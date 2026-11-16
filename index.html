@@ -231,69 +231,43 @@ dialog.wide{width:min(980px,calc(100vw - 32px))}
 .preview iframe{display:block;width:100%;height:440px;border:0}
 .preview p{margin:0;padding:8px 12px;font-size:12.5px;color:var(--ink-3);background:var(--sunken);border-top:1px solid var(--line)}
 
-/* 집계: 시트 연결 설정 */
-.cfg{border:1px solid var(--line);border-radius:var(--r);background:var(--sunken);padding:16px;margin-bottom:16px}
-.cfg-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;margin-bottom:12px}
-.cfg-top b{font-size:14px;font-weight:650;display:block}
-.cfg-top .meta{display:block}
-.cfg .flabel{margin:14px 0 8px}
-.cols{display:flex;flex-wrap:wrap;gap:6px}
-.cols label{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 11px;border:1px solid var(--line-2);border-radius:999px;background:var(--surface);font-size:13.5px;color:var(--ink-2);cursor:pointer}
-.cols label:has(input:checked){border-color:var(--ink);color:var(--ink);font-weight:600}
-.cols input{margin:0}
-.check{display:flex;gap:8px;align-items:center;font-size:14px;color:var(--ink-2);margin-top:12px}
-.share{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13px;color:var(--ink-2);background:#f3f7fe;border:1px solid #d9e5fa;border-radius:var(--r-sm);padding:10px 12px;margin:-6px 0 16px;line-height:1.55}
-.share code{font-family:inherit;font-weight:650;color:var(--brand-ink);word-break:break-all}
-.url-row{display:flex;gap:8px}
-.url-row .in{flex:1;min-width:0}
-.url-row .btn{height:44px}
+/* 집계: 입력 화면·결과 화면 */
 .done{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:600;color:var(--s-tally)}
 .done svg.i{width:15px;height:15px}
-
-/* 집계: 표 화면 */
-.gv-back{display:inline-flex;align-items:center;gap:4px;margin:-8px 0 14px -6px}
-.gv-head{display:flex;gap:16px;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;margin-bottom:14px}
-.gv-head h1{font-size:26px;font-weight:750;letter-spacing:-.04em;line-height:1.25;margin:0 0 6px}
-.gv-head .btns{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
-.gv-body{white-space:pre-wrap;color:var(--ink-2);font-size:14.5px;margin:0 0 16px;max-width:62em}
-.gv-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-size:13px;color:var(--ink-3);margin-bottom:8px}
-.gv-bar .live{display:inline-flex;align-items:center;gap:6px}
-.gv-bar .live i{width:7px;height:7px;border-radius:50%;background:var(--s-tally)}
-.gv-note{font-size:13px;color:#9a6700;background:#fff8e6;border-radius:var(--r-sm);padding:10px 12px;margin-bottom:12px}
-.grid-wrap{overflow:auto;max-height:calc(100vh - 290px);min-height:220px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow)}
-table.grid{border-collapse:separate;border-spacing:0;font-size:14px;min-width:100%}
-.grid th,.grid td{border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:0;text-align:left;white-space:nowrap}
-.grid thead th{position:sticky;top:0;z-index:2;background:var(--sunken);font-size:12.5px;font-weight:650;color:var(--ink-2);padding:10px 12px;height:40px}
-.grid thead th.lk{color:var(--ink-3)}
-.grid thead th svg.i{width:12px;height:12px;vertical-align:-1px;margin-left:4px}
-.grid .rn{position:sticky;left:0;z-index:1;background:var(--sunken);color:var(--ink-3);font-size:12px;text-align:center;min-width:44px;width:44px;font-variant-numeric:tabular-nums}
-.grid thead .rn{z-index:3}
-.grid td.c{position:relative;min-width:120px;max-width:280px;height:40px;padding:0 12px;overflow:hidden;text-overflow:ellipsis;cursor:text;outline:none;transition:background .3s}
-.grid td.c:hover{background:#f7f9fc}
-.grid td.c:focus{box-shadow:inset 0 0 0 2px var(--brand);background:#f5f8fe}
-.grid td.c.num{text-align:right;font-variant-numeric:tabular-nums}
-.grid td.c.ro{color:var(--ink-2);background:#fafbfc;cursor:default}
-.grid td.c.ro:focus{box-shadow:inset 0 0 0 2px var(--line-2);background:#fafbfc}
-.grid td.c.editing{padding:0;box-shadow:inset 0 0 0 2px var(--brand);background:#fff}
-.grid td.c input{width:100%;height:38px;border:0;outline:none;padding:0 12px;background:transparent;font-size:14px}
-.grid td.c.saving{color:var(--ink-3)}
-.grid td.c.saving::after{content:"";position:absolute;right:6px;top:50%;width:6px;height:6px;margin-top:-3px;border-radius:50%;background:var(--brand);opacity:.6}
-.grid td.c.saved{background:#ecf8f3}
-.grid td.c.err{box-shadow:inset 0 0 0 2px var(--s-apply);background:#fdf3f3}
-.grid td.c.flash{background:#fff6dc}
-.grid tr.others td.c{background:#f6f7f9;color:var(--ink-3)}
-.grid tr.others td.c.masked{cursor:not-allowed}
-.grid .done-pill{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;color:var(--ink-3)}
-.grid .done-pill svg.i{width:13px;height:13px}
-.grid tr.mine .rn{color:var(--brand);font-weight:700;box-shadow:inset 3px 0 0 var(--brand)}
-.grid thead th.meta-col{color:var(--ink-3);font-weight:500}
-.gv-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:10px;font-size:13px;color:var(--ink-3)}
-.grid td.c[data-c="0"],.grid thead th:nth-child(2){position:sticky;left:44px;z-index:1;box-shadow:1px 0 0 var(--line)}
-.grid td.c[data-c="0"]{background:var(--surface)}
-.grid td.c.ro[data-c="0"]{background:#fafbfc}
-.grid thead th:nth-child(2){z-index:3;background:var(--sunken)}
-@media (max-width:960px){.gv-keys{display:none}.grid-wrap{max-height:none}}
-.kbd{display:inline-block;border:1px solid var(--line-2);border-bottom-width:2px;border-radius:5px;padding:0 5px;font-size:11.5px;color:var(--ink-2);background:var(--surface);margin:0 1px}
+.tv-back{display:inline-flex;align-items:center;gap:4px;margin:-8px 0 14px -6px}
+.tv-head{display:flex;gap:16px;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;margin-bottom:14px}
+.tv-head h1{font-size:26px;font-weight:750;letter-spacing:-.04em;line-height:1.25;margin:0 0 6px}
+.tv-head .btns{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.tv-body{white-space:pre-wrap;color:var(--ink-2);font-size:15px;margin:0 0 20px;max-width:62em;line-height:1.7}
+.tv-note{font-size:13.5px;color:#9a6700;background:#fff8e6;border-radius:var(--r-sm);padding:11px 14px;margin-bottom:16px}
+.entries{display:grid;gap:14px;padding-bottom:96px}
+.entry{padding:22px 24px}
+.entry-top{display:flex;justify-content:space-between;align-items:center;margin:-4px 0 14px}
+.entry-top b{font-size:14px;font-weight:700;color:var(--ink-2)}
+.efields{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:4px 18px}
+.efields .wide{grid-column:1 / -1}
+.efields label.f,.efields fieldset.f{margin-bottom:14px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips label{display:inline-flex;align-items:center;gap:7px;height:40px;padding:0 14px;border:1px solid var(--line-2);border-radius:999px;font-size:14px;cursor:pointer;background:var(--surface);user-select:none}
+.chips label:has(input:checked){border-color:var(--brand);background:#eef4fe;color:var(--brand-ink);font-weight:650}
+.chips input{position:absolute;opacity:0;pointer-events:none}
+.chips label:has(input:focus-visible){outline:2px solid var(--brand);outline-offset:2px}
+.add-row{width:100%;height:52px;border:1px dashed var(--line-2);border-radius:var(--r-lg);background:transparent;color:var(--ink-2);font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
+.add-row:hover{border-color:var(--ink-3);color:var(--ink);background:rgba(255,255,255,.6)}
+.savebar{position:sticky;bottom:16px;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow-lift);padding:12px 14px 12px 18px;margin-top:-80px}
+.savebar .st-txt{font-size:13.5px;color:var(--ink-2);display:flex;align-items:center;gap:8px}
+.savebar .st-txt i{width:8px;height:8px;border-radius:50%;background:var(--ink-3)}
+.savebar .st-txt.dirty i{background:#e9a514}
+.savebar .st-txt.ok i{background:var(--s-tally)}
+.savebar .btns{display:flex;gap:8px}
+.res-tbl td{vertical-align:top}
+.res-tbl tr.cont td.who{color:transparent}
+.miss{margin-top:20px}
+.miss summary{cursor:pointer;font-size:14px;font-weight:650;padding:6px 0}
+.miss .names{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.miss .names span{font-size:13px;background:var(--sunken);border:1px solid var(--line);border-radius:999px;padding:3px 10px;color:var(--ink-2)}
+.preset{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
 
 /* 학습자료 */
 .mats{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
@@ -409,7 +383,7 @@ dialog::backdrop{background:rgba(15,22,36,.42);backdrop-filter:blur(2px)}
    설정: Apps Script 웹 앱 URL을 붙여넣으세요.
    비워 두면 체험용(데모) 모드로 열립니다.
    ══════════════════════════════════════════════ */
-const API_URL = 'https://script.google.com/macros/s/AKfycbyeBDxS6VjAZirSGOw05meQzfTvMGGTgRZYqXu5JIDkqLyAzJvAr7bINL1kiDdEsHyR/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycby1H57uwHOM9s5oLZ8agO5_UjSG3rSCwB4oS5-hXrNe0pTzibc5NBuWdxJu21ZksnH9/exec';
 
 const DEMO = !API_URL;
 const app = document.getElementById('app');
@@ -424,7 +398,7 @@ const SECTIONS = {
   apply: { label: '신청', color: 'var(--s-apply)', add: '신청 받기',
     desc: '선생님들께 받을 신청을 올립니다. 신청 현황은 올린 선생님과 관리자만 볼 수 있습니다.' },
   tally: { label: '집계', color: 'var(--s-tally)', add: '집계 글쓰기',
-    desc: '사이트의 표에 바로 입력합니다. 내가 입력한 줄만 보이고, 전체 내용은 올린 선생님과 관리자만 봅니다.' },
+    desc: '사이트에서 바로 입력합니다. 내가 입력한 내용만 보이고, 결과는 올린 선생님과 관리자만 받아 봅니다.' },
   link: { label: '바로가기', color: 'var(--s-link)', add: '바로가기 추가',
     desc: '자주 들어가는 사이트를 분류별로 모았습니다.' },
   users: { label: '회원 관리', color: 'var(--s-users)', adminOnly: true,
@@ -473,8 +447,8 @@ const state = {
   view: store('hm_view') || 'admin', q: '',
   f: { adminTag: '전체', grade: '전체', kind: '전체', subject: '전체' },
   open: {}, users: null, gateTab: 'login',
-  tallyCounts: {}, myTallies: {}, serviceEmail: '',
-  grid: null,   // 열려 있는 집계 표
+  tallyCounts: {}, myTallies: {},
+  tv: null,   // 열려 있는 집계 화면 { postId, kind: 'entry' | 'results' }
 };
 
 /* ───────── 도우미 ───────── */
@@ -527,7 +501,7 @@ function clearSession() { state.token = null; state.me = null; store('hm_token',
 async function load() {
   const d = await api('bootstrap');
   Object.assign(state, { me: d.me, posts: d.posts, applyCounts: d.applyCounts || {}, applyFull: d.applyFull || {}, myApplies: d.myApplies || {}, pendingCount: d.pendingCount || 0,
-    tallyCounts: d.tallyCounts || {}, myTallies: d.myTallies || {}, serviceEmail: d.serviceEmail || '' });
+    tallyCounts: d.tallyCounts || {}, myTallies: d.myTallies || {} });
 }
 
 /* ───────── 화면: 입구 ───────── */
@@ -630,7 +604,7 @@ function renderPortal() {
       </div>
     </aside>
     <main class="main" style="--accent:${S.color}">
-      <div class="wrap">${state.grid && v === 'tally' ? '<div id="gridView"></div>' : `
+      <div class="wrap">${state.tv && v === 'tally' ? '<div id="tallyView"></div>' : `
         <header class="head">
           <div><h1><span class="d"></span>${S.label}</h1><p>${S.desc}</p></div>
           ${v === 'users' ? '' : `<div><button class="btn" data-act="new">${ic('plus')}${S.add}</button></div>`}
@@ -644,7 +618,7 @@ function renderPortal() {
     </main>
   </div>
   ${DEMO ? '<div class="demo-flag"><i></i>체험용 화면</div>' : ''}`;
-  if (state.grid && v === 'tally') { renderGridView(); return; }
+  if (state.tv && v === 'tally') { renderTallyView(); return; }
   const q = document.getElementById('q');
   if (q) q.addEventListener('input', () => { state.q = q.value; renderList(); });
   renderFilters(); renderList();
@@ -770,23 +744,27 @@ function ticket(p) {
 }
 
 function tallyRow(p) {
-  const d = dday(p.extra.due);
-  const grid = !!p.extra.grid;
+  const d = dday(p.extra.due), closed = d !== null && d < 0;
+  const ready = Array.isArray(p.extra.fields) && p.extra.fields.length > 0;
   const manage = canEdit(p);
   const due = p.extra.due ? `<span class="due ${d !== null && d >= 0 && d <= 3 ? 'soon' : ''}">${ic('clock')}${fmtDate(p.extra.due)}까지${d !== null && d >= 0 ? ` (D-${d})` : ' (끝남)'}</span>` : '';
   const mine = state.myTallies[p.id];
   const cnt = state.tallyCounts[p.id] || 0;
-  const main = grid
-    ? `<button class="btn sm" data-act="openGrid" data-id="${p.id}">${ic('app')}${manage ? '전체 현황 보기' : d !== null && d < 0 ? '내 입력 보기' : '입력하기'}</button>`
-    : (manage ? `<span class="meta">고치기에서 시트를 연결해 주세요</span>` : `<span class="meta">준비 중</span>`);
+  let btns = '';
+  if (!ready) btns = manage ? `<span class="meta">고치기에서 입력 항목을 다시 만들어 주세요</span>` : `<span class="meta">준비 중</span>`;
+  else {
+    if (manage) btns += `<button class="btn sm line" data-act="tallyResults" data-id="${p.id}">${ic('chart')}결과 보기</button>`;
+    btns += mine ? `<button class="btn sm ${closed ? 'line' : ''}" data-act="tallyOpen" data-id="${p.id}">${closed ? '내 입력 보기' : '내 입력 고치기'}</button>`
+      : closed ? `<button class="btn sm line" disabled>기한이 지났습니다</button>` : `<button class="btn sm" data-act="tallyOpen" data-id="${p.id}">입력하기</button>`;
+  }
   return `<article class="trow">
     <div class="top">
       <div>
         <h3>${esc(p.title)}</h3>
-        <div class="meta">${due ? due + ' · ' : ''}${grid ? `<span class="num">${cnt}명 참여</span> · ` : ''}${esc(p.authorName)} · ${fmtDate(p.createdAt)}</div>
-        ${grid && mine ? `<div class="done" style="margin-top:6px">${ic('check')}${fmtDate(mine)}에 입력함</div>` : ''}
+        <div class="meta">${due ? due + ' · ' : ''}${ready ? `<span class="num">${cnt}명 제출</span> · ` : ''}${esc(p.authorName)} · ${fmtDate(p.createdAt)}</div>
+        ${mine ? `<div class="done" style="margin-top:6px">${ic('check')}${fmtDate(mine.at)}에 제출함${p.extra.mode === 'multi' ? ` (${mine.rows.length}줄)` : ''}</div>` : ''}
       </div>
-      <div class="btns">${ownBtns(p)}${main}</div>
+      <div class="btns">${ownBtns(p)}${btns}</div>
     </div>
     ${p.body ? `<p class="body">${esc(p.body)}</p>` : ''}
   </article>`;
@@ -886,11 +864,16 @@ function postForm(board, p) {
     <label class="f"><span>참고 자료 주소<small>선택</small></span><input class="in" name="url" type="url" value="${v(p?.url)}" placeholder="https://"></label>`;
   else if (board === 'tally') fields = `
     <label class="f"><span>제목</span><input class="in" name="title" required maxlength="80" value="${v(p?.title)}" placeholder="2학기 현장체험학습 희망지 조사"></label>
-    <div class="f" style="margin-bottom:16px"><span class="flabel">구글 시트 주소</span>
-      <div class="url-row"><input class="in" name="url" type="url" value="${v(p?.url)}" placeholder="https://docs.google.com/spreadsheets/d/…"><button type="button" class="btn line" data-act="inspect">${e.grid ? '다시 연결' : '시트 연결'}</button></div></div>
-    ${state.serviceEmail ? `<div class="share"><span>시트에 <b>‘하늘마루’로 시작하는 탭</b>을 만들고 1행에 항목 이름을 적은 뒤, 시트를 아래 주소에 <b>편집자</b>로 공유하고 ‘시트 연결’을 누르세요.</span><code>${esc(state.serviceEmail)}</code><button type="button" class="txt" data-act="copyEmail">주소 복사</button></div>` : ''}
-    <div id="tallyCfg"></div>
-    <label class="f"><span>안내</span><textarea class="in" name="body" maxlength="4000" placeholder="무엇을 왜 모으는지, 어느 줄에 입력하면 되는지 적어 주세요">${v(p?.body)}</textarea></label>
+    <label class="f"><span>안내</span><textarea class="in" name="body" maxlength="4000" placeholder="무엇을 왜 모으는지, 어떻게 입력하면 되는지 적어 주세요">${v(p?.body)}</textarea></label>
+    <div class="f" style="margin-bottom:16px"><span class="flabel">입력받을 항목</span>
+      <div class="fb" id="fieldsBox"></div>
+      <div class="preset"><button type="button" class="btn sm line" data-act="addField">${ic('plus')}항목 추가</button>
+        <button type="button" class="btn sm line" data-act="addClassField">${ic('plus')}학년반 항목 넣기</button></div></div>
+    <div class="f" style="margin-bottom:16px"><span class="flabel">입력 방식</span>
+      <div class="opts">
+        <label><input type="radio" name="mode" value="once" ${e.mode !== 'multi' ? 'checked' : ''}>한 사람당 한 번 입력 <span class="qhint">반별 인원, 참석 여부처럼</span></label>
+        <label><input type="radio" name="mode" value="multi" ${e.mode === 'multi' ? 'checked' : ''}>한 사람이 여러 줄 입력 <span class="qhint">학생별·행사별 명단처럼</span></label>
+      </div></div>
     <label class="f" style="max-width:240px"><span>입력 기한<small>선택</small></span><input class="in" name="due" type="date" value="${v(e.due)}"></label>`;
   else if (board === 'learn') {
     const kind = e.kind || 'webapp';
@@ -931,9 +914,9 @@ function postForm(board, p) {
     form._fields = JSON.parse(JSON.stringify(applyFields(e)));
     renderFields(form);
   }
-  if (board === 'tally' && e.grid) {
-    form._tally = { tab: e.tab, tabs: [e.tab], headers: e.headers || [], locked: e.locked || [], allowAdd: !!e.allowAdd };
-    renderTallyCfg(form);
+  if (board === 'tally') {
+    form._fields = JSON.parse(JSON.stringify(Array.isArray(e.fields) ? e.fields : []));
+    renderFields(form);
   }
   const drop = document.getElementById('drop'), fileIn = document.getElementById('fileIn');
   if (drop) {
@@ -963,26 +946,18 @@ async function submitPost(form, board, p) {
   const extra = {};
   let url = (fd.url || '').trim();
   if (board === 'admin') { if (!url) return formMsg('웹앱 주소를 입력해 주세요.'); extra.tag = fd.tag; extra.icon = fd.icon; }
-  if (board === 'apply') {
-    extra.deadline = fd.deadline || ''; extra.capacity = Math.max(0, parseInt(fd.capacity || '0', 10) || 0);
+  if (board === 'apply' || board === 'tally') {
     syncFields(form);
     const fields = form._fields.map(f => ({ ...f, label: f.label.trim(), options: (f.type === 'one' || f.type === 'many') ? f.options.map(o => o.trim()).filter(Boolean) : [] }));
     const noLabel = fields.findIndex(f => !f.label);
     if (noLabel >= 0) return formMsg(`${noLabel + 1}번째 항목의 이름을 적어 주세요.`);
     const noOpt = fields.find(f => (f.type === 'one' || f.type === 'many') && !f.options.length);
     if (noOpt) return formMsg(`‘${noOpt.label}’ 항목에 보기를 하나 이상 적어 주세요.`);
+    if (board === 'tally' && !fields.length) return formMsg('입력받을 항목을 하나 이상 만들어 주세요.');
     extra.fields = fields;
   }
-  if (board === 'tally') {
-    extra.due = fd.due || '';
-    const cfg = readTallyCfg(form);
-    if (!cfg) return formMsg('구글 시트 주소를 넣고 ‘시트 연결’을 눌러 주세요.');
-    if (cfg) {
-      if (!url) return formMsg('구글 시트 주소를 입력해 주세요.');
-      if (cfg.locked.length >= cfg.headers.length && !cfg.allowAdd) return formMsg('모든 열을 고정하면 입력할 칸이 없습니다.');
-      Object.assign(extra, cfg);
-    }
-  }
+  if (board === 'apply') { extra.deadline = fd.deadline || ''; extra.capacity = Math.max(0, parseInt(fd.capacity || '0', 10) || 0); }
+  if (board === 'tally') { extra.due = fd.due || ''; extra.mode = fd.mode === 'multi' ? 'multi' : 'once'; url = ''; }
   if (board === 'link') { if (!url) return formMsg('주소를 입력해 주세요.'); extra.group = (fd.group || '').trim() || '기타'; }
   if (board === 'learn') {
     Object.assign(extra, { kind: fd.kind, grade: fd.grade, subject: fd.subject });
@@ -1007,240 +982,191 @@ async function submitPost(form, board, p) {
   } catch (err) { formMsg(err.message); btn.disabled = false; btn.textContent = p ? '저장' : '올리기'; }
 }
 
-/* ───────── 집계: 시트 연결 설정 ───────── */
-function renderTallyCfg(form) {
-  const c = form._tally, box = document.getElementById('tallyCfg');
-  if (!c) { box.innerHTML = ''; return; }
-  box.innerHTML = `<div class="cfg">
-    <div class="cfg-top"><div><b>${c.title ? esc(c.title) : '연결된 시트'}</b><span class="meta">‘${esc(c.tab)}’ 탭${c.rowCount !== undefined ? ` · 항목 ${c.headers.length}개, 내용 ${c.rowCount}줄` : ''}을 사이트에 표로 띄웁니다.</span></div>
-      ${c.tabs.length > 1 ? `<select class="in" style="width:auto;height:34px" data-act="tabSel" aria-label="탭">${c.tabs.map(t => `<option ${t === c.tab ? 'selected' : ''}>${esc(t)}</option>`).join('')}</select>` : ''}</div>
-    <span class="flabel">고칠 수 없게 고정할 열<small>미리 채워 둔 학년반 같은 열</small></span>
-    <div class="cols">${c.headers.map(h => `<label><input type="checkbox" data-act="lockCol" value="${esc(h)}" ${c.locked.includes(h) ? 'checked' : ''}>${esc(h)}</label>`).join('')}</div>
-    <label class="check"><input type="checkbox" data-act="allowAdd" ${c.allowAdd ? 'checked' : ''}>선생님들이 맨 아래에 줄을 추가할 수 있게 하기</label>
-  </div>`;
-}
-function readTallyCfg(form) {
-  const c = form._tally; if (!c) return null;
-  const locked = [...document.querySelectorAll('#tallyCfg [data-act=lockCol]:checked')].map(x => x.value);
-  const add = document.querySelector('#tallyCfg [data-act=allowAdd]');
-  return { grid: true, tab: c.tab, headers: c.headers, locked, allowAdd: !!(add && add.checked) };
-}
-async function inspectSheet(form, tab) {
-  const url = form.querySelector('[name=url]').value.trim();
-  if (!/docs\.google\.com\/spreadsheets\/d\//.test(url)) return formMsg('구글 시트 주소를 붙여넣어 주세요. (docs.google.com/spreadsheets/d/… 형태)');
-  const btn = form.querySelector('[data-act=inspect]'); btn.disabled = true; btn.textContent = '확인하는 중…';
-  try {
-    const r = await api('tallyInspect', { url, tab });
-    const prev = form._tally ? readTallyCfg(form) : null;
-    form._tally = { title: r.title, tab: r.tab, tabs: r.tabs, headers: r.headers, rowCount: r.rowCount,
-      locked: prev ? prev.locked.filter(h => r.headers.includes(h)) : [], allowAdd: prev ? prev.allowAdd : false };
-    document.getElementById('formMsg').innerHTML = '';
-    renderTallyCfg(form);
-  } catch (err) { formMsg(err.message); }
-  btn.disabled = false; btn.textContent = form._tally ? '다시 연결' : '시트 연결';
-}
+/* ───────── 집계: 입력 화면(교사)·결과 화면(작성자·관리자) ─────────
+   입력한 내용은 포털에 저장되고, 작성자는 결과 화면에서 복사하거나 엑셀(CSV)로 내려받아 시트에 정리합니다. */
+// 학년반 보기: 1~5학년 9반, 6학년 8반 (학급 수가 바뀌면 이 숫자만 고치세요)
+const CLASS_COUNTS = [9, 9, 9, 9, 9, 8];
+const CLASS_LIST = CLASS_COUNTS.flatMap((n, g) => Array.from({ length: n }, (_, c) => `${g + 1}-${c + 1}`));
 
-/* ───────── 집계: 표 화면 ─────────
-   칸을 누르거나 글자를 치면 바로 입력, Enter는 아래 칸, Tab은 오른쪽 칸으로 옮기며 저장합니다.
-   작성자·관리자는 전체 표를, 다른 교사는 자기 줄과 빈 줄만 봅니다(가리는 일은 서버가 합니다). */
-const GRID_POLL_MS = 15000;
-const isNumLike = (v) => /^-?[\d,]+(\.\d+)?$/.test(String(v ?? '').trim()) && String(v).trim() !== '';
+function tvPost() { return state.tv && state.posts.find(p => p.id === state.tv.postId); }
+function closeTally() { state.tv = null; }
+function tvDirty() { return state.tv && state.tv.kind === 'entry' && state.tv.dirty; }
 
-function openGrid(id) {
-  stopGridPoll();
-  state.grid = { postId: id, data: null, error: null, editing: null, pending: 0, loadedAt: 0 };
+function openTally(id, kind) {
+  const p = state.posts.find(x => x.id === id); if (!p) return;
+  const mine = state.myTallies[id];
+  state.tv = { postId: id, kind, dirty: false, rows: mine ? JSON.parse(JSON.stringify(mine.rows)) : [{}], data: null, error: null };
   renderPortal(); window.scrollTo(0, 0);
-  loadGrid(false);
+  if (kind === 'results') loadResults();
 }
-function closeGrid() { stopGridPoll(); state.grid = null; }
-function stopGridPoll() { if (state._gridTimer) { clearInterval(state._gridTimer); state._gridTimer = null; } }
-function gridPost() { return state.grid && state.posts.find(p => p.id === state.grid.postId); }
-function gridClosed(p) { const d = dday(p.extra.due); return d !== null && d < 0; }
-const gridSig = (d) => d.headers.join('\u0001') + '|' + d.rows.map(r => r.n + (r.others ? 'o' : '')).join(',');
 
-async function loadGrid(silent) {
-  const g = state.grid; if (!g) return;
-  try {
-    const r = await api('tallyGrid', { postId: g.postId });
-    if (state.grid !== g) return;
-    const old = g.data;
-    g.data = r; g.loadedAt = Date.now(); g.error = null;
-    if (silent && old && gridSig(old) === gridSig(r)) patchGrid(old);
-    else { const pos = focusPos(); renderGridView(); restoreFocus(pos); }
-  } catch (e) {
-    if (state.grid !== g) return;
-    if (!silent) { g.error = e.message; renderGridView(); }
-  }
-  if (!state._gridTimer && state.grid === g) {
-    state._gridTimer = setInterval(() => {
-      const cur = state.grid;
-      if (!cur || document.hidden || cur.editing || cur.pending) return;
-      loadGrid(true);
-    }, GRID_POLL_MS);
-  }
-}
-function focusPos() { const f = document.activeElement?.closest?.('#grid td.c'); return f ? [+f.dataset.r, +f.dataset.c] : null; }
-function restoreFocus(pos) { if (pos) cellAt(pos[0], pos[1])?.focus(); }
-
-function renderGridView() {
-  const g = state.grid, p = gridPost(), box = document.getElementById('gridView');
-  if (!g || !box) return;
-  if (!p) { closeGrid(); renderPortal(); return; }
-  const manage = canEdit(p);
-  const d = dday(p.extra.due), closed = gridClosed(p);
-  const head = `
-    <button class="txt gv-back" data-act="gridBack">← 집계 목록</button>
-    <div class="gv-head">
+function tvHead(p, extraBtns) {
+  const d = dday(p.extra.due);
+  return `<button class="txt tv-back" data-act="tvBack">← 집계 목록</button>
+    <div class="tv-head">
       <div><h1>${esc(p.title)}</h1>
-        <div class="meta">${p.extra.due ? `<span class="due ${d !== null && d >= 0 && d <= 3 ? 'soon' : ''}">${ic('clock')}${fmtDate(p.extra.due)}까지${d !== null && d >= 0 ? ` (D-${d})` : ' (끝남)'}</span> · ` : ''}${esc(p.authorName)} · <span class="num" id="gvCount">${state.tallyCounts[p.id] || 0}명 참여</span></div></div>
-      <div class="btns">
-        ${manage ? `<button class="btn sm line" data-act="tallyLogView" data-id="${p.id}">${ic('clock')}입력 기록</button>` : ''}
-        <button class="btn sm line" data-act="gridRefresh">새로고침</button>
-      </div>
+        <div class="meta">${p.extra.due ? `<span class="due ${d !== null && d >= 0 && d <= 3 ? 'soon' : ''}">${ic('clock')}${fmtDate(p.extra.due)}까지${d !== null && d >= 0 ? ` (D-${d})` : ' (끝남)'}</span> · ` : ''}${esc(p.authorName)}${state.tv.kind === 'results' && state.tv.data ? ` · ${state.tv.data.list.length}명 제출` : ''}</div></div>
+      <div class="btns">${extraBtns || ''}</div>
     </div>
-    ${p.body ? `<p class="gv-body">${esc(p.body)}</p>` : ''}
-    ${closed ? '<div class="gv-note">입력 기한이 지나 보기만 할 수 있습니다.</div>' : ''}`;
-  if (g.error) { box.innerHTML = head + `<div class="msg err">${esc(g.error)}</div>`; return; }
-  if (!g.data) { box.innerHTML = head + '<div class="grid-wrap" style="display:grid;place-items:center"><span class="meta">불러오는 중…</span></div>'; return; }
-  const { headers, ro, rows } = g.data;
-  const numCol = headers.map((_, c) => { const vals = rows.map(r => r.v[c]).filter(v => v !== '' && v !== null); return vals.length > 0 && vals.every(isNumLike); });
-  const metaCol = headers.map(h => h === '입력자' || h === '입력 시각');
-  const th = headers.map((h, c) => `<th class="${ro[c] ? 'lk' : ''}${metaCol[c] ? ' meta-col' : ''}" scope="col">${esc(h)}${ro[c] && !metaCol[c] ? ic('lock') : ''}</th>`).join('');
-  const body = rows.map((r, i) => {
-    let pill = false;
-    return `<tr class="${r.others ? 'others' : ''}${r.mine ? ' mine' : ''}"><th class="rn" scope="row" ${r.mine ? 'title="내가 입력한 줄"' : ''}>${manage ? r.n : i + 1}</th>${headers.map((h, c) => {
-      const masked = r.v[c] === null;
-      const isRo = closed || ro[c] || r.f[c] || r.others;
-      let text = esc(r.v[c] ?? '');
-      if (masked && !pill) { pill = true; text = `<span class="done-pill">${ic('check')}다른 선생님 입력 완료</span>`; }
-      const why = closed ? '입력 기한이 지났습니다' : r.others ? '다른 선생님이 입력한 줄입니다' : metaCol[c] ? '자동으로 기록됩니다' : ro[c] ? '고정된 열입니다' : '수식 칸입니다';
-      return `<td class="c${isRo ? ' ro' : ''}${masked ? ' masked' : ''}${numCol[c] ? ' num' : ''}" tabindex="0" data-r="${i}" data-c="${c}" ${isRo ? `title="${why}"` : ''}>${text}</td>`;
-    }).join('')}</tr>`;
-  }).join('');
-  const canAdd = p.extra.allowAdd && !closed;
-  box.innerHTML = head + `
-    ${manage ? '' : '<div class="gv-bar" style="color:var(--ink-2)"><span>다른 선생님이 입력한 줄은 내용이 가려지고, 내가 입력한 줄(파란 표시)과 빈 줄에만 입력할 수 있습니다.</span></div>'}
-    <div class="gv-bar"><span class="live"><i></i><span id="gvAgo">방금 불러옴</span> · 15초마다 자동 새로고침</span>
-      ${closed ? '' : `<span class="gv-keys">칸을 누르거나 바로 입력 <span class="kbd">Enter</span> 아래 칸 <span class="kbd">Tab</span> 오른쪽 칸 <span class="kbd">Esc</span> 취소</span>`}</div>
-    <div class="grid-wrap" id="gridWrap"><table class="grid" id="grid"><thead><tr><th class="rn" scope="col">${manage ? '행' : ''}</th>${th}</tr></thead><tbody>${body}</tbody></table>
-      ${rows.length === 0 ? `<p class="meta" style="padding:20px">${canAdd ? '아직 줄이 없습니다. 아래 ‘내 줄 추가’로 입력을 시작하세요.' : '입력할 줄이 없습니다. 작성자가 시트에 줄을 채워 두어야 합니다.'}</p>` : ''}</div>
-    <div class="gv-foot"><span>입력한 내용은 바로 저장됩니다. 같은 칸을 다른 선생님이 먼저 고치면 알려 드립니다.</span>
-      ${canAdd ? `<button class="btn sm line" data-act="gridAddRow">${ic('plus')}내 줄 추가</button>` : ''}</div>`;
-  tickAgo();
+    ${p.body ? `<p class="tv-body">${esc(p.body)}</p>` : ''}`;
 }
-function tickAgo() {
-  const el = document.getElementById('gvAgo'), g = state.grid;
-  if (!el || !g || !g.loadedAt) return;
-  const s = Math.round((Date.now() - g.loadedAt) / 1000);
-  el.textContent = s < 5 ? '방금 불러옴' : `${s}초 전에 불러옴`;
-}
-setInterval(tickAgo, 5000);
 
-// 자동 새로고침: 바뀐 칸만 고치고 노란색으로 잠깐 표시합니다
-function patchGrid(old) {
-  const n = state.grid.data;
-  n.rows.forEach((r, i) => r.v.forEach((v, c) => {
-    if (old.rows[i].v[c] === v || v === null) return;
-    const td = cellAt(i, c); if (!td || td.classList.contains('editing')) return;
-    td.textContent = v; td.classList.add('flash'); setTimeout(() => td.classList.remove('flash'), 1600);
-  }));
-  tickAgo();
+function renderTallyView() {
+  const p = tvPost(), box = document.getElementById('tallyView');
+  if (!box) return;
+  if (!p) { closeTally(); renderPortal(); return; }
+  if (state.tv.kind === 'results') return renderResults(p, box);
+  renderEntry(p, box);
 }
-function cellAt(r, c) { return document.querySelector(`#grid td.c[data-r="${r}"][data-c="${c}"]`); }
-function cellVal(r, c) { const row = state.grid.data.rows[r]; return row ? (row.v[c] ?? '') : ''; }
 
-function startEdit(td, initial) {
-  const g = state.grid;
-  if (!td || td.classList.contains('ro') || td.classList.contains('editing')) return;
-  if (g.editing) finishEdit(true);
-  const r = +td.dataset.r, c = +td.dataset.c;
-  const before = cellVal(r, c);
-  g.editing = { r, c, before, td };
-  td.classList.remove('err', 'saved');
-  td.classList.add('editing');
-  td.innerHTML = `<input aria-label="${esc(g.data.headers[c])} ${r + 1}번째 줄" maxlength="500">`;
-  const inp = td.firstChild;
-  inp.value = initial !== undefined ? initial : before;
-  inp.focus();
-  if (initial === undefined) inp.select();
-  inp.addEventListener('keydown', (e) => {
-    if (e.isComposing || e.keyCode === 229) return;   // 한글 조합 중에는 무시
-    if (e.key === 'Enter') { e.preventDefault(); finishEdit(true, [1, 0]); }
-    else if (e.key === 'Tab') { e.preventDefault(); finishEdit(true, [0, e.shiftKey ? -1 : 1]); }
-    else if (e.key === 'Escape') { e.preventDefault(); finishEdit(false, [0, 0]); }
+/* 입력 화면 */
+function entryField(f, i, val) {
+  const n = `r${i}_${esc(f.id)}`, star = f.required ? '<span class="req-mark" aria-label="필수">*</span>' : '';
+  if (f.type === 'one' && f.options.length > 6) {
+    return `<label class="f"><span>${esc(f.label)}${star}</span><select class="in" name="${n}"><option value="">고르세요</option>${f.options.map(o => `<option ${o === val ? 'selected' : ''}>${esc(o)}</option>`).join('')}</select></label>`;
+  }
+  if (f.type === 'one' || f.type === 'many') {
+    const sel = Array.isArray(val) ? val : (val ? [val] : []);
+    return `<fieldset class="f wide"><legend>${esc(f.label)}${star}${f.type === 'many' ? '<span class="qhint">여러 개 고를 수 있어요</span>' : ''}</legend><div class="chips">
+      ${f.options.map(o => `<label><input type="${f.type === 'one' ? 'radio' : 'checkbox'}" name="${n}" value="${esc(o)}" ${sel.includes(o) ? 'checked' : ''}>${f.type === 'many' ? ic('check') : ''}${esc(o)}</label>`).join('')}</div></fieldset>`;
+  }
+  const v = esc(val ?? '');
+  if (f.type === 'long') return `<label class="f wide"><span>${esc(f.label)}${star}</span><textarea class="in" name="${n}" maxlength="2000" rows="3">${v}</textarea></label>`;
+  if (f.type === 'number') return `<label class="f"><span>${esc(f.label)}${star}</span><input class="in" name="${n}" inputmode="decimal" value="${v}"></label>`;
+  if (f.type === 'date') return `<label class="f"><span>${esc(f.label)}${star}</span><input class="in" name="${n}" type="date" value="${v}"></label>`;
+  return `<label class="f"><span>${esc(f.label)}${star}</span><input class="in" name="${n}" maxlength="300" value="${v}"></label>`;
+}
+
+function renderEntry(p, box) {
+  const tv = state.tv, fields = p.extra.fields || [], multi = p.extra.mode === 'multi';
+  const d = dday(p.extra.due), closed = d !== null && d < 0;
+  const mine = state.myTallies[p.id];
+  const cards = tv.rows.map((row, i) => `<section class="card entry" data-row="${i}">
+      ${multi ? `<div class="entry-top"><b>${i + 1}번째 줄</b>${!closed && tv.rows.length > 1 ? `<button type="button" class="txt" data-act="rowDel" data-i="${i}">이 줄 지우기</button>` : ''}</div>` : ''}
+      <div class="efields">${fields.map(f => entryField(f, i, row[f.id])).join('')}</div>
+    </section>`).join('');
+  const status = tv.dirty ? '<span class="st-txt dirty"><i></i>아직 제출하지 않은 내용이 있습니다</span>'
+    : mine ? `<span class="st-txt ok"><i></i>${fmtDate(mine.at)} ${new Date(mine.at).toTimeString().slice(0, 5)}에 제출함</span>`
+    : '<span class="st-txt"><i></i>아직 제출하지 않았습니다</span>';
+  box.innerHTML = tvHead(p) + `
+    ${closed ? '<div class="tv-note">입력 기한이 지나 보기만 할 수 있습니다.</div>' : ''}
+    <form id="entryForm" novalidate>
+      <fieldset style="border:0;padding:0;margin:0" ${closed ? 'disabled' : ''}>
+        <div class="entries">${cards}
+          ${multi && !closed ? `<button type="button" class="add-row" data-act="rowAdd">${ic('plus')}줄 추가</button>` : ''}
+        </div>
+      </fieldset>
+      ${closed ? '' : `<div class="savebar">${status}<div class="btns">
+        ${mine ? `<button type="button" class="btn line" data-act="tallyDel">제출 취소</button>` : ''}
+        <button type="submit" class="btn primary">${mine ? '고쳐서 제출' : '제출하기'}</button></div></div>`}
+    </form>`;
+  const form = document.getElementById('entryForm');
+  form.addEventListener('input', () => markDirty());
+  form.addEventListener('change', () => markDirty());
+  form.addEventListener('submit', (e) => { e.preventDefault(); submitEntry(p); });
+}
+function markDirty() {
+  const tv = state.tv; if (!tv || tv.dirty) return;
+  tv.dirty = true;
+  const st = document.querySelector('.savebar .st-txt');
+  if (st) { st.className = 'st-txt dirty'; st.innerHTML = '<i></i>아직 제출하지 않은 내용이 있습니다'; }
+}
+// 화면에 입력된 값을 읽어 state.tv.rows에 담습니다
+function readEntry(p) {
+  const fd = new FormData(document.getElementById('entryForm'));
+  const fields = p.extra.fields;
+  state.tv.rows = state.tv.rows.map((_, i) => {
+    const row = {};
+    fields.forEach(f => {
+      const n = `r${i}_${f.id}`;
+      row[f.id] = f.type === 'many' ? fd.getAll(n) : String(fd.get(n) ?? '').trim();
+    });
+    return row;
   });
-  inp.addEventListener('blur', () => { if (g.editing && g.editing.td === td) finishEdit(true); });
+  return state.tv.rows;
 }
-function finishEdit(save, move) {
-  const g = state.grid, ed = g && g.editing; if (!ed) return;
-  const { r, c, before, td } = ed;
-  const val = td.querySelector('input') ? td.querySelector('input').value.trim() : before;
-  g.editing = null;
-  td.classList.remove('editing');
-  td.textContent = save ? val : before;
-  if (save && val !== before) saveCell(r, c, before, val, td);
-  if (move) {
-    const next = cellAt(r + move[0], c + move[1]);
-    // Tab·Enter로 넘어가면 다음 칸을 바로 입력 상태로 엽니다(한글도 첫 글자부터 들어가도록)
-    if (next && (move[0] || move[1]) && !next.classList.contains('ro')) startEdit(next);
-    else (next || td).focus();
-  }
-}
+const rowEmpty = (row) => Object.values(row).every(v => Array.isArray(v) ? !v.length : !v);
 
-async function saveCell(r, c, before, val, td) {
-  const g = state.grid, p = gridPost();
-  const row = g.data.rows[r];
-  g.pending++;
-  td.classList.add('saving');
-  try {
-    const res = await api('tallyCell', { postId: p.id, row: row.n, col: g.data.cols[c], old: before, value: val });
-    if (state.grid !== g) return;
-    const live = cellAt(r, c) || td;
-    live.classList.remove('saving');
-    if (res.conflict) {
-      toast(res.message);
-      row.v[c] = res.value;
-      live.textContent = res.value; live.classList.add('flash'); setTimeout(() => live.classList.remove('flash'), 2000);
-    } else {
-      row.v[c] = res.value; row.mine = true;
-      live.textContent = res.value;
-      live.closest('tr')?.classList.add('mine');
-      live.classList.add('saved'); setTimeout(() => live.classList.remove('saved'), 1200);
-      if (!state.myTallies[p.id]) { state.tallyCounts[p.id] = (state.tallyCounts[p.id] || 0) + 1; const el = document.getElementById('gvCount'); if (el) el.textContent = `${state.tallyCounts[p.id]}명 참여`; }
-      state.myTallies[p.id] = res.at;
+async function submitEntry(p) {
+  const fields = p.extra.fields, multi = p.extra.mode === 'multi';
+  let rows = readEntry(p);
+  if (multi) rows = rows.filter(r => !rowEmpty(r));
+  if (!rows.length || rows.every(rowEmpty)) return toast('입력한 내용이 없습니다.');
+  for (let i = 0; i < rows.length; i++) {
+    for (const f of fields) {
+      const v = rows[i][f.id];
+      const where = multi ? `${i + 1}번째 줄: ` : '';
+      if (f.required && (Array.isArray(v) ? !v.length : !v)) return toast(`${where}‘${f.label}’ 항목을 ${f.type === 'one' || f.type === 'many' ? '골라' : '입력해'} 주세요.`);
+      if (v && f.type === 'number' && isNaN(Number(String(v).replace(/,/g, '')))) return toast(`${where}‘${f.label}’에는 숫자만 입력해 주세요.`);
     }
-  } catch (err) {
-    if (state.grid !== g) return;
-    const live = cellAt(r, c) || td;
-    live.classList.remove('saving'); live.classList.add('err');
-    live.textContent = before; live.title = err.message;
-    toast(err.message);
-  } finally {
-    if (state.grid === g && g.pending > 0) g.pending--;
   }
+  const btn = document.querySelector('#entryForm [type=submit]'); if (btn) { btn.disabled = true; btn.textContent = '제출하는 중…'; }
+  try {
+    const had = !!state.myTallies[p.id];
+    const r = await api('tallySubmit', { postId: p.id, rows });
+    state.myTallies[p.id] = { rows: r.rows, at: r.at };
+    if (!had) state.tallyCounts[p.id] = (state.tallyCounts[p.id] || 0) + 1;
+    state.tv.rows = JSON.parse(JSON.stringify(r.rows)); state.tv.dirty = false;
+    renderTallyView();
+    toast(r.updated ? '고쳐서 제출했습니다.' : '제출했습니다.');
+  } catch (err) { toast(err.message); if (btn) { btn.disabled = false; btn.textContent = state.myTallies[p.id] ? '고쳐서 제출' : '제출하기'; } }
 }
 
-// 표 안에서 키보드로 이동·입력
-document.addEventListener('keydown', (e) => {
-  const td = e.target.closest && e.target.closest('#grid td.c');
-  if (!td || td.classList.contains('editing')) return;
-  // 한글 등 조합형 입력: 편집 칸을 먼저 열어 입력이 그 칸으로 들어가게 합니다
-  if (e.isComposing || e.keyCode === 229 || e.key === 'Process') { startEdit(td, ''); return; }
-  const r = +td.dataset.r, c = +td.dataset.c;
-  const go = (dr, dc) => { const n = cellAt(r + dr, c + dc); if (n) { e.preventDefault(); n.focus(); } };
-  if (e.key === 'ArrowDown') go(1, 0);
-  else if (e.key === 'ArrowUp') go(-1, 0);
-  else if (e.key === 'ArrowRight' || (e.key === 'Tab' && !e.shiftKey)) go(0, 1);
-  else if (e.key === 'ArrowLeft' || (e.key === 'Tab' && e.shiftKey)) go(0, -1);
-  else if (e.key === 'Enter' || e.key === 'F2') { e.preventDefault(); startEdit(td); }
-  else if ((e.key === 'Backspace' || e.key === 'Delete') && !td.classList.contains('ro')) { e.preventDefault(); startEdit(td, ''); }
-  else if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) { e.preventDefault(); startEdit(td, e.key); }
-});
-// 칸을 누르면 바로 입력할 수 있게 엽니다
-document.addEventListener('click', (e) => {
-  const td = e.target.closest && e.target.closest('#grid td.c');
-  if (td && !td.classList.contains('editing') && !td.classList.contains('ro')) startEdit(td);
-});
+/* 결과 화면 */
+async function loadResults() {
+  const tv = state.tv; if (!tv) return;
+  try {
+    const r = await api('tallyResults', { postId: tv.postId });
+    if (state.tv !== tv) return;
+    tv.data = r; tv.error = null;
+  } catch (e) { if (state.tv !== tv) return; tv.error = e.message; }
+  renderTallyView();
+}
+function resultRows(data) {   // 교사별 여러 줄을 한 줄씩 펼칩니다
+  const out = [];
+  data.list.forEach(s => s.rows.forEach((row, j) => out.push({ name: s.name, dept: s.dept, at: s.at, row, j, n: s.rows.length })));
+  return out;
+}
+function renderResults(p, box) {
+  const tv = state.tv;
+  const btns = tv.data && tv.data.list.length ? `<button class="btn sm line" data-act="resCopy">${ic('copy')}시트용으로 복사</button>
+    <button class="btn sm line" data-act="resCsv">${ic('file')}엑셀(CSV) 내려받기</button>` : '';
+  if (tv.error) { box.innerHTML = tvHead(p) + `<div class="msg err">${esc(tv.error)}</div>`; return; }
+  if (!tv.data) { box.innerHTML = tvHead(p) + '<p class="meta">결과를 불러오는 중…</p>'; return; }
+  const { fields, list, missing } = tv.data;
+  const rows = resultRows(tv.data);
+  const multi = tv.data.mode === 'multi';
+  // 요약: 보기는 보기별 수, 숫자는 합계
+  const sums = fields.map(f => {
+    if ((f.type === 'one' || f.type === 'many') && f.options.length <= 12) {   // 학년반처럼 보기가 많은 항목은 요약하지 않습니다
+      const c = {}; f.options.forEach(o => c[o] = 0);
+      rows.forEach(r => { const v = r.row[f.id]; (Array.isArray(v) ? v : v ? [v] : []).forEach(x => { if (x in c) c[x]++; }); });
+      const shown = f.options.filter(o => c[o] > 0);
+      if (!shown.length) return '';
+      return `<div class="sum"><b>${esc(f.label)}</b>${shown.slice(0, 12).map(o => `<div class="r"><span>${esc(o)}</span><span>${c[o]}${multi ? '건' : '명'}</span></div>`).join('')}${shown.length > 12 ? `<div class="r"><span>그 밖 ${shown.length - 12}개</span><span></span></div>` : ''}</div>`;
+    }
+    if (f.type === 'number') {
+      const vals = rows.map(r => r.row[f.id]).filter(v => v !== '' && v !== undefined && v !== null).map(v => Number(String(v).replace(/,/g, ''))).filter(x => !isNaN(x));
+      if (!vals.length) return '';
+      const total = vals.reduce((a, b) => a + b, 0);
+      return `<div class="sum"><b>${esc(f.label)}</b><div class="r"><span>합계</span><span>${total.toLocaleString('ko-KR')}</span></div><div class="r"><span>입력 ${vals.length}건 평균</span><span>${(Math.round(total / vals.length * 10) / 10).toLocaleString('ko-KR')}</span></div></div>`;
+    }
+    return '';
+  }).join('');
+  const table = rows.length ? `<div class="card tbl-wrap"><table class="tbl res-tbl"><thead><tr><th>번호</th><th>이름</th><th>소속</th>${fields.map(f => `<th>${esc(f.label)}</th>`).join('')}<th>제출 시각</th></tr></thead><tbody>
+      ${rows.map((r, i) => `<tr class="${r.j > 0 ? 'cont' : ''}"><td class="num">${i + 1}</td><td class="who" style="white-space:nowrap"><b style="font-weight:600">${esc(r.name)}</b></td><td class="who" style="white-space:nowrap">${esc(r.dept)}</td>
+        ${fields.map(f => `<td class="ans">${esc(ansText(f, r.row[f.id]))}</td>`).join('')}<td class="meta" style="white-space:nowrap">${r.j === 0 ? `${fmtDate(r.at)} ${new Date(r.at).toTimeString().slice(0, 5)}` : ''}</td></tr>`).join('')}
+    </tbody></table></div>` : '<div class="empty"><b>아직 제출한 사람이 없습니다</b>제출이 들어오면 여기에 표로 모입니다.</div>';
+  box.innerHTML = tvHead(p, btns + `<button class="btn sm line" data-act="resReload">새로고침</button>`) + `
+    ${sums ? `<div class="sumbox">${sums}</div>` : ''}
+    ${table}
+    ${missing.length ? `<details class="miss"><summary>아직 제출하지 않은 선생님 ${missing.length}명</summary><div class="names">${missing.map(m => `<span>${esc(m.name)}${m.dept ? ` · ${esc(m.dept)}` : ''}</span>`).join('')}</div></details>` : (list.length ? '<p class="done" style="margin-top:16px">' + ic('check') + '모든 선생님이 제출했습니다.</p>' : '')}`;
+}
+function resultTable() {
+  const { fields } = state.tv.data;
+  return [['번호', '이름', '소속', ...fields.map(f => f.label), '제출 시각'],
+    ...resultRows(state.tv.data).map((r, i) => [i + 1, r.name, r.dept, ...fields.map(f => String(ansText(f, r.row[f.id]))), `${new Date(r.at).toLocaleDateString('ko-KR')} ${new Date(r.at).toTimeString().slice(0, 5)}`])];
+}
 
 /* ───────── 신청 항목 만들기 ───────── */
 function renderFields(form) {
@@ -1342,7 +1268,7 @@ document.addEventListener('click', async (ev) => {
         t.insertAdjacentHTML('afterend', `<div class="pop" role="menu"><button role="menuitem" data-act="pw">${ic('key')}비밀번호 바꾸기</button><button role="menuitem" data-act="logout">${ic('exit')}로그아웃</button></div>`);
         break;
       }
-      case 'nav': closeGrid(); state.view = t.dataset.view; store('hm_view', state.view); state.q = ''; if (state.view === 'users') state.users = null; renderPortal(); window.scrollTo(0, 0); break;
+      case 'nav': if (tvDirty() && !confirm('제출하지 않은 내용이 있습니다. 그래도 이동할까요?')) return; closeTally(); state.view = t.dataset.view; store('hm_view', state.view); state.q = ''; if (state.view === 'users') state.users = null; renderPortal(); window.scrollTo(0, 0); break;
       case 'filter': state.f[t.dataset.g] = t.dataset.v; renderFilters(); renderList(); break;
       case 'new': postForm(state.view, null); break;
       case 'edit': if (post) postForm(post.board, post); break;
@@ -1351,8 +1277,12 @@ document.addEventListener('click', async (ev) => {
         dlg.querySelectorAll('[data-act=icon]').forEach(b => b.setAttribute('aria-pressed', b === t));
         dlg.querySelector('input[name=icon]').value = t.dataset.icon; break;
       }
-      case 'toggle': state.open[id] = !state.open[id]; renderList(); break;
-      case 'inspect': await inspectSheet(document.getElementById('postForm')); break;
+      case 'addClassField': {
+        const f = document.getElementById('postForm'); syncFields(f);
+        if (f._fields.some(x => x.label === '학년반')) { toast('학년반 항목이 이미 있습니다.'); break; }
+        f._fields.unshift({ id: 'cls', label: '학년반', type: 'one', options: CLASS_LIST.slice(), required: true });
+        renderFields(f); break;
+      }
       case 'addField': { const f = document.getElementById('postForm'); syncFields(f); f._fields.push({ id: Math.random().toString(36).slice(2, 10), label: '', type: 'short', options: [], required: false }); renderFields(f); document.querySelector(`#fieldsBox .fcard:last-child [data-k=label]`)?.focus(); break; }
       case 'fDel': case 'fUp': case 'fDown': case 'optAdd': case 'optDel': {
         const f = document.getElementById('postForm'); syncFields(f);
@@ -1365,32 +1295,42 @@ document.addEventListener('click', async (ev) => {
         renderFields(f);
         if (act === 'optAdd') { const ins = document.querySelectorAll(`#fieldsBox .fcard[data-i="${i}"] [data-k=opt]`); ins[ins.length - 1]?.focus(); }
         break;
-      }      case 'copyEmail': await navigator.clipboard.writeText(state.serviceEmail); toast('주소를 복사했습니다.'); break;
-      case 'openGrid': if (post) openGrid(id); break;
-      case 'gridBack': closeGrid(); renderPortal(); window.scrollTo(0, 0); break;
-      case 'gridRefresh': if (state.grid && !state.grid.editing) { await loadGrid(false); toast('새로 불러왔습니다.'); } break;
-      case 'gridAddRow': {
-        const g = state.grid; if (!g || !g.data) break;
-        if (g.pending || g.editing) { finishEdit(true); }
-        t.disabled = true;
-        const r = await api('tallyAddRow', { postId: g.postId });
-        g.data.rows.push({ n: r.n, v: g.data.headers.map(() => ''), f: g.data.headers.map(() => 0), mine: true, others: false });
-        renderGridView();
-        const first = document.querySelector(`#grid td.c[data-r="${g.data.rows.length - 1}"]:not(.ro)`);
-        if (first) { first.scrollIntoView({ block: 'nearest' }); startEdit(first); }
+      }
+      case 'tallyOpen': if (post) openTally(id, 'entry'); break;
+      case 'tallyResults': if (post) openTally(id, 'results'); break;
+      case 'tvBack': {
+        if (tvDirty() && !confirm('제출하지 않은 내용이 있습니다. 그래도 목록으로 갈까요?')) return;
+        closeTally(); renderPortal(); window.scrollTo(0, 0); break;
+      }
+      case 'rowAdd': {
+        const p = tvPost(); readEntry(p); state.tv.rows.push({}); state.tv.dirty = true; renderTallyView();
+        const cards = document.querySelectorAll('.entry'); const last = cards[cards.length - 1];
+        last?.scrollIntoView({ block: 'center', behavior: 'smooth' }); last?.querySelector('input:not([type=radio]):not([type=checkbox]),select,textarea')?.focus();
         break;
       }
-      case 'tallyLogView': {
-        const list = await api('tallyLog', { postId: id });
-        openDialog(`${dlgHead('입력 기록', `${esc(post.title)} · 최근 ${list.length}건`)}
-          <div class="dlg-body">${list.length ? `<div class="card tbl-wrap"><table class="tbl"><thead><tr><th>시각</th><th>이름</th><th>칸</th><th>바뀐 내용</th></tr></thead><tbody>
-          ${list.map(l => `<tr><td class="meta" style="white-space:nowrap">${fmtDate(l.createdAt)} ${new Date(l.createdAt).toTimeString().slice(0, 5)}</td><td><b style="font-weight:600">${esc(l.name)}</b></td><td style="white-space:nowrap">${esc(l.row)}행 · ${esc(l.header)}</td><td><span class="meta">${esc(l.oldValue) || '(빈칸)'}</span> → ${esc(l.newValue) || '(빈칸)'}</td></tr>`).join('')}
-          </tbody></table></div>` : '<p class="meta">아직 입력한 사람이 없습니다.</p>'}</div>
-          <div class="dlg-foot"><button class="btn" data-act="close">닫기</button></div>`);
-        break;
+      case 'rowDel': {
+        const p = tvPost(); readEntry(p); state.tv.rows.splice(+t.dataset.i, 1); state.tv.dirty = true; renderTallyView(); break;
+      }
+      case 'tallyDel': {
+        const p = tvPost(); if (!p || !confirm('제출한 내용을 지울까요? 작성자도 볼 수 없게 됩니다.')) return;
+        await api('tallyDelete', { postId: p.id });
+        delete state.myTallies[p.id]; state.tallyCounts[p.id] = Math.max(0, (state.tallyCounts[p.id] || 1) - 1);
+        state.tv.rows = [{}]; state.tv.dirty = false; renderTallyView(); toast('제출을 취소했습니다.'); break;
+      }
+      case 'resReload': state.tv.data = null; renderTallyView(); await loadResults(); toast('새로 불러왔습니다.'); break;
+      case 'resCopy': {
+        await navigator.clipboard.writeText(resultTable().map(r => r.map(c => String(c).replace(/[\t\n]/g, ' ')).join('\t')).join('\n'));
+        toast('복사했습니다. 구글 시트 A1 칸에 붙여넣으세요.'); break;
+      }
+      case 'resCsv': {
+        const csv = resultTable().map(r => r.map(c => { const s = String(c); return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; }).join(',')).join('\r\n');
+        const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' });
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+        a.download = `${tvPost().title.replace(/[\\/:*?"<>|]/g, '_')}.csv`; document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(() => URL.revokeObjectURL(a.href), 1000); toast('내려받았습니다. 엑셀이나 구글 시트에서 열 수 있습니다.'); break;
       }
       case 'del': {
-        if (!post || !confirm(`‘${post.title}’을(를) 지울까요?${post.extra.fileId ? '\n드라이브에 올린 파일도 휴지통으로 옮겨집니다.' : ''}${post.board === 'apply' ? '\n신청 명단도 함께 지워집니다.' : ''}`)) return;
+        if (!post || !confirm(`‘${post.title}’을(를) 지울까요?${post.extra.fileId ? '\n드라이브에 올린 파일도 휴지통으로 옮겨집니다.' : ''}${post.board === 'apply' ? '\n신청 명단도 함께 지워집니다.' : ''}${post.board === 'tally' ? '\n제출된 내용도 함께 지워집니다.' : ''}`)) return;
         await api('deletePost', { id });
         state.posts = state.posts.filter(p => p.id !== id);
         closeDialog(); renderPortal(); toast('지웠습니다.'); break;
@@ -1460,7 +1400,7 @@ document.addEventListener('click', async (ev) => {
           try { await api('changePassword', { oldPassword: f.old, newPassword: f.n1 }); closeDialog(); toast('비밀번호를 바꿨습니다.'); } catch (err) { formMsg(err.message); }
         }); break;
       }
-      case 'logout': closeMenu(); closeGrid(); await api('logout').catch(() => {}); clearSession(); state.gateTab = 'login'; renderGate(); break;
+      case 'logout': closeMenu(); closeTally(); await api('logout').catch(() => {}); clearSession(); state.gateTab = 'login'; renderGate(); break;
     }
   } catch (err) { toast(err.message); if (t.disabled !== undefined) t.disabled = false; }
 });
@@ -1469,7 +1409,6 @@ document.addEventListener('change', (ev) => {
   if (t.dataset.act === 'subject') { state.f.subject = t.value; renderList(); }
   if (t.dataset.act === 'kind') { state.f.kind = t.value; renderList(); }
   if (t.matches && t.matches('#fieldsBox [data-k=type]')) { const f = document.getElementById('postForm'); syncFields(f); renderFields(f); }
-  if (t.dataset.act === 'tabSel') { const f = document.getElementById('postForm'); f._tally.tab = t.value; inspectSheet(f, t.value); }
   if (t.dataset.act === 'kindSel') {
     const file = t.value === 'file';
     document.getElementById('urlBox').hidden = file; document.getElementById('fileBox').hidden = !file;
@@ -1507,10 +1446,17 @@ const Mock = (() => {
       { id: 'time', label: '희망 시간', type: 'one', options: ['1교시 전', '점심시간', '방과 후'], required: true },
       { id: 'n', label: '사용 인원', type: 'number', options: [], required: false }] }, 'u2', 1),
     mk('apply', '교직원 배구 친선 경기 참가', '', '', { deadline: day(-2), capacity: 12 }, 'u2', 10),
-    mk('tally', '2학기 현장체험학습 희망지 조사', '자기 반 줄에 희망 장소와 인원을 입력해 주세요. 버스 대수 계산에 씁니다.', 'https://docs.google.com/spreadsheets/d/EXAMPLE_SHEET_ID/edit',
-      { due: day(2), grid: true, tab: '하늘마루', headers: ['학년반', '담임', '희망 장소', '학생 수', '비고'], locked: ['학년반'], allowAdd: false }, 'u1', 2),
-    mk('tally', '겨울방학 방과후 수요 조사', '내 줄 추가를 눌러 반별 희망 학생 수를 입력해 주세요.', 'https://docs.google.com/spreadsheets/d/EXAMPLE_SHEET_ID2/edit',
-      { due: day(9), grid: true, tab: '하늘마루', headers: ['학년반', '희망 강좌', '학생 수'], locked: [], allowAdd: true }, 'u1', 4),
+    mk('tally', '2학기 현장체험학습 희망지 조사', '반별로 희망 장소와 인원을 입력해 주세요. 버스 대수 계산에 씁니다.', '',
+      { due: day(2), mode: 'once', fields: [
+        { id: 'cls', label: '학년반', type: 'one', options: CLASS_LIST.slice(), required: true },
+        { id: 'place', label: '희망 장소', type: 'one', options: ['인천어린이과학관', '국립생태원', '송도 센트럴파크'], required: true },
+        { id: 'n', label: '학생 수', type: 'number', options: [], required: true },
+        { id: 'note', label: '참고 사항', type: 'long', options: [], required: false }] }, 'u1', 2),
+    mk('tally', '겨울방학 방과후 강좌 수요 조사', '반 학생 중 희망자를 강좌별로 한 줄씩 입력해 주세요.', '',
+      { due: day(9), mode: 'multi', fields: [
+        { id: 'course', label: '희망 강좌', type: 'one', options: ['코딩', '바이올린', '로봇과학', '미술'], required: true },
+        { id: 'n', label: '희망 학생 수', type: 'number', options: [], required: true },
+        { id: 'time', label: '희망 시간대', type: 'many', options: ['오전', '오후'], required: false }] }, 'u1', 4),
     mk('learn', '학생 웹게임 아케이드', '학생들이 만든 HTML 게임 모음입니다. 창체 시간 발표회에 씁니다.', 'https://example.com/arcade', { kind: 'webapp', grade: '공통', subject: '창체' }, 'u1', 5),
     mk('learn', '분수 막대 비교 놀이', '분모가 다른 분수의 크기를 막대로 비교합니다.', 'https://example.com/fraction', { kind: 'webapp', grade: '3학년', subject: '수학' }, 'u2', 3),
     mk('learn', '물의 상태 변화 활동지', '실험 관찰 기록용 활동지입니다.', 'https://drive.google.com/', { kind: 'file', grade: '4학년', subject: '과학', fileId: 'f1', fileName: '물의상태변화_활동지.pdf', size: 820000 }, 'u2', 7),
@@ -1528,24 +1474,13 @@ const Mock = (() => {
   for (let i = 0; i < 11; i++) applies.push({ postId: posts[3].id, userId: 'x' + i, userName: ['최','정','강','조','윤','장','임','한','오','서','신'][i] + '선생',
     memo: A_({ nb: i % 3 ? '필요 없음' : '필요', topic: [tp[i % 4], ...(i % 2 ? [tp[(i + 1) % 4]] : [])], q: i === 2 ? '학생 개인정보 없이 만드는 방법이 궁금합니다.' : '' }), createdAt: ago(1) });
   for (let i = 0; i < 11; i++) applies.push({ postId: posts[5].id, userId: 'y' + i, userName: '참가자' + (i + 1), memo: '', createdAt: ago(7) });
-  const demoClasses = [];
-  for (let g = 1; g <= 6; g++) for (let c = 1; c <= (g === 6 ? 8 : 9); c++) demoClasses.push(`${g}-${c}`);
-  const META = ['입력자', '입력 시각'];
-  const stamp = () => new Date(Date.now() + 9 * 3600000).toISOString().slice(0, 16).replace('T', ' ');
-  const filled = { 0: ['최선생', '인천어린이과학관', '24', ''], 1: ['정선생', '국립생태원', '23', '휠체어 이용 학생 1명'], 2: ['강선생', '송도 센트럴파크', '25', ''] };
-  const sheets = {
-    [posts[6].id]: { headers: ['학년반', '담임', '희망 장소', '학생 수', '비고', ...META],
-      rows: demoClasses.map((k, i) => filled[i] ? [k, ...filled[i], filled[i][0], '2026-11-13 09:1' + i] : [k, '', '', '', '', '', '']) },
-    [posts[7].id]: { headers: ['학년반', '희망 강좌', '학생 수', ...META],
-      rows: [['2-3', '코딩', '12', '윤선생', '2026-11-12 14:02'], ['5-1', '바이올린', '8', '장선생', '2026-11-12 15:40']] },
-  };
-  const tallyLog = [{ postId: posts[6].id, userId: 'x1', name: '최선생', row: 2, header: '희망 장소', oldValue: '', newValue: '인천어린이과학관', at: ago(1) },
-    { postId: posts[6].id, userId: 'x2', name: '정선생', row: 3, header: '학생 수', oldValue: '', newValue: '23', at: ago(1) },
-    { postId: posts[6].id, userId: 'x3', name: '강선생', row: 4, header: '희망 장소', oldValue: '', newValue: '송도 센트럴파크', at: ago(0) },
-    { postId: posts[7].id, userId: 'x5', name: '윤선생', row: 2, header: '학생 수', oldValue: '', newValue: '12', at: ago(2) },
-    { postId: posts[7].id, userId: 'x6', name: '장선생', row: 3, header: '학생 수', oldValue: '', newValue: '8', at: ago(2) }];
-  // 다른 선생님이 입력하는 모습(자동 새로고침 확인용): 20초 뒤 1-5반 줄을 조선생이 입력
-  setTimeout(() => { const sh = sheets[posts[6].id]; const r = sh && sh.rows[4]; if (r && !r[5]) { Object.assign(r, { 1: '조선생', 2: '국립생태원', 3: '22', 5: '조선생', 6: stamp() }); tallyLog.push({ postId: posts[6].id, userId: 'x4', name: '조선생', row: 6, header: '희망 장소', oldValue: '', newValue: '국립생태원', at: new Date().toISOString() }); } }, 20000);
+  // 집계 제출(교사 한 명당 하나)
+  const tallyData = [
+    { postId: posts[6].id, userId: 'x1', userName: '최선생', rows: [{ cls: '1-1', place: '인천어린이과학관', n: '24', note: '' }], at: ago(1) },
+    { postId: posts[6].id, userId: 'x2', userName: '정선생', rows: [{ cls: '1-2', place: '국립생태원', n: '23', note: '휠체어 이용 학생 1명' }], at: ago(1) },
+    { postId: posts[6].id, userId: 'x3', userName: '강선생', rows: [{ cls: '1-3', place: '인천어린이과학관', n: '25', note: '' }], at: ago(0) },
+    { postId: posts[7].id, userId: 'x5', userName: '윤선생', rows: [{ course: '코딩', n: '6', time: ['오전'] }, { course: '미술', n: '4', time: ['오후'] }], at: ago(2) },
+  ];
   const canManage = (me, p) => me.role === 'admin' || p.authorId === me.id;
   const answers = (memo) => { const s = String(memo || ''); if (s[0] === '{') { try { return JSON.parse(s).a || {}; } catch (e) { } } return s ? { memo: s } : {}; };
   const fieldsOf = (x) => (x.fields && x.fields.length) ? x.fields : (x.memoLabel ? [{ id: 'memo', label: x.memoLabel, type: 'short', options: [], required: false }] : []);
@@ -1577,69 +1512,36 @@ const Mock = (() => {
       for (const pid in all) { const p = posts.find(x => x.id === pid); if (!p) continue; if (canManage(me, p)) counts[pid] = all[pid]; if (p.extra.capacity && all[pid] >= p.extra.capacity) full[pid] = true; }
       return { me: pub(me), posts: posts.slice().sort((a, b) => b.createdAt.localeCompare(a.createdAt)).map(p => { const c = JSON.parse(JSON.stringify(p)); if (c.board === 'tally' && !canManage(me, p)) c.url = ''; return c; }),
         applyCounts: counts, applyFull: full, myApplies: mine, pendingCount: users.filter(u => u.status === 'pending').length,
-        tallyCounts: tallyLog.reduce((m, t) => { (m[t.postId] = m[t.postId] || new Set()).add(t.userId); return m; }, {}),
-        myTallies: tallyLog.filter(t => t.userId === me.id).reduce((m, t) => (m[t.postId] = t.at, m), {}),
-        serviceEmail: 'haneulmaru.portal@gmail.com' };
+        tallyCounts: tallyData.reduce((m, t) => (m[t.postId] = (m[t.postId] || 0) + 1, m), {}),
+        myTallies: tallyData.filter(t => t.userId === me.id).reduce((m, t) => (m[t.postId] = { rows: JSON.parse(JSON.stringify(t.rows)), at: t.at }, m), {}) };
     },
-    _fixCounts(out) { for (const k in out.tallyCounts) out.tallyCounts[k] = out.tallyCounts[k].size; return out; },
-    tallyInspect(r) {
-      if (!/docs\.google\.com\/spreadsheets\/d\//.test(r.url || '')) return fail('NO_ACCESS', '시트를 열 수 없습니다. 주소를 확인해 주세요.');
-      const tabs = { '하늘마루': ['학년반', '담임', '희망 장소', '학생 수', '비고'], '하늘마루 학년별': ['학년반', '담당', '인원', '비고'] };
-      const tab = r.tab && tabs[r.tab] ? r.tab : '하늘마루';
-      return { title: '체험용 시트', tab, tabs: Object.keys(tabs), headers: tabs[tab], rowCount: tab === '하늘마루' ? 53 : 6 };
-    },
-    tallyGrid(r, me) {
+    tallySubmit(r, me) {
       const p = posts.find(x => x.id === r.postId);
-      if (!sheets[p.id]) {
-        const h = p.extra.headers || ['항목'];
-        sheets[p.id] = { headers: [...h, ...META], rows: h[0] === '학년반' && !p.extra.allowAdd ? demoClasses.map(k => [k, ...h.slice(1).map(() => ''), '', '']) : [] };
-      }
-      const sh = sheets[p.id], manage = canManage(me, p), locked = p.extra.locked || [];
-      const who = sh.headers.indexOf('입력자');
-      const cols = sh.headers.map((h, c) => c).filter(c => manage || !META.includes(sh.headers[c]));
-      const rows = [];
-      sh.rows.forEach((row, i) => {
-        const owner = row[who], others = !!owner && owner !== me.name;
-        if (!manage && others && !cols.some(c => locked.includes(sh.headers[c]) && row[c])) return;
-        rows.push({ n: i + 2, v: cols.map(c => (!manage && others && !locked.includes(sh.headers[c])) ? null : row[c]), f: cols.map(() => 0), mine: owner === me.name, others: others && !manage });
-      });
-      return { tab: p.extra.tab, manage, headers: cols.map(c => sh.headers[c]), cols: cols.map(c => c + 1),
-        ro: cols.map(c => locked.includes(sh.headers[c]) || META.includes(sh.headers[c])), rows, at: new Date().toISOString() };
-    },
-    tallyCell(r, me) {
-      const p = posts.find(x => x.id === r.postId); const sh = sheets[p.id];
       if (p.extra.due && p.extra.due < day(0)) return fail('CLOSED', '입력 기한이 지났습니다.');
-      const header = sh.headers[r.col - 1];
-      if (META.includes(header)) return fail('LOCKED', `‘${header}’ 열은 자동으로 기록됩니다.`);
-      if ((p.extra.locked || []).includes(header)) return fail('LOCKED', `‘${header}’ 열은 작성자가 고정해 두었습니다.`);
-      const row = sh.rows[r.row - 2]; if (!row) return fail('INVALID', '없는 줄입니다. 표를 새로고침해 주세요.');
-      const who = sh.headers.indexOf('입력자');
-      if (row[who] && row[who] !== me.name && !canManage(me, p)) return fail('FORBIDDEN', '다른 선생님이 입력한 줄은 고칠 수 없습니다.');
-      const cur = row[r.col - 1] ?? '';
-      if (String(r.old ?? '') !== cur) return { conflict: true, value: cur, message: '다른 선생님이 먼저 이 칸을 고쳤습니다. 바뀐 내용을 확인해 주세요.' };
-      const v = String(r.value ?? '').trim();
-      row[r.col - 1] = v;
-      if (!row[who]) row[who] = me.name;
-      row[who + 1] = stamp();
-      const at = new Date().toISOString();
-      if (v !== cur) tallyLog.push({ postId: p.id, userId: me.id, name: me.name, row: r.row, header, oldValue: cur, newValue: v, at });
-      return { value: v, at };
+      let rows = Array.isArray(r.rows) ? r.rows : []; if (p.extra.mode !== 'multi') rows = rows.slice(0, 1);
+      for (let i = 0; i < rows.length; i++) for (const f of p.extra.fields) {
+        const v = rows[i][f.id]; if (f.required && (Array.isArray(v) ? !v.length : !v)) return fail('INVALID', `${p.extra.mode === 'multi' ? (i + 1) + '번째 줄: ' : ''}‘${f.label}’ 항목을 입력해 주세요.`);
+      }
+      if (!rows.length) return fail('INVALID', '입력한 내용이 없습니다.');
+      const at = new Date().toISOString(); const mine = tallyData.find(t => t.postId === p.id && t.userId === me.id);
+      if (mine) Object.assign(mine, { rows, at }); else tallyData.push({ postId: p.id, userId: me.id, userName: me.name, rows, at });
+      return { rows: JSON.parse(JSON.stringify(rows)), at, updated: !!mine };
     },
-    tallyAddRow(r, me) {
-      const p = posts.find(x => x.id === r.postId); const sh = sheets[p.id];
-      if (!p.extra.allowAdd) return fail('INVALID', '이 집계는 줄을 추가할 수 없습니다.');
-      const row = sh.headers.map(() => ''); const who = sh.headers.indexOf('입력자');
-      row[who] = me.name; row[who + 1] = stamp(); sh.rows.push(row);
-      return { n: sh.rows.length + 1 };
+    tallyDelete(r, me) { const i = tallyData.findIndex(t => t.postId === r.postId && t.userId === me.id); if (i < 0) return fail('NOT_FOUND', '입력한 내용이 없습니다.'); tallyData.splice(i, 1); return true; },
+    tallyResults(r, me) {
+      const p = posts.find(x => x.id === r.postId);
+      if (!canManage(me, p)) return fail('FORBIDDEN', '작성자와 관리자만 결과를 볼 수 있습니다.');
+      const list = tallyData.filter(t => t.postId === p.id).map(t => ({ name: t.userName, dept: (users.find(u => u.id === t.userId) || {}).dept || '', rows: t.rows, at: t.at }));
+      const done = new Set(tallyData.filter(t => t.postId === p.id).map(t => t.userId));
+      return { fields: p.extra.fields, mode: p.extra.mode, list: JSON.parse(JSON.stringify(list)), missing: users.filter(u => u.status === 'approved' && !done.has(u.id)).map(u => ({ name: u.name, dept: u.dept })) };
     },
-    tallyLog(r) { return tallyLog.filter(l => l.postId === r.postId).slice().reverse().map(l => ({ name: l.name, row: l.row, header: l.header, oldValue: l.oldValue, newValue: l.newValue, createdAt: l.at })); },
     savePost(r, me) {
       const p = r.post; const now = new Date().toISOString();
       if (p.id) { const cur = posts.find(x => x.id === p.id); Object.assign(cur, { title: p.title, body: p.body, url: p.url, extra: p.extra, updatedAt: now }); return JSON.parse(JSON.stringify(cur)); }
       const np = { id: nid(), board: p.board, title: p.title, body: p.body, url: p.url, extra: p.extra, authorId: me.id, authorName: me.name, createdAt: now, updatedAt: now };
       posts.push(np); return JSON.parse(JSON.stringify(np));
     },
-    deletePost(r) { const i = posts.findIndex(p => p.id === r.id); posts.splice(i, 1); for (let j = tallyLog.length - 1; j >= 0; j--) if (tallyLog[j].postId === r.id) tallyLog.splice(j, 1); for (let j = applies.length - 1; j >= 0; j--) if (applies[j].postId === r.id) applies.splice(j, 1); return true; },
+    deletePost(r) { const i = posts.findIndex(p => p.id === r.id); posts.splice(i, 1); for (let j = tallyData.length - 1; j >= 0; j--) if (tallyData[j].postId === r.id) tallyData.splice(j, 1); for (let j = applies.length - 1; j >= 0; j--) if (applies[j].postId === r.id) applies.splice(j, 1); return true; },
     apply(r, me) {
       const p = posts.find(x => x.id === r.postId); const list = applies.filter(a => a.postId === p.id);
       if (p.extra.deadline && p.extra.deadline < day(0)) return fail('CLOSED', '신청이 마감되었습니다.');
@@ -1685,7 +1587,6 @@ const Mock = (() => {
         if (!me || me.status !== 'approved') return fail('LOGIN', '로그인이 필요합니다.');
       }
       let out = fn(req, me);
-      if (req.action === 'bootstrap') out = A._fixCounts(out);
       return out && out.ok === false ? out : { ok: true, data: out };
     },
   };
