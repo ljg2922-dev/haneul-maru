@@ -12,7 +12,7 @@
   --bg:#f3f5f8; --surface:#ffffff; --sunken:#f6f7f9;
   --ink:#172033; --ink-2:#4a5468; --ink-3:#8b93a3; --line:#e5e8ee; --line-2:#d5dae3;
   --brand:#1f5fd1; --brand-ink:#163f8f;
-  --s-admin:#3b7cf0; --s-learn:#d8921a; --s-apply:#e5484d; --s-tally:#12a172; --s-link:#8b5cf6; --s-users:#6b7385;
+  --s-admin:#3b7cf0; --s-learn:#d8921a; --s-apply:#e5484d; --s-tally:#12a172; --s-link:#8b5cf6; --s-users:#6b7385; --s-plan:#0e9fb5;
   --font:"Pretendard Variable", Pretendard, "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
   --r-sm:8px; --r:12px; --r-lg:16px;
   --shadow:0 1px 2px rgba(23,32,51,.04), 0 1px 1px rgba(23,32,51,.03);
@@ -95,6 +95,24 @@ textarea.in{height:auto;min-height:104px;padding:11px 13px;resize:vertical;line-
 .pw-eye:hover{background:var(--sunken);color:var(--ink)}
 .pw-hint{display:block;margin-top:6px;font-size:12.5px;font-weight:600;color:#b4540a}
 .pw-hint[hidden]{display:none}
+
+/* ── 업무계획 ── */
+.plan-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.plan-tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;max-width:100%;scrollbar-width:thin}
+.plan-tabs button{flex:none;height:34px;padding:0 13px;border:1px solid var(--line-2);border-radius:999px;background:var(--surface);font-size:13.5px;color:var(--ink-2);cursor:pointer;white-space:nowrap}
+.plan-tabs button:hover{color:var(--ink);border-color:var(--ink-3)}
+.plan-tabs button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff;font-weight:650}
+.plan-acts{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.plan-meta{font-size:12.5px;color:var(--ink-3);margin:-4px 0 10px}
+.plan-wrap{overflow:auto;max-height:calc(100vh - 250px);min-height:240px;background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow)}
+table.plan{border-collapse:collapse;table-layout:fixed;font-size:13.3px;line-height:1.45;color:#111}
+.plan td{border:1px solid #e2e5ea;padding:4px 6px;vertical-align:middle;white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere}
+.plan thead{position:sticky;top:0;z-index:2;box-shadow:0 1px 0 #cfd4dc}
+.plan thead td{background:#f4f6f9}
+.plan td.today{outline:2px solid var(--s-apply);outline-offset:-2px}
+.plan a{color:var(--brand)}
+.plan-empty{padding:40px 24px;text-align:center;color:var(--ink-3)}
+@media (max-width:960px){.plan-wrap{max-height:none}}
 
 /* ── 웹앱 보기(?app=) ── */
 .viewer{position:fixed;inset:0;display:flex;flex-direction:column;background:var(--surface)}
@@ -400,7 +418,7 @@ dialog::backdrop{background:rgba(15,22,36,.42);backdrop-filter:blur(2px)}
    설정: Apps Script 웹 앱 URL을 붙여넣으세요.
    비워 두면 체험용(데모) 모드로 열립니다.
    ══════════════════════════════════════════════ */
-const API_URL = 'https://script.google.com/macros/s/AKfycbwtywzCQ_77UEeGXFQh-W4i3d42o-FtKtID_u8bDhTm1Eqaol6YNQhMnMWE58hlKT3C/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbxbqax1da1mrnS4W1JKy4RbkKy23lwA9YkX1aD7RO1HrS5IAeBAEMcnYnoN9cm0SZGx/exec';
 
 const DEMO = !API_URL;
 const app = document.getElementById('app');
@@ -412,6 +430,8 @@ const SECTIONS = {
     desc: '학교에서 만든 업무용 웹앱을 모았습니다. 누르면 새 창에서 열립니다.' },
   learn: { label: '학습자료', color: 'var(--s-learn)', add: '자료 올리기',
     desc: '수업용 웹앱과 자료를 학년·교과별로 나눕니다. 올린 파일은 학교 구글 드라이브에 저장됩니다.' },
+  plan: { label: '업무계획', color: 'var(--s-plan)', noPosts: true,
+    desc: '학교 월별·주간 업무계획 시트를 그대로 보여 줍니다. 처음에는 이번 주(이번 달) 탭이 열립니다.' },
   apply: { label: '신청', color: 'var(--s-apply)', add: '신청 받기',
     desc: '선생님들께 받을 신청을 올립니다. 신청 현황은 올린 선생님과 관리자만 볼 수 있습니다.' },
   tally: { label: '집계', color: 'var(--s-tally)', add: '집계 글쓰기',
@@ -464,6 +484,7 @@ const state = {
   view: store('hm_view') || 'admin', q: '',
   f: { adminTag: '전체', grade: '전체', kind: '전체', subject: '전체' },
   open: {}, users: null, gateTab: 'login',
+  plan: { gid: null, data: null, error: null, loading: false },
   tallyCounts: {}, myTallies: {},
   tv: null,   // 열려 있는 집계 화면 { postId, kind: 'entry' | 'results' }
 };
@@ -627,7 +648,7 @@ function renderPortal() {
   if (!SECTIONS[state.view] || (SECTIONS[state.view].adminOnly && !isAdmin)) state.view = 'admin';
   const v = state.view, S = SECTIONS[v];
   const navItem = ([k, s]) => {
-    const n = k === 'users' ? (state.pendingCount ? `<span class="alert" aria-label="승인 대기 ${state.pendingCount}명">${state.pendingCount}</span>` : '') : `<span class="n">${countOf(k)}</span>`;
+    const n = s.noPosts ? '' : k === 'users' ? (state.pendingCount ? `<span class="alert" aria-label="승인 대기 ${state.pendingCount}명">${state.pendingCount}</span>` : '') : `<span class="n">${countOf(k)}</span>`;
     return `<button class="tab" style="--c:${s.color}" data-act="nav" data-view="${k}" ${k === v ? 'aria-current="page"' : ''}><span class="d"></span>${s.label}${n}</button>`;
   };
   const entries = Object.entries(SECTIONS);
@@ -651,9 +672,9 @@ function renderPortal() {
       <div class="wrap">${state.tv && v === 'tally' ? '<div id="tallyView"></div>' : `
         <header class="head">
           <div><h1><span class="d"></span>${S.label}</h1><p>${S.desc}</p></div>
-          ${v === 'users' ? '' : `<div><button class="btn" data-act="new">${ic('plus')}${S.add}</button></div>`}
+          ${S.add ? `<div><button class="btn" data-act="new">${ic('plus')}${S.add}</button></div>` : v === 'plan' && isAdmin ? `<div><button class="btn line" data-act="planCfg">${ic('link')}시트 연결 설정</button></div>` : ''}
         </header>
-        ${v === 'users' ? '' : `<div class="toolbar">
+        ${v === 'users' || v === 'plan' ? '' : `<div class="toolbar">
           <div class="filters" id="filters"></div>
           <label class="search"><span class="sr">${S.label}에서 찾기</span>${ic('search')}<input id="q" type="search" placeholder="제목, 내용, 올린 사람" value="${esc(state.q)}"></label>
         </div>`}
@@ -695,6 +716,7 @@ function renderList() {
   const el = document.getElementById('list');
   const v = state.view;
   if (v === 'users') return renderUsers(el);
+  if (v === 'plan') return renderPlan(el);
   let items = filtered(v);
   const searching = state.q.trim();
   if (v === 'admin') {
@@ -1356,6 +1378,14 @@ document.addEventListener('click', async (ev) => {
         const inp = t.parentElement.querySelector('input'); const show = inp.type === 'password';
         inp.type = show ? 'text' : 'password'; t.textContent = show ? '숨기기' : '보기'; inp.focus(); break;
       }
+      case 'planTab': await loadPlan(t.dataset.gid); break;
+      case 'planReload': await loadPlan(state.plan.gid, true); toast('시트에서 새로 불러왔습니다.'); break;
+      case 'planToday': if (!scrollToToday()) toast('이 탭에서 오늘 날짜를 찾지 못했습니다.'); break;
+      case 'planCfg': if (!state.plan.data) { try { state.plan.data = await api('planGet', {}); } catch (e) { } } planCfgDialog(); break;
+      case 'planUnlink': {
+        if (!confirm('업무계획 시트 연결을 끊을까요? 시트 자체는 그대로 남습니다.')) return;
+        await api('planSet', { url: '' }); closeDialog(); state.plan = { gid: null, data: null, error: null, loading: false }; renderPortal(); toast('연결을 끊었습니다.'); break;
+      }
       case 'gateTab': state.gateTab = t.dataset.tab; renderGate(); break;
       case 'toGate': state.gateTab = 'login'; renderGate(); break;
       case 'menu': {
@@ -1588,6 +1618,42 @@ const Mock = (() => {
   const answers = (memo) => { const s = String(memo || ''); if (s[0] === '{') { try { return JSON.parse(s).a || {}; } catch (e) { } } return s ? { memo: s } : {}; };
   const fieldsOf = (x) => (x.fields && x.fields.length) ? x.fields : (x.memoLabel ? [{ id: 'memo', label: x.memoLabel, type: 'short', options: [], required: false }] : []);
   const sessions = {};
+  // 체험용 업무계획 시트(이번 주가 들어가도록 오늘 날짜로 만듭니다)
+  let planOn = true;
+  function demoPlan() {
+    const today = new Date(); const mon = new Date(today); mon.setDate(today.getDate() - ((today.getDay() + 6) % 7));
+    const days = [0, 1, 2, 3, 4].map(i => { const d = new Date(mon); d.setDate(mon.getDate() + i); return d; });
+    const md = (d) => `${d.getMonth() + 1}.${d.getDate()}`;
+    const fd = (new Date(today.getFullYear(), today.getMonth(), 1).getDay() + 6) % 7, M = today.getMonth() + 1, W = Math.ceil((today.getDate() + (fd <= 4 ? fd : fd - 7)) / 7);
+    const st = [{}, { b: '#1f4e79', c: '#ffffff', w: 1, a: 'c', z: 14 }, { b: '#d9e2f3', w: 1, a: 'c' }, { a: 'c', w: 1 }, { b: '#fff2cc' }, { c: '#c00000', w: 1 }, { a: 'c', b: '#fce4d6', w: 1 }];
+    const plan = [
+      ['교직원 회의(15:00, 시청각실)', '수업 공개 협의회', '등굣길 교통안전 지도', '2학기 예산 집행 점검', ''],
+      ['학년 협의회', '교과서 선정 위원회', '학교폭력 예방 교육(3~4교시)', '급식 납품 검수', '6학년 현장체험학습'],
+      ['방과후 강좌 수요 조사 마감', '디지털 연수(15:30, 컴퓨터실)', '소방 대피 훈련(2교시)', '시설 점검의 날', ''],
+      ['학부모 상담 주간 안내 발송', '학습 자료 공유회', '생활지도 협의', '물품 구매 요청 마감', ''],
+      ['주간 업무 정리', '', '안전 점검 결과 보고', '월말 정산 준비', '방과후 휴강'],
+    ];
+    const week = { v: [[`${M}월 ${W}주 주간 업무계획 (${md(days[0])}~${md(days[4])})`, '', '', '', '', '', ''], ['요일', '날짜', '교무', '연구', '생활·안전', '행정실', '비고']], s: [[1, 1, 1, 1, 1, 1, 1], [2, 2, 2, 2, 2, 2, 2]] };
+    '월화수목금'.split('').forEach((dn, i) => {
+      week.v.push([dn, `${days[i].getMonth() + 1}/${days[i].getDate()}`, plan[i][0], plan[i][1], plan[i][2], plan[i][3], plan[i][4]]);
+      week.s.push([3, 3, 0, 0, i === 2 ? 5 : 0, 0, plan[i][4] ? 4 : 0]);
+    });
+    week.v.push(['', '', '※ 주간 계획은 매주 금요일까지 각 부서에서 입력해 주세요.', '', '', '', '']); week.s.push([0, 0, 0, 0, 0, 0, 0]);
+    Object.assign(week, { st, m: [[0, 0, 1, 7], [7, 2, 1, 5]], w: [52, 70, 200, 200, 200, 190, 150], hr: [], hc: [], fr: 2 });
+    const monthEv = { 2: '전교 다모임', 5: '교육과정 협의', 10: '학생 자치회', 12: '교직원 연수', 16: '수업 공개 주간', 18: '소방 대피 훈련', 20: '현장체험학습(6학년)', 24: '학부모 상담 주간', 27: '예산 점검', 30: '월말 정리' };
+    const first = new Date(today.getFullYear(), today.getMonth(), 1), last = new Date(today.getFullYear(), M, 0).getDate();
+    const month = { v: [[`${M}월 학사 일정`, '', '', '', '', '', ''], ['일', '월', '화', '수', '목', '금', '토']], s: [[1, 1, 1, 1, 1, 1, 1], [6, 2, 2, 2, 2, 2, 6]] };
+    let row = new Array(7).fill(''), sr = new Array(7).fill(0);
+    for (let dd = 1; dd <= last; dd++) {
+      const dow = new Date(today.getFullYear(), today.getMonth(), dd).getDay();
+      row[dow] = `${M}/${dd}${monthEv[dd] ? '\n' + monthEv[dd] : ''}`; sr[dow] = monthEv[dd] ? 4 : 0; if (dow === 0 || dow === 6) sr[dow] = 0;
+      if (dow === 6 || dd === last) { month.v.push(row); month.s.push(sr.map(x => x === 4 ? 4 : 0).map((x, i) => (i === 0 ? (x || 0) : x))); row = new Array(7).fill(''); sr = new Array(7).fill(0); }
+    }
+    Object.assign(month, { st: [...st], m: [[0, 0, 1, 7]], w: [110, 110, 110, 110, 110, 110, 110], hr: [], hc: [], fr: 2 });
+    month.s = month.s.map((r, i) => i < 2 ? r : r.map((x, c) => c === 0 ? 5 : x));
+    month.st[5] = { c: '#c00000' };
+    return [{ name: `${M}월`, gid: 'month', grid: month }, { name: `${M}월 ${W}주`, gid: 'week', grid: week }, { name: `${M % 12 + 1}월`, gid: 'next', grid: { v: [], s: [], st: [{}], m: [], w: [], hr: [], hc: [], fr: 0 } }];
+  }
   // 체험용 HTML 웹앱 저장소(실제로는 Apps Script 주소 + ?app=ID 로 열립니다)
   const apps = { 'demo-gugu': `<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>구구단 빨리 풀기</title>
 <style>body{font-family:sans-serif;display:grid;place-items:center;min-height:100vh;margin:0;background:#eef4fe}main{text-align:center}
@@ -1678,6 +1744,19 @@ document.getElementById('a').addEventListener('keydown',e=>{if(e.key==='Enter'){
       if (!canManage(me, p)) return fail('FORBIDDEN', '작성자와 관리자만 신청 현황을 볼 수 있습니다.');
       return { fields: fieldsOf(p.extra), list: applies.filter(a => a.postId === r.postId).map(a => ({ name: a.userName, dept: (users.find(u => u.id === a.userId) || {}).dept || '', answers: answers(a.memo), createdAt: a.createdAt })) };
     },
+    planSet(r, me) {
+      if (me.role !== 'admin') return fail('FORBIDDEN', '관리자만 할 수 있습니다.');
+      if (!r.url) { planOn = false; return { connected: false }; }
+      if (!/\/spreadsheets\/d\//.test(r.url)) return fail('INVALID', '구글 시트 주소를 붙여넣어 주세요.');
+      planOn = true; return { connected: true, title: '월별 및 주간업무 계획(2026) [체험용 예시]' };
+    },
+    planGet(r, me) {
+      if (!planOn) return { connected: false, serviceEmail: me.role === 'admin' ? 'haneulmaru.portal@gmail.com' : '' };
+      const tabs = demoPlan();
+      const t = tabs.find(x => x.gid === r.gid) || tabs.find(x => x.gid === 'week');
+      return { connected: true, title: '월별 및 주간업무 계획(2026) [체험용 예시]', tabs: tabs.map(x => ({ name: x.name, gid: x.gid })), gid: t.gid, auto: !r.gid,
+        grid: t.grid, url: 'https://docs.google.com/spreadsheets/d/EXAMPLE/edit#gid=' + t.gid, at: new Date().toISOString() };
+    },
     uploadApp(r) {
       if (!/\.html?$/i.test(r.name || '')) return fail('INVALID', '.html 파일만 올릴 수 있습니다.');
       const id = 'demo-' + Date.now().toString(36); apps[id] = r.html;
@@ -1718,6 +1797,110 @@ document.getElementById('a').addEventListener('keydown',e=>{if(e.key==='Enter'){
     },
   };
 })();
+
+/* ───────── 업무계획 ─────────
+   서버가 시트를 값·병합·색·굵기·열 너비 그대로 보내 주면, 여기서 표로 그립니다. 시트를 고치지는 않습니다. */
+async function loadPlan(gid, fresh) {
+  const P = state.plan;
+  P.loading = true; P.error = null;
+  if (document.getElementById('planBox')) renderPlan(document.getElementById('list'));
+  try { P.data = await api('planGet', { gid: gid || undefined, fresh: fresh ? 1 : undefined }); P.gid = P.data.gid; }
+  catch (e) { P.error = e.message; }
+  P.loading = false;
+  const el = document.getElementById('list');
+  if (state.view === 'plan' && el) { renderPlan(el); scrollToToday(); }
+}
+function todayPatterns() {
+  const d = new Date(), M = d.getMonth() + 1, D = d.getDate();
+  return [new RegExp(`(^|[^0-9])${M}\\s*[./]\\s*${D}(?![0-9])`), new RegExp(`(^|[^0-9])${M}\\s*월\\s*${D}\\s*일`)];
+}
+function linkify(t) { return esc(t).replace(/https?:\/\/[^\s<]+/g, u => `<a href="${u}" target="_blank" rel="noopener">${u}</a>`); }
+
+function planTable(g) {
+  if (!g.v.length) return '<div class="plan-empty">이 탭은 비어 있습니다.</div>';
+  const hr = new Set(g.hr), hc = new Set(g.hc);
+  const cover = new Set(), span = {};
+  g.m.forEach(([r, c, rs, cs]) => {
+    for (let i = r; i < r + rs; i++) for (let j = c; j < c + cs; j++) if (i !== r || j !== c) cover.add(i + ',' + j);
+    let vr = 0, vc = 0;
+    for (let i = r; i < r + rs && i < g.v.length; i++) if (!hr.has(i)) vr++;
+    for (let j = c; j < c + cs; j++) if (!hc.has(j)) vc++;
+    span[r + ',' + c] = [vr, vc];
+  });
+  const pats = todayPatterns();
+  const cols = g.w.map((w, c) => hc.has(c) ? '' : `<col style="width:${Math.max(24, w)}px">`).join('');
+  const total = g.w.reduce((a, w, c) => a + (hc.has(c) ? 0 : Math.max(24, w)), 0);
+  const row = (r) => {
+    if (hr.has(r)) return '';
+    const cells = g.v[r].map((val, c) => {
+      if (hc.has(c) || cover.has(r + ',' + c)) return '';
+      const sp = span[r + ',' + c];
+      if (sp && (!sp[0] || !sp[1])) return '';
+      const st = g.st[g.s[r][c]] || {};
+      const css = [st.b && `background:${st.b}`, st.c && `color:${st.c}`, st.w && 'font-weight:700', st.a === 'c' && 'text-align:center', st.a === 'r' && 'text-align:right',
+        st.z && `font-size:${(st.z * 1.333).toFixed(1)}px`, st.t && 'vertical-align:top'].filter(Boolean).join(';');
+      const today = val && pats.some(p => p.test(val));
+      return `<td${sp && sp[0] > 1 ? ` rowspan="${sp[0]}"` : ''}${sp && sp[1] > 1 ? ` colspan="${sp[1]}"` : ''}${css ? ` style="${css}"` : ''}${today ? ' class="today"' : ''}>${linkify(val)}</td>`;
+    }).join('');
+    return `<tr>${cells}</tr>`;
+  };
+  const idx = g.v.map((_, r) => r);
+  const head = idx.slice(0, g.fr).map(row).join(''), body = idx.slice(g.fr).map(row).join('');
+  return `<table class="plan" style="width:${total}px"><colgroup>${cols}</colgroup>${head ? `<thead>${head}</thead>` : ''}<tbody>${body}</tbody></table>`;
+}
+
+function renderPlan(el) {
+  const P = state.plan, isAdmin = state.me.role === 'admin';
+  if (!P.data && !P.loading && !P.error) { loadPlan(null); return; }
+  if (P.error && !P.data) { el.innerHTML = `<div id="planBox"><div class="msg err">${esc(P.error)}</div>${isAdmin ? '<button class="btn line" data-act="planCfg">시트 연결 설정</button>' : ''}</div>`; return; }
+  if (!P.data) { el.innerHTML = '<div id="planBox"><p class="meta">업무계획 시트를 불러오는 중…</p></div>'; return; }
+  const d = P.data;
+  if (!d.connected) {
+    el.innerHTML = `<div id="planBox" class="empty"><b>아직 연결된 업무계획 시트가 없습니다</b>${isAdmin ? '오른쪽 위 ‘시트 연결 설정’에서 학교 업무계획 시트 주소를 넣어 주세요.<br><button class="btn line" data-act="planCfg">시트 연결 설정</button>' : '관리자가 시트를 연결하면 여기에서 볼 수 있습니다.'}</div>`;
+    return;
+  }
+  const at = new Date(d.at);
+  el.innerHTML = `<div id="planBox">
+    <div class="plan-bar">
+      <div class="plan-tabs" role="toolbar" aria-label="시트 탭">${d.tabs.map(t => `<button data-act="planTab" data-gid="${esc(t.gid)}" aria-pressed="${t.gid === d.gid}">${esc(t.name)}</button>`).join('')}</div>
+      <div class="plan-acts">
+        <button class="btn sm line" data-act="planToday">오늘 위치</button>
+        <button class="btn sm line" data-act="planReload" ${P.loading ? 'disabled' : ''}>${P.loading ? '불러오는 중…' : '새로고침'}</button>
+        <a class="btn sm line" href="${esc(safeUrl(d.url))}" target="_blank" rel="noopener">${ic('out')}시트에서 보기</a>
+      </div>
+    </div>
+    <div class="plan-meta">${esc(d.title)} · ${at.getHours()}시 ${String(at.getMinutes()).padStart(2, '0')}분 기준${d.auto ? ' · 이번 주(이번 달) 탭을 자동으로 열었습니다' : ''}${P.error ? ` · <span style="color:#b4282e">${esc(P.error)}</span>` : ''}</div>
+    <div class="plan-wrap" id="planWrap">${planTable(d.grid)}</div>
+  </div>`;
+  document.querySelector('.plan-tabs [aria-pressed="true"]')?.scrollIntoView({ block: 'nearest', inline: 'center' });
+}
+function scrollToToday() {
+  const td = document.querySelector('#planWrap td.today'), wrap = document.getElementById('planWrap');
+  if (!td || !wrap) return false;
+  wrap.scrollTop = Math.max(0, td.offsetTop - wrap.clientHeight / 3);
+  wrap.scrollLeft = Math.max(0, td.offsetLeft - 60);
+  return true;
+}
+async function planCfgDialog() {
+  const P = state.plan;
+  const email = (P.data && P.data.serviceEmail) || '';
+  openDialog(`<form id="planForm" novalidate>${dlgHead('업무계획 시트 연결')}
+    <div class="dlg-body"><div id="formMsg"></div>
+      <label class="f"><span>구글 시트 주소</span><input class="in" name="url" type="url" placeholder="https://docs.google.com/spreadsheets/d/…" value="${P.data && P.data.connected ? esc(P.data.url) : ''}"></label>
+      <p class="hint" style="margin:0 0 12px">포털을 배포한 구글 계정이 이 시트를 볼 수 있어야 합니다. 시트의 <b>공유</b>에서 ${email ? `<b>${esc(email)}</b>` : '포털 운영 계정'}을 <b>뷰어</b>로 추가해 주세요. 같은 계정으로 만든 시트라면 그대로 연결됩니다.</p>
+      <p class="hint" style="margin:0">주소에 특정 탭(#gid=…)이 들어 있으면, 이번 주·이번 달 탭을 찾지 못할 때 그 탭을 먼저 엽니다.</p>
+    </div>
+    <div class="dlg-foot">${P.data && P.data.connected ? '<button type="button" class="btn danger" data-act="planUnlink" style="margin-right:auto">연결 끊기</button>' : ''}<button type="button" class="btn line" data-act="close">닫기</button><button class="btn primary" type="submit">연결</button></div></form>`);
+  document.getElementById('planForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const b = e.target.querySelector('[type=submit]'); b.disabled = true; b.textContent = '확인하는 중…';
+    try {
+      const r = await api('planSet', { url: e.target.url.value.trim() });
+      closeDialog(); toast(`‘${r.title}’ 시트를 연결했습니다.`);
+      state.plan = { gid: null, data: null, error: null, loading: false }; renderPortal();
+    } catch (err) { formMsg(err.message); b.disabled = false; b.textContent = '연결'; }
+  });
+}
 
 /* ───────── 웹앱 보기 ─────────
    포털 주소?app=ID 로 열면, Apps Script에서 HTML 내용만 받아 격리된 화면(sandbox iframe)에 띄웁니다.
