@@ -96,6 +96,15 @@ textarea.in{height:auto;min-height:104px;padding:11px 13px;resize:vertical;line-
 .pw-hint{display:block;margin-top:6px;font-size:12.5px;font-weight:600;color:#b4540a}
 .pw-hint[hidden]{display:none}
 
+/* ── 웹앱 보기(?app=) ── */
+.viewer{position:fixed;inset:0;display:flex;flex-direction:column;background:var(--surface)}
+.vbar{flex:none;height:40px;display:flex;align-items:center;gap:10px;padding:0 12px;border-bottom:1px solid var(--line);font-size:13.5px}
+.vbar .mark{width:20px;height:20px;border-radius:6px}
+.vbar b{font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}
+.vbar .vname{color:var(--ink-3);white-space:nowrap}
+.viewer iframe{flex:1;width:100%;border:0;background:#fff}
+.viewer .vmsg{flex:1;display:grid;place-items:center;color:var(--ink-3);padding:24px;text-align:center}
+
 /* ── 승인 대기 ── */
 .wait{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
 .wait-card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:44px 40px;max-width:440px;text-align:center;box-shadow:var(--shadow-lift)}
@@ -391,7 +400,7 @@ dialog::backdrop{background:rgba(15,22,36,.42);backdrop-filter:blur(2px)}
    설정: Apps Script 웹 앱 URL을 붙여넣으세요.
    비워 두면 체험용(데모) 모드로 열립니다.
    ══════════════════════════════════════════════ */
-const API_URL = 'https://script.google.com/macros/s/AKfycbzakwQgHqmiQdcnpdra4_YlAgXjvFVAH0Cfr6vJJX8uUnz9pYacE_tz0SDy_Mzedpzy/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbwtywzCQ_77UEeGXFQh-W4i3d42o-FtKtID_u8bDhTm1Eqaol6YNQhMnMWE58hlKT3C/exec';
 
 const DEMO = !API_URL;
 const app = document.getElementById('app');
@@ -721,9 +730,10 @@ function renderList() {
 function appIcon(icon) { return P[icon] && APP_ICONS.includes(icon) ? ic(icon) : `<span>${esc(icon || '')}</span>` || ic('school'); }
 
 // 포털에 올린 HTML 웹앱은 Apps Script 주소 + ?app=파일ID 로 엽니다
-function appUrl(id) { return DEMO ? Mock.appUrl(id) : API_URL + (API_URL.includes('?') ? '&' : '?') + 'app=' + encodeURIComponent(id); }
+// 올린 HTML 웹앱은 포털 주소 + ?app=파일ID 로 엽니다(구글 주소로 직접 열면 계정 여러 개 로그인 시 오류가 나기 때문)
+function appUrl(id) { return location.href.split(/[?#]/)[0] + '?app=' + encodeURIComponent(id); }
 function postUrl(p) { return p.extra && p.extra.appFileId ? appUrl(p.extra.appFileId) : p.url; }
-function openHref(p) { const u = postUrl(p); return DEMO && /^blob:/.test(u) ? u : safeUrl(u); }
+function openHref(p) { const u = postUrl(p); return /^file:/.test(u) ? u : safeUrl(u); }
 
 function appTile(p) {
   const tag = p.extra.tag || '기타';
@@ -1054,7 +1064,7 @@ async function submitPost(form, board, p) {
       btn.textContent = '웹앱 올리는 중…';
       const up = await api('uploadApp', { name: form._app.name, html: await form._app.text() });
       Object.assign(extra, { appFileId: up.fileId, appFileName: up.name, size: up.size });
-      url = DEMO ? '' : appUrl(up.fileId);
+      url = /^https?:/.test(appUrl(up.fileId)) ? appUrl(up.fileId) : '';
     }
     btn.textContent = '저장하는 중…';
     const saved = await api('savePost', { post: { id: p?.id, board, title: fd.title, body: fd.body || '', url, extra } });
@@ -1582,10 +1592,9 @@ const Mock = (() => {
   const apps = { 'demo-gugu': `<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>구구단 빨리 풀기</title>
 <style>body{font-family:sans-serif;display:grid;place-items:center;min-height:100vh;margin:0;background:#eef4fe}main{text-align:center}
 #q{font-size:56px;font-weight:800;margin:16px}input{font-size:28px;width:120px;text-align:center}#s{color:#1f5fd1;font-weight:700}</style></head>
-<body><main><h1>구구단 빨리 풀기</h1><div id="q"></div><input id="a" inputmode="numeric" autofocus><p>맞힌 문제 <span id="s">0</span>개</p></main>
-<script>let a,b,s=0;const n=()=>{a=2+Math.floor(Math.random()*8);b=1+Math.floor(Math.random()*9);q.textContent=a+' × '+b+' = ?'};n();
-document.getElementById('a').addEventListener('keydown',e=>{if(e.key==='Enter'){if(+e.target.value===a*b){s++;document.getElementById('s').textContent=s}e.target.value='';n()}});<\/script></body></html>` };
-  const appUrls = {};
+<body><main><h1>구구단 빨리 풀기</h1><div id="q"></div><input id="a" inputmode="numeric" autofocus><p>맞힌 문제 <span id="s">0</span>개 · 최고 기록 <span id="best">0</span>개</p></main>
+<script>let a,b,s=0;document.getElementById('best').textContent=localStorage.getItem('best')||0;const n=()=>{a=2+Math.floor(Math.random()*8);b=1+Math.floor(Math.random()*9);q.textContent=a+' × '+b+' = ?'};n();
+document.getElementById('a').addEventListener('keydown',e=>{if(e.key==='Enter'){if(+e.target.value===a*b){s++;document.getElementById('s').textContent=s;if(s>(+localStorage.getItem('best')||0)){localStorage.setItem('best',s);document.getElementById('best').textContent=s}}e.target.value='';n()}});<\/script></body></html>` };
   const fail = (code, message) => ({ ok: false, code, message });
   const pub = (u) => ({ id: u.id, name: u.name, dept: u.dept, status: u.status, role: u.role, createdAt: u.createdAt, lastLogin: u.lastLogin });
   const norm = (s) => String(s || '').replace(/\s+/g, '').toLowerCase();
@@ -1671,7 +1680,9 @@ document.getElementById('a').addEventListener('keydown',e=>{if(e.key==='Enter'){
     },
     uploadApp(r) {
       if (!/\.html?$/i.test(r.name || '')) return fail('INVALID', '.html 파일만 올릴 수 있습니다.');
-      const id = nid(); apps[id] = r.html; return { fileId: id, name: r.name, size: new Blob([r.html]).size };
+      const id = 'demo-' + Date.now().toString(36); apps[id] = r.html;
+      try { localStorage.setItem('hmdemo-app:' + id, r.html); } catch (e) { }   // 새 창에서도 열리도록(체험용)
+      return { fileId: id, name: r.name, size: new Blob([r.html]).size };
     },
     upload(r) { return { fileId: nid(), url: 'https://drive.google.com/', name: r.name, size: Math.round(r.data.length * 0.75) }; },
     users(r, me) { return me.role === 'admin' ? users.map(pub) : fail('FORBIDDEN', '관리자만 할 수 있습니다.'); },
@@ -1688,9 +1699,11 @@ document.getElementById('a').addEventListener('keydown',e=>{if(e.key==='Enter'){
     },
   };
   return {
-    appUrl(id) {
-      if (!apps[id]) return '';
-      return appUrls[id] || (appUrls[id] = URL.createObjectURL(new Blob([apps[id]], { type: 'text/html' })));
+    appContent(id) {
+      let html = apps[id]; try { html = html || localStorage.getItem('hmdemo-app:' + id); } catch (e) { }
+      if (!html) return { ok: false, message: '찾을 수 없는 웹앱입니다.' };
+      const m = /<title[^>]*>([^<]*)<\/title>/i.exec(html);
+      return { ok: true, data: { title: (m && m[1].trim()) || '웹앱', html } };
     },
     async call(req) {
       await new Promise(r => setTimeout(r, 160));
@@ -1706,8 +1719,59 @@ document.getElementById('a').addEventListener('keydown',e=>{if(e.key==='Enter'){
   };
 })();
 
+/* ───────── 웹앱 보기 ─────────
+   포털 주소?app=ID 로 열면, Apps Script에서 HTML 내용만 받아 격리된 화면(sandbox iframe)에 띄웁니다.
+   - 구글 로그인 정보 없이 받아 오므로, 구글 계정이 여러 개 로그인돼 있어도 열립니다.
+   - 격리된 화면은 포털과 출처가 달라 포털의 로그인 정보에 접근할 수 없습니다.
+   - 웹앱이 쓰는 브라우저 저장소(localStorage)는 대신 흉내 내고, 내용은 웹앱별로 따로 저장해 둡니다. */
+function storeShim(init) {
+  const data = JSON.stringify(init || {}).replace(/</g, '\\u003c');
+  return `<script>(function(){function mk(o,persist){var s=o||{},K=function(){return Object.keys(s)};
+function save(){if(persist){try{parent.postMessage({hmStore:s},'*')}catch(e){}}}
+var a={getItem:function(k){k=String(k);return Object.prototype.hasOwnProperty.call(s,k)?s[k]:null},
+setItem:function(k,v){s[String(k)]=String(v);save()},removeItem:function(k){delete s[String(k)];save()},
+clear:function(){s={};save()},key:function(i){return K()[i]===undefined?null:K()[i]}};
+Object.defineProperty(a,'length',{get:function(){return K().length}});return a}
+try{Object.defineProperty(window,'localStorage',{value:mk(${data},true),configurable:true})}catch(e){}
+try{Object.defineProperty(window,'sessionStorage',{value:mk({},false),configurable:true})}catch(e){}})();<\/script>`;
+}
+function withShim(html, init) {
+  const shim = storeShim(init);
+  const at = (re) => { const m = re.exec(html); return m ? m.index + m[0].length : -1; };
+  let i = at(/<head[^>]*>/i); if (i < 0) i = at(/<html[^>]*>/i); if (i < 0) i = at(/<!doctype[^>]*>/i);
+  return i < 0 ? shim + html : html.slice(0, i) + shim + html.slice(i);
+}
+async function renderAppViewer(id) {
+  document.title = '웹앱 · 하늘마루';
+  app.innerHTML = `<div class="viewer"><div class="vbar"><span class="mark" aria-hidden="true"></span><b id="vTitle">불러오는 중…</b><span class="vname">하늘마루</span></div><div class="vmsg" id="vBody">웹앱을 불러오는 중…</div></div>`;
+  let res;
+  try {
+    if (DEMO) res = Mock.appContent(id);
+    else { const r = await fetch(API_URL + (API_URL.includes('?') ? '&' : '?') + 'app=' + encodeURIComponent(id) + '&raw=1'); res = await r.json(); }
+  } catch (e) { res = { ok: false, message: '웹앱을 불러오지 못했습니다. 인터넷 연결을 확인하고 새로고침해 주세요.' }; }
+  const body = document.getElementById('vBody');
+  if (!res || !res.ok) { document.getElementById('vTitle').textContent = '웹앱을 열 수 없습니다'; body.textContent = (res && res.message) || '찾을 수 없는 웹앱입니다.'; return; }
+  const { title, html } = res.data;
+  document.title = title; document.getElementById('vTitle').textContent = title;
+  const key = 'hmapp:' + id;
+  let saved = {}; try { saved = JSON.parse(localStorage.getItem(key) || '{}'); } catch (e) { saved = {}; }
+  const frame = document.createElement('iframe');
+  // allow-same-origin은 일부러 넣지 않습니다(넣으면 웹앱이 포털 로그인 정보에 접근할 수 있게 됨)
+  frame.setAttribute('sandbox', 'allow-scripts allow-forms allow-modals allow-popups allow-popups-to-escape-sandbox allow-downloads allow-top-navigation-by-user-activation');
+  frame.setAttribute('allow', 'fullscreen; clipboard-write; autoplay');
+  frame.title = title;
+  window.addEventListener('message', (e) => {
+    if (e.source !== frame.contentWindow || !e.data || typeof e.data.hmStore !== 'object') return;
+    try { const str = JSON.stringify(e.data.hmStore); if (str.length < 2000000) localStorage.setItem(key, str); } catch (x) { /* 저장 공간 부족 */ }
+  });
+  frame.srcdoc = withShim(html, saved);
+  body.replaceWith(frame);
+}
+
 /* ───────── 시작 ───────── */
 (async function start() {
+  const appId = new URLSearchParams(location.search).get('app');
+  if (appId) { renderAppViewer(appId); return; }
   if (state.token) { try { await load(); } catch (e) { clearSession(); } }
   render();
 })();
