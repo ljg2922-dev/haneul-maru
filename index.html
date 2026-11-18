@@ -88,6 +88,14 @@ textarea.in{height:auto;min-height:104px;padding:11px 13px;resize:vertical;line-
 .mark::after{content:"";position:absolute;left:-20%;right:-20%;bottom:-38%;height:70%;border-radius:50%;background:rgba(255,255,255,.92)}
 .gate-top .mark{box-shadow:inset 0 0 0 1px rgba(255,255,255,.45)}
 
+/* 비밀번호 칸: 보기 버튼, 한글·Caps Lock 경고 */
+.pw{position:relative}
+.pw .in{padding-right:64px}
+.pw-eye{position:absolute;right:6px;top:50%;transform:translateY(-50%);height:32px;padding:0 10px;border:0;border-radius:6px;background:transparent;color:var(--ink-3);font-size:13px;font-weight:600;cursor:pointer}
+.pw-eye:hover{background:var(--sunken);color:var(--ink)}
+.pw-hint{display:block;margin-top:6px;font-size:12.5px;font-weight:600;color:#b4540a}
+.pw-hint[hidden]{display:none}
+
 /* ── 승인 대기 ── */
 .wait{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
 .wait-card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:44px 40px;max-width:440px;text-align:center;box-shadow:var(--shadow-lift)}
@@ -383,7 +391,7 @@ dialog::backdrop{background:rgba(15,22,36,.42);backdrop-filter:blur(2px)}
    설정: Apps Script 웹 앱 URL을 붙여넣으세요.
    비워 두면 체험용(데모) 모드로 열립니다.
    ══════════════════════════════════════════════ */
-const API_URL = 'https://script.google.com/macros/s/AKfycby1H57uwHOM9s5oLZ8agO5_UjSG3rSCwB4oS5-hXrNe0pTzibc5NBuWdxJu21ZksnH9/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbzakwQgHqmiQdcnpdra4_YlAgXjvFVAH0Cfr6vJJX8uUnz9pYacE_tz0SDy_Mzedpzy/exec';
 
 const DEMO = !API_URL;
 const app = document.getElementById('app');
@@ -477,6 +485,32 @@ function ownBtns(p) {
 }
 function sizeText(n) { if (!n) return ''; return n > 1048576 ? (n / 1048576).toFixed(1) + 'MB' : Math.ceil(n / 1024) + 'KB'; }
 
+/* ───────── 비밀번호 칸 ─────────
+   PC의 비밀번호 칸은 한글 입력이 막혀 있어서, 한글 자판으로 친 글자가 영문으로 들어갑니다(하늘쌤 → gksmfToa).
+   휴대폰은 한글이 그대로 들어가 기기마다 비밀번호가 달라지므로, 새 비밀번호는 영문·숫자·기호만 받습니다. */
+const HANGUL_RE = /[ㄱ-ㆎ가-힣]/;
+function pwRule(pw) {
+  if (/[^\x21-\x7E]/.test(pw)) return '비밀번호는 영문, 숫자, 기호로만 만들어 주세요. 한글과 띄어쓰기는 쓸 수 없습니다.';
+  if (pw.length < 8) return '비밀번호는 8자 이상으로 정해 주세요.';
+  return '';
+}
+function pwField(name, label, small, ac) {
+  return `<label class="f"><span>${label}${small ? `<small>${small}</small>` : ''}</span>
+    <span class="pw"><input class="in" name="${name}" type="password" autocomplete="${ac}" autocapitalize="off" autocorrect="off" spellcheck="false" data-pw>
+    <button type="button" class="pw-eye" data-act="pwEye" aria-label="${label} 보기">보기</button></span>
+    <span class="pw-hint" hidden></span></label>`;
+}
+function pwCheck(e) {
+  const inp = e.target; if (!inp.matches || !inp.matches('input[data-pw]')) return;
+  const hint = inp.closest('label').querySelector('.pw-hint'); if (!hint) return;
+  const caps = e.getModifierState && e.getModifierState('CapsLock');
+  const msg = HANGUL_RE.test(inp.value) ? '한글이 입력되고 있습니다. 비밀번호는 영문으로 입력해 주세요.'
+    : caps ? 'Caps Lock(대문자 고정)이 켜져 있습니다.' : '';
+  hint.textContent = msg; hint.hidden = !msg;
+}
+document.addEventListener('input', pwCheck);
+document.addEventListener('keyup', pwCheck);
+
 /* ───────── 서버 통신 ───────── */
 async function api(action, payload = {}) {
   const body = Object.assign({ action, token: state.token }, payload);
@@ -525,8 +559,8 @@ function renderGate(message) {
         ${message ? `<div class="msg ${message.ok ? 'ok' : 'err'}" role="alert">${esc(message.text)}</div>` : ''}
         <label class="f"><span>이름</span><input class="in" name="name" autocomplete="username" required maxlength="20" placeholder="김하늘"></label>
         ${login ? '' : `<label class="f"><span>학년·반 또는 부서<small>선택</small></span><input class="in" name="dept" maxlength="30" placeholder="3학년 2반"></label>`}
-        <label class="f"><span>비밀번호${login ? '' : '<small>8자 이상</small>'}</span><input class="in" name="password" type="password" autocomplete="${login ? 'current-password' : 'new-password'}" required minlength="8"></label>
-        ${login ? '' : `<label class="f"><span>비밀번호 확인</span><input class="in" name="password2" type="password" autocomplete="new-password" required></label>`}
+        ${pwField('password', login ? '비밀번호' : '비밀번호', login ? '' : '영문·숫자·기호 8자 이상', login ? 'current-password' : 'new-password')}
+        ${login ? '' : pwField('password2', '비밀번호 확인', '', 'new-password')}
         <button class="btn primary" style="width:100%;height:46px;margin-top:6px" type="submit">${login ? '로그인' : '가입 신청 보내기'}</button>
         <div class="gate-switch">${login ? '처음 오셨나요?' : '이미 승인받았나요?'}<button type="button" data-act="gateTab" data-tab="${login ? 'register' : 'login'}">${login ? '가입 신청' : '로그인'}</button></div>
         ${DEMO ? `<div class="demo-note">체험용 화면입니다. 이름 <b>관리자</b>, 비밀번호 <b>demo1234</b>로 들어가 볼 수 있습니다. 새로고침하면 입력한 내용은 사라집니다.</div>` : ''}
@@ -544,6 +578,7 @@ async function onGateSubmit(e) {
   const login = state.gateTab === 'login';
   if (!fd.name.trim() || !fd.password) return renderGateKeep({ text: '이름과 비밀번호를 모두 입력해 주세요.' }, fd);
   if (!login && fd.password !== fd.password2) return renderGateKeep({ text: '비밀번호 확인이 일치하지 않습니다.' }, fd);
+  if (!login) { const bad = pwRule(fd.password); if (bad) return renderGateKeep({ text: bad }, fd); }
   btn.disabled = true; btn.textContent = login ? '확인하는 중…' : '보내는 중…';
   try {
     if (login) {
@@ -685,14 +720,19 @@ function renderList() {
 
 function appIcon(icon) { return P[icon] && APP_ICONS.includes(icon) ? ic(icon) : `<span>${esc(icon || '')}</span>` || ic('school'); }
 
+// 포털에 올린 HTML 웹앱은 Apps Script 주소 + ?app=파일ID 로 엽니다
+function appUrl(id) { return DEMO ? Mock.appUrl(id) : API_URL + (API_URL.includes('?') ? '&' : '?') + 'app=' + encodeURIComponent(id); }
+function postUrl(p) { return p.extra && p.extra.appFileId ? appUrl(p.extra.appFileId) : p.url; }
+function openHref(p) { const u = postUrl(p); return DEMO && /^blob:/.test(u) ? u : safeUrl(u); }
+
 function appTile(p) {
   const tag = p.extra.tag || '기타';
   return `<div class="card app" style="--t:${ADMIN_TAGS[tag] || ADMIN_TAGS['기타']}">
-    <a class="cover" href="${esc(safeUrl(p.url))}" target="_blank" rel="noopener" aria-label="${esc(p.title)} 새 창에서 열기"></a>
+    <a class="cover" href="${esc(openHref(p))}" target="_blank" rel="noopener" aria-label="${esc(p.title)} 새 창에서 열기"></a>
     <div class="ico">${p.extra.icon ? appIcon(p.extra.icon) : ic('school')}</div>
     <h3>${esc(p.title)}${ic('out')}</h3>
     <p>${esc(p.body)}</p>
-    <div class="foot"><span class="tag"><i></i>${esc(tag)}</span><span class="meta">${esc(p.authorName)}</span></div>
+    <div class="foot"><span class="tag"><i></i>${esc(tag)}</span><span class="meta">${p.extra.appFileId ? '<span class="pill">HTML</span> ' : ''}${esc(p.authorName)}</span></div>
     ${ownBtns(p)}
   </div>`;
 }
@@ -780,7 +820,7 @@ function matCard(p) {
     <div class="pills"><span class="pill">${esc(p.extra.grade || '공통')}</span><span class="pill">${esc(p.extra.subject || '기타')}</span>${p.extra.fileName ? `<span class="pill">${sizeText(p.extra.size)}</span>` : ''}</div>
     <div class="foot">
       <span class="meta">${esc(p.authorName)} · ${fmtDate(p.createdAt)}</span>
-      ${p.url ? `<a class="btn sm line" href="${esc(safeUrl(p.url))}" target="_blank" rel="noopener">${openLabel}</a>` : ''}
+      ${postUrl(p) ? `<a class="btn sm line" href="${esc(openHref(p))}" target="_blank" rel="noopener">${openLabel}</a>` : ''}
     </div>
     ${ownBtns(p)}
   </article>`;
@@ -841,11 +881,23 @@ function postForm(board, p) {
   const v = (x) => esc(x ?? '');
   const today = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
   let fields = '';
+  // 웹앱 연결 방법: 주소 입력 / HTML 파일 올리기
+  const src = e.appFileId ? 'html' : 'url';
+  const srcBlock = `
+    <fieldset class="f" style="margin-bottom:14px"><legend>웹앱 연결 방법</legend><div class="chips">
+      <label><input type="radio" name="src" value="url" data-act="srcSel" ${src === 'url' ? 'checked' : ''}>주소 입력</label>
+      <label><input type="radio" name="src" value="html" data-act="srcSel" ${src === 'html' ? 'checked' : ''}>HTML 파일 올리기</label></div></fieldset>
+    <div id="srcUrl" ${src === 'html' ? 'hidden' : ''}><label class="f"><span>주소</span><input class="in" name="url" type="url" value="${src === 'url' && (board === 'admin' || e.kind === 'webapp' || !e.kind) ? v(p?.url) : ''}" placeholder="https://"></label></div>
+    <div id="srcHtml" ${src === 'html' ? '' : 'hidden'}>
+      <div class="f" style="margin-bottom:16px"><span class="flabel">HTML 파일<small>5MB까지</small></span>
+        <div class="drop ${e.appFileName ? 'has' : ''}" id="appDrop" tabindex="0" role="button">${e.appFileName ? `${esc(e.appFileName)} (${sizeText(e.size)}) · 바꾸려면 누르세요` : '눌러서 .html 파일을 고르거나 여기로 끌어 놓으세요'}</div>
+        <input type="file" id="appIn" accept=".html,.htm,text/html" hidden>
+        <p class="hint" style="margin:8px 0 0">올리면 바로 열리는 주소가 만들어집니다. CSS·자바스크립트가 파일 안에 들어 있는 한 파일짜리 웹앱이어야 하고, 그림 파일을 따로 쓰는 웹앱은 주소 입력을 쓰세요.</p></div></div>`;
   if (board === 'admin') {
     const curIcon = APP_ICONS.includes(e.icon) ? e.icon : 'school';
     fields = `
     <label class="f"><span>웹앱 이름</span><input class="in" name="title" required maxlength="80" value="${v(p?.title)}" placeholder="방문객 출입기록"></label>
-    <label class="f"><span>주소</span><input class="in" name="url" type="url" required value="${v(p?.url)}" placeholder="https://"></label>
+    ${srcBlock}
     <label class="f"><span>한 줄 설명</span><input class="in" name="body" maxlength="140" value="${v(p?.body)}" placeholder="QR로 방문객 출입을 기록합니다"></label>
     <label class="f" style="max-width:240px"><span>업무 분류</span><select class="in" name="tag">${Object.keys(ADMIN_TAGS).map(t => `<option ${t === (e.tag || '기타') ? 'selected' : ''}>${t}</option>`).join('')}</select></label>
     <div class="f" style="margin-bottom:16px"><span class="flabel">아이콘</span>
@@ -884,7 +936,8 @@ function postForm(board, p) {
       <label class="f"><span>학년</span><select class="in" name="grade">${GRADES.map(g => `<option ${g === (e.grade || '공통') ? 'selected' : ''}>${g}</option>`).join('')}</select></label>
       <label class="f"><span>교과</span><select class="in" name="subject">${SUBJECTS.map(s => `<option ${s === (e.subject || '기타') ? 'selected' : ''}>${s}</option>`).join('')}</select></label>
     </div>
-    <div id="urlBox" ${kind === 'file' ? 'hidden' : ''}><label class="f"><span>주소</span><input class="in" name="url" type="url" value="${kind === 'file' ? '' : v(p?.url)}" placeholder="https://"></label></div>
+    <div id="webBox" ${kind === 'webapp' ? '' : 'hidden'}>${srcBlock}</div>
+    <div id="urlBox" ${kind === 'link' ? '' : 'hidden'}><label class="f"><span>주소</span><input class="in" name="linkUrl" type="url" value="${kind === 'link' ? v(p?.url) : ''}" placeholder="https://"></label></div>
     <div id="fileBox" ${kind === 'file' ? '' : 'hidden'}>
       <div class="f" style="margin-bottom:16px"><span class="flabel">파일<small>20MB까지, 학교 구글 드라이브에 저장</small></span>
         <div class="drop ${e.fileName ? 'has' : ''}" id="drop" tabindex="0" role="button">${e.fileName ? `${esc(e.fileName)} (${sizeText(e.size)}) · 바꾸려면 누르세요` : '눌러서 파일을 고르거나 여기로 끌어 놓으세요'}</div>
@@ -918,20 +971,35 @@ function postForm(board, p) {
     form._fields = JSON.parse(JSON.stringify(Array.isArray(e.fields) ? e.fields : []));
     renderFields(form);
   }
-  const drop = document.getElementById('drop'), fileIn = document.getElementById('fileIn');
-  if (drop) {
-    const pick = (file) => {
-      if (!file) return;
-      if (file.size > 20 * 1048576) { formMsg('20MB 이하 파일만 올릴 수 있습니다.'); return; }
-      form._file = file; drop.classList.add('has'); drop.textContent = `${file.name} (${sizeText(file.size)})`;
-      const t = form.querySelector('[name=title]'); if (!t.value) t.value = file.name.replace(/\.[^.]+$/, '');
-    };
-    drop.addEventListener('click', () => fileIn.click());
-    drop.addEventListener('keydown', ev => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); fileIn.click(); } });
-    drop.addEventListener('dragover', ev => { ev.preventDefault(); });
-    drop.addEventListener('drop', ev => { ev.preventDefault(); pick(ev.dataTransfer.files[0]); });
-    fileIn.addEventListener('change', () => pick(fileIn.files[0]));
-  }
+  form._app = null;
+  form._existingApp = e.appFileId ? { appFileId: e.appFileId, appFileName: e.appFileName, size: e.size, url: p.url } : null;
+  setupDrop(form, 'drop', 'fileIn', (file) => {
+    if (file.size > 20 * 1048576) return '20MB 이하 파일만 올릴 수 있습니다.';
+    form._file = file;
+  });
+  setupDrop(form, 'appDrop', 'appIn', (file) => {
+    if (!/\.html?$/i.test(file.name)) return '.html 파일만 올릴 수 있습니다.';
+    if (file.size > 5 * 1048576) return '5MB 이하 HTML 파일만 올릴 수 있습니다.';
+    form._app = file;
+  });
+}
+// 파일 끌어 놓기·고르기 상자
+function setupDrop(form, dropId, inputId, accept) {
+  const drop = document.getElementById(dropId), input = document.getElementById(inputId);
+  if (!drop) return;
+  const pick = (file) => {
+    if (!file) return;
+    const err = accept(file);
+    if (err) { formMsg(err); return; }
+    document.getElementById('formMsg').innerHTML = '';
+    drop.classList.add('has'); drop.textContent = `${file.name} (${sizeText(file.size)})`;
+    const t = form.querySelector('[name=title]'); if (!t.value) t.value = file.name.replace(/\.[^.]+$/, '');
+  };
+  drop.addEventListener('click', () => input.click());
+  drop.addEventListener('keydown', ev => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); input.click(); } });
+  drop.addEventListener('dragover', ev => { ev.preventDefault(); });
+  drop.addEventListener('drop', ev => { ev.preventDefault(); pick(ev.dataTransfer.files[0]); });
+  input.addEventListener('change', () => pick(input.files[0]));
 }
 function formMsg(t) { const el = document.getElementById('formMsg'); if (el) el.innerHTML = `<div class="msg err" role="alert">${esc(t)}</div>`; }
 
@@ -945,7 +1013,15 @@ async function submitPost(form, board, p) {
   if (!String(fd.title || '').trim()) return formMsg('제목을 입력해 주세요.');
   const extra = {};
   let url = (fd.url || '').trim();
-  if (board === 'admin') { if (!url) return formMsg('웹앱 주소를 입력해 주세요.'); extra.tag = fd.tag; extra.icon = fd.icon; }
+  const webapp = board === 'admin' || (board === 'learn' && fd.kind === 'webapp');
+  const htmlSrc = webapp && fd.src === 'html';
+  if (webapp) {
+    if (htmlSrc) {
+      if (!form._app && !form._existingApp) return formMsg('올릴 HTML 파일을 골라 주세요.');
+      if (!form._app) { Object.assign(extra, { appFileId: form._existingApp.appFileId, appFileName: form._existingApp.appFileName, size: form._existingApp.size }); url = form._existingApp.url || ''; }
+    } else if (!url) return formMsg('웹앱 주소를 입력해 주세요.');
+  }
+  if (board === 'admin') { extra.tag = fd.tag; extra.icon = fd.icon; }
   if (board === 'apply' || board === 'tally') {
     syncFields(form);
     const fields = form._fields.map(f => ({ ...f, label: f.label.trim(), options: (f.type === 'one' || f.type === 'many') ? f.options.map(o => o.trim()).filter(Boolean) : [] }));
@@ -964,7 +1040,7 @@ async function submitPost(form, board, p) {
     if (fd.kind === 'file') {
       if (!form._file && !form._existing?.fileId) return formMsg('올릴 파일을 골라 주세요.');
       if (!form._file) { Object.assign(extra, { fileId: form._existing.fileId, fileName: form._existing.fileName, size: form._existing.size }); url = form._existing.url; }
-    } else if (!url) return formMsg('주소를 입력해 주세요.');
+    } else if (fd.kind === 'link') { url = (fd.linkUrl || '').trim(); if (!url) return formMsg('주소를 입력해 주세요.'); }
   }
   if (url && !/^https?:\/\//i.test(url)) return formMsg('주소는 https:// 로 시작해야 합니다.');
   btn.disabled = true;
@@ -973,6 +1049,12 @@ async function submitPost(form, board, p) {
       btn.textContent = '드라이브에 올리는 중…';
       const up = await api('upload', { name: form._file.name, mimeType: form._file.type, data: await readBase64(form._file) });
       Object.assign(extra, { fileId: up.fileId, fileName: up.name, size: up.size }); url = up.url;
+    }
+    if (htmlSrc && form._app) {
+      btn.textContent = '웹앱 올리는 중…';
+      const up = await api('uploadApp', { name: form._app.name, html: await form._app.text() });
+      Object.assign(extra, { appFileId: up.fileId, appFileName: up.name, size: up.size });
+      url = DEMO ? '' : appUrl(up.fileId);
     }
     btn.textContent = '저장하는 중…';
     const saved = await api('savePost', { post: { id: p?.id, board, title: fd.title, body: fd.body || '', url, extra } });
@@ -1260,6 +1342,10 @@ document.addEventListener('click', async (ev) => {
   const post = id ? state.posts.find(p => p.id === id) : null;
   try {
     switch (act) {
+      case 'pwEye': {
+        const inp = t.parentElement.querySelector('input'); const show = inp.type === 'password';
+        inp.type = show ? 'text' : 'password'; t.textContent = show ? '숨기기' : '보기'; inp.focus(); break;
+      }
       case 'gateTab': state.gateTab = t.dataset.tab; renderGate(); break;
       case 'toGate': state.gateTab = 'login'; renderGate(); break;
       case 'menu': {
@@ -1390,13 +1476,14 @@ document.addEventListener('click', async (ev) => {
       case 'pw': {
         closeMenu();
         openDialog(`<form id="pwForm" novalidate>${dlgHead('비밀번호 바꾸기')}<div class="dlg-body"><div id="formMsg"></div>
-          <label class="f"><span>지금 비밀번호</span><input class="in" type="password" name="old" autocomplete="current-password"></label>
-          <label class="f"><span>새 비밀번호<small>8자 이상</small></span><input class="in" type="password" name="n1" autocomplete="new-password"></label>
-          <label class="f"><span>새 비밀번호 확인</span><input class="in" type="password" name="n2" autocomplete="new-password"></label></div>
+          ${pwField('old', '지금 비밀번호', '', 'current-password')}
+          ${pwField('n1', '새 비밀번호', '영문·숫자·기호 8자 이상', 'new-password')}
+          ${pwField('n2', '새 비밀번호 확인', '', 'new-password')}</div>
           <div class="dlg-foot"><button type="button" class="btn line" data-act="close">닫기</button><button class="btn primary" type="submit">바꾸기</button></div></form>`);
         document.getElementById('pwForm').addEventListener('submit', async e => {
           e.preventDefault(); const f = Object.fromEntries(new FormData(e.target));
           if (f.n1 !== f.n2) return formMsg('새 비밀번호 확인이 일치하지 않습니다.');
+          const bad = pwRule(f.n1); if (bad) return formMsg(bad.replace('비밀번호는', '새 비밀번호는'));
           try { await api('changePassword', { oldPassword: f.old, newPassword: f.n1 }); closeDialog(); toast('비밀번호를 바꿨습니다.'); } catch (err) { formMsg(err.message); }
         }); break;
       }
@@ -1410,8 +1497,13 @@ document.addEventListener('change', (ev) => {
   if (t.dataset.act === 'kind') { state.f.kind = t.value; renderList(); }
   if (t.matches && t.matches('#fieldsBox [data-k=type]')) { const f = document.getElementById('postForm'); syncFields(f); renderFields(f); }
   if (t.dataset.act === 'kindSel') {
-    const file = t.value === 'file';
-    document.getElementById('urlBox').hidden = file; document.getElementById('fileBox').hidden = !file;
+    document.getElementById('webBox').hidden = t.value !== 'webapp';
+    document.getElementById('urlBox').hidden = t.value !== 'link';
+    document.getElementById('fileBox').hidden = t.value !== 'file';
+  }
+  if (t.dataset.act === 'srcSel') {
+    document.getElementById('srcUrl').hidden = t.value !== 'url';
+    document.getElementById('srcHtml').hidden = t.value !== 'html';
   }
 });
 document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') closeMenu(); });
@@ -1458,6 +1550,7 @@ const Mock = (() => {
         { id: 'n', label: '희망 학생 수', type: 'number', options: [], required: true },
         { id: 'time', label: '희망 시간대', type: 'many', options: ['오전', '오후'], required: false }] }, 'u1', 4),
     mk('learn', '학생 웹게임 아케이드', '학생들이 만든 HTML 게임 모음입니다. 창체 시간 발표회에 씁니다.', 'https://example.com/arcade', { kind: 'webapp', grade: '공통', subject: '창체' }, 'u1', 5),
+    mk('learn', '구구단 빨리 풀기', 'HTML 파일로 올린 웹앱 예시입니다. 30초 동안 구구단 문제를 풉니다.', '', { kind: 'webapp', grade: '2학년', subject: '수학', appFileId: 'demo-gugu', appFileName: '구구단.html', size: 2400 }, 'u2', 1),
     mk('learn', '분수 막대 비교 놀이', '분모가 다른 분수의 크기를 막대로 비교합니다.', 'https://example.com/fraction', { kind: 'webapp', grade: '3학년', subject: '수학' }, 'u2', 3),
     mk('learn', '물의 상태 변화 활동지', '실험 관찰 기록용 활동지입니다.', 'https://drive.google.com/', { kind: 'file', grade: '4학년', subject: '과학', fileId: 'f1', fileName: '물의상태변화_활동지.pdf', size: 820000 }, 'u2', 7),
     mk('link', '인천광역시교육청', '', 'https://www.ice.go.kr', { group: '교육청' }, 'u1', 20),
@@ -1485,20 +1578,33 @@ const Mock = (() => {
   const answers = (memo) => { const s = String(memo || ''); if (s[0] === '{') { try { return JSON.parse(s).a || {}; } catch (e) { } } return s ? { memo: s } : {}; };
   const fieldsOf = (x) => (x.fields && x.fields.length) ? x.fields : (x.memoLabel ? [{ id: 'memo', label: x.memoLabel, type: 'short', options: [], required: false }] : []);
   const sessions = {};
+  // 체험용 HTML 웹앱 저장소(실제로는 Apps Script 주소 + ?app=ID 로 열립니다)
+  const apps = { 'demo-gugu': `<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>구구단 빨리 풀기</title>
+<style>body{font-family:sans-serif;display:grid;place-items:center;min-height:100vh;margin:0;background:#eef4fe}main{text-align:center}
+#q{font-size:56px;font-weight:800;margin:16px}input{font-size:28px;width:120px;text-align:center}#s{color:#1f5fd1;font-weight:700}</style></head>
+<body><main><h1>구구단 빨리 풀기</h1><div id="q"></div><input id="a" inputmode="numeric" autofocus><p>맞힌 문제 <span id="s">0</span>개</p></main>
+<script>let a,b,s=0;const n=()=>{a=2+Math.floor(Math.random()*8);b=1+Math.floor(Math.random()*9);q.textContent=a+' × '+b+' = ?'};n();
+document.getElementById('a').addEventListener('keydown',e=>{if(e.key==='Enter'){if(+e.target.value===a*b){s++;document.getElementById('s').textContent=s}e.target.value='';n()}});<\/script></body></html>` };
+  const appUrls = {};
   const fail = (code, message) => ({ ok: false, code, message });
   const pub = (u) => ({ id: u.id, name: u.name, dept: u.dept, status: u.status, role: u.role, createdAt: u.createdAt, lastLogin: u.lastLogin });
   const norm = (s) => String(s || '').replace(/\s+/g, '').toLowerCase();
+  // 서버의 korToKeys_와 같은 변환(한글 자판 → 같은 자리 영문)
+  const KM = 'r R rt s sw sg e E f fr fa fq ft fx fv fg a q Q qt t T d w W c z x v g k o i O j p u P h hk ho hl y n nj np nl b m ml l'.split(' ');
+  const CHO = 'ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ', JUNG = 'ㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ', JONG = ['', ...'ㄱㄲㄳㄴㄵㄶㄷㄹㄺㄻㄼㄽㄾㄿㅀㅁㅂㅄㅅㅆㅇㅈㅊㅋㅌㅍㅎ'];
+  const jm = (j) => { const i = j.charCodeAt(0) - 0x3131; return i >= 0 && i < KM.length ? KM[i] : j; };
+  const korToKeys = (s) => [...String(s || '')].map(ch => { const c = ch.charCodeAt(0); if (c >= 0xAC00 && c <= 0xD7A3) { const n = c - 0xAC00; return jm(CHO[Math.floor(n / 588)]) + jm(JUNG[Math.floor((n % 588) / 28)]) + (n % 28 ? jm(JONG[n % 28]) : ''); } return jm(ch); }).join('');
   const A = {
     register(r) {
       if (String(r.name || '').trim().length < 2) return fail('INVALID', '이름은 2자 이상 입력해 주세요.');
-      if (String(r.password || '').length < 8) return fail('INVALID', '비밀번호는 8자 이상으로 정해 주세요.');
+      if (pwRule(String(r.password || ''))) return fail('INVALID', pwRule(String(r.password || '')));
       if (users.some(u => norm(u.name) === norm(r.name))) return fail('DUPLICATE', '같은 이름이 이미 등록되어 있습니다. 이름 뒤에 학년·반이나 부서를 붙여 주세요. 예) 김하늘(3-2)');
       users.push({ id: nid(), name: r.name.trim(), pw: r.password, dept: r.dept || '', status: 'pending', role: 'teacher', createdAt: new Date().toISOString(), lastLogin: '' });
       return { status: 'pending' };
     },
     login(r) {
       const u = users.find(x => norm(x.name) === norm(r.name));
-      if (!u || u.pw !== r.password) return fail('AUTH', '이름 또는 비밀번호가 맞지 않습니다.');
+      if (!u || (u.pw !== r.password && u.pw !== korToKeys(r.password))) return fail('AUTH', '이름 또는 비밀번호가 맞지 않습니다. 한/영 키와 Caps Lock(대문자 고정)을 확인해 주세요.');
       if (u.status === 'pending') return { status: 'pending', name: u.name };
       if (u.status === 'rejected') return fail('REJECTED', '가입이 승인되지 않았습니다. 관리자에게 문의해 주세요.');
       const token = nid() + Math.random().toString(36).slice(2); sessions[token] = u.id; u.lastLogin = new Date().toISOString();
@@ -1563,6 +1669,10 @@ const Mock = (() => {
       if (!canManage(me, p)) return fail('FORBIDDEN', '작성자와 관리자만 신청 현황을 볼 수 있습니다.');
       return { fields: fieldsOf(p.extra), list: applies.filter(a => a.postId === r.postId).map(a => ({ name: a.userName, dept: (users.find(u => u.id === a.userId) || {}).dept || '', answers: answers(a.memo), createdAt: a.createdAt })) };
     },
+    uploadApp(r) {
+      if (!/\.html?$/i.test(r.name || '')) return fail('INVALID', '.html 파일만 올릴 수 있습니다.');
+      const id = nid(); apps[id] = r.html; return { fileId: id, name: r.name, size: new Blob([r.html]).size };
+    },
     upload(r) { return { fileId: nid(), url: 'https://drive.google.com/', name: r.name, size: Math.round(r.data.length * 0.75) }; },
     users(r, me) { return me.role === 'admin' ? users.map(pub) : fail('FORBIDDEN', '관리자만 할 수 있습니다.'); },
     setUser(r, me) {
@@ -1572,12 +1682,16 @@ const Mock = (() => {
     },
     resetPassword(r) { const u = users.find(x => x.id === r.userId); u.pw = 'temp' + Math.floor(1000 + Math.random() * 9000); return { tempPassword: u.pw }; },
     changePassword(r, me) {
-      if (me.pw !== r.oldPassword) return fail('AUTH', '지금 비밀번호가 맞지 않습니다.');
-      if (String(r.newPassword || '').length < 8) return fail('INVALID', '새 비밀번호는 8자 이상으로 정해 주세요.');
+      if (me.pw !== r.oldPassword && me.pw !== korToKeys(r.oldPassword)) return fail('AUTH', '지금 비밀번호가 맞지 않습니다. 한/영 키와 Caps Lock을 확인해 주세요.');
+      if (pwRule(String(r.newPassword || ''))) return fail('INVALID', '새 ' + pwRule(String(r.newPassword || '')));
       me.pw = r.newPassword; return true;
     },
   };
   return {
+    appUrl(id) {
+      if (!apps[id]) return '';
+      return appUrls[id] || (appUrls[id] = URL.createObjectURL(new Blob([apps[id]], { type: 'text/html' })));
+    },
     async call(req) {
       await new Promise(r => setTimeout(r, 160));
       const fn = A[req.action]; if (!fn) return fail('BAD_REQUEST', '알 수 없는 요청입니다.');
