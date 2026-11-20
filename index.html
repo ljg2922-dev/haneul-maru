@@ -12,7 +12,7 @@
   --bg:#f3f5f8; --surface:#ffffff; --sunken:#f6f7f9;
   --ink:#172033; --ink-2:#4a5468; --ink-3:#8b93a3; --line:#e5e8ee; --line-2:#d5dae3;
   --brand:#1f5fd1; --brand-ink:#163f8f;
-  --s-admin:#3b7cf0; --s-learn:#d8921a; --s-apply:#e5484d; --s-tally:#12a172; --s-link:#8b5cf6; --s-users:#6b7385; --s-plan:#0e9fb5;
+  --s-admin:#3b7cf0; --s-learn:#d8921a; --s-apply:#e5484d; --s-tally:#12a172; --s-link:#8b5cf6; --s-users:#6b7385; --s-plan:#0e9fb5; --s-room:#db2777;
   --font:"Pretendard Variable", Pretendard, "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
   --r-sm:8px; --r:12px; --r-lg:16px;
   --shadow:0 1px 2px rgba(23,32,51,.04), 0 1px 1px rgba(23,32,51,.03);
@@ -95,6 +95,86 @@ textarea.in{height:auto;min-height:104px;padding:11px 13px;resize:vertical;line-
 .pw-eye:hover{background:var(--sunken);color:var(--ink)}
 .pw-hint{display:block;margin-top:6px;font-size:12.5px;font-weight:600;color:#b4540a}
 .pw-hint[hidden]{display:none}
+
+/* ── 실 예약 ── */
+.rooms{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:20px}
+.rcard{position:relative;display:flex;gap:12px;align-items:flex-start;text-align:left;padding:16px;border:1px solid var(--line);border-radius:var(--r-lg);background:var(--surface);cursor:pointer;box-shadow:var(--shadow);transition:border-color .15s,box-shadow .15s,transform .15s}
+.rcard:hover{border-color:var(--line-2);box-shadow:var(--shadow-lift)}
+.rcard[aria-pressed="true"]{border-color:var(--rc);box-shadow:0 0 0 2px var(--rc),var(--shadow-lift)}
+.rcard .ri{width:40px;height:40px;border-radius:11px;flex:none;display:grid;place-items:center;background:color-mix(in srgb,var(--rc) 13%,#fff);color:var(--rc)}
+.rcard .ri svg.i{width:20px;height:20px}
+.rcard b{display:block;font-size:15.5px;font-weight:700;letter-spacing:-.03em}
+.rcard small{display:block;font-size:12.5px;color:var(--ink-3);margin-top:2px}
+.rcard .rtoday{display:block;font-size:12.5px;font-weight:600;color:var(--rc);margin-top:6px}
+.rv{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:16px;align-items:start}
+.cal{padding:18px 18px 14px}
+.cal-head{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.cal-head h2{font-size:19px;font-weight:750;letter-spacing:-.035em;margin:0 6px;min-width:120px;text-align:center}
+.cal-head .room-name{margin-left:auto;display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:650;color:var(--ink-2)}
+.cal-head .room-name i{width:9px;height:9px;border-radius:3px;background:var(--rc)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border-top:1px solid var(--line);border-left:1px solid var(--line)}
+.cal-grid .wd{font-size:12px;font-weight:650;color:var(--ink-3);text-align:center;padding:7px 0;border-right:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--sunken)}
+.cal-grid .wd.sun,.day.sun .dn{color:#d14343}.cal-grid .wd.sat,.day.sat .dn{color:#2f6fd6}
+.day{position:relative;min-height:104px;padding:6px 6px 8px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--surface);cursor:pointer;text-align:left;font:inherit;display:flex;flex-direction:column;gap:3px;min-width:0}
+.day:hover{background:#f8fafc}
+.day .dn{font-size:13px;font-weight:650;line-height:1.2;display:flex;align-items:center;gap:6px}
+.day.out{background:#fafbfc}.day.out .dn{opacity:.35}
+.day.past .dn{opacity:.5}.day.past{background:#fcfcfd}
+.day.today .dn span{background:var(--ink);color:#fff;border-radius:999px;padding:1px 7px}
+.day.sel{box-shadow:inset 0 0 0 2px var(--rc);z-index:1}
+.day .free{font-size:11px;font-weight:600;color:var(--s-tally);margin-left:auto}
+.bk{display:block;font-size:11.5px;line-height:1.35;padding:2px 6px;border-radius:5px;background:color-mix(in srgb,var(--rc) 11%,#fff);border-left:3px solid var(--rc);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
+.bk.mine{background:color-mix(in srgb,var(--rc) 24%,#fff);font-weight:650}
+.bk.more{background:none;border:0;color:var(--ink-3);padding:0 6px}
+.cal-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--ink-3);margin-top:10px}
+.cal-legend span{display:inline-flex;align-items:center;gap:5px}
+.cal-legend i{width:12px;height:9px;border-radius:2px;background:color-mix(in srgb,var(--rc) 11%,#fff);border-left:3px solid var(--rc)}
+.cal-legend i.m{background:color-mix(in srgb,var(--rc) 24%,#fff)}
+.dp{position:sticky;top:20px;padding:18px}
+.dp h3{font-size:18px;font-weight:750;letter-spacing:-.035em;margin:0}
+.dp .meta{margin:2px 0 14px}
+.slots{display:grid;gap:6px}
+.slot{display:grid;grid-template-columns:76px minmax(0,1fr) auto;gap:10px;align-items:center;padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:var(--surface);font-size:13.5px}
+.slot .sl b{display:block;font-size:13.5px;font-weight:700}
+.slot .sl small{display:block;font-size:11px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.slot.booked{background:color-mix(in srgb,var(--rc) 7%,#fff);border-color:color-mix(in srgb,var(--rc) 25%,#fff)}
+.slot.booked.mine{border-color:var(--rc)}
+.slot .who b{font-weight:650}
+.slot .who span{color:var(--ink-3);font-size:12.5px;margin-left:4px}
+.slot .who p{margin:2px 0 0;font-size:12.5px;color:var(--ink-2);white-space:normal;overflow-wrap:anywhere}
+.slot.free{cursor:pointer}
+.slot.free:hover{border-color:var(--ink-3)}
+.slot.free .tag2{font-size:12.5px;font-weight:600;color:var(--s-tally)}
+.slot.free input{width:18px;height:18px;accent-color:var(--rc);margin:0}
+.slot.free:has(input:checked){border-color:var(--rc);box-shadow:inset 0 0 0 1px var(--rc);background:color-mix(in srgb,var(--rc) 6%,#fff)}
+.slot.na{color:var(--ink-3);background:var(--sunken)}
+.bookform{margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+.bookform .btn{width:100%;margin-top:8px;height:44px}
+.dp-empty{color:var(--ink-3);font-size:14px;padding:24px 6px;text-align:center}
+.rcfg{display:grid;gap:12px}
+.rrow{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:14px;align-items:center;padding:16px 18px}
+.rrow .ri{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:color-mix(in srgb,var(--rc) 13%,#fff);color:var(--rc)}
+.rrow b{font-size:16px;font-weight:700}
+.rrow .meta span+span::before{content:" · "}
+.rrow .off{display:inline-block;font-size:12px;font-weight:650;color:#9a6700;background:#fff6dc;border-radius:999px;padding:1px 8px;margin-left:6px}
+.swatches{display:flex;gap:8px;flex-wrap:wrap}
+.swatches label{width:30px;height:30px;border-radius:50%;background:var(--sw);cursor:pointer;display:grid;place-items:center;box-shadow:inset 0 0 0 2px rgba(255,255,255,.6)}
+.swatches input{position:absolute;opacity:0;pointer-events:none}
+.swatches label:has(input:checked){box-shadow:0 0 0 2px #fff,0 0 0 4px var(--sw)}
+.swatches label:has(input:focus-visible){outline:2px solid var(--brand);outline-offset:4px}
+.slotrows{display:grid;gap:6px;margin-bottom:8px}
+.slotrow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr) auto;gap:6px}
+.slotrow .in{height:38px;font-size:14px}
+@media (max-width:1100px){.rv{grid-template-columns:1fr}.dp{position:static}}
+@media (max-width:960px){
+  .day{min-height:64px;padding:4px}
+  .day .bk{font-size:0;height:6px;padding:0;border-left-width:0;border-radius:3px;background:var(--rc);opacity:.55}
+  .day .bk.mine{opacity:1}
+  .day .bk.more{display:none}
+  .day .free{display:none}
+  .cal{padding:12px 10px}
+  .cal-head .room-name{width:100%;margin:4px 0 0}
+}
 
 /* ── 업무계획 ── */
 .plan-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px}
@@ -418,7 +498,7 @@ dialog::backdrop{background:rgba(15,22,36,.42);backdrop-filter:blur(2px)}
    설정: Apps Script 웹 앱 URL을 붙여넣으세요.
    비워 두면 체험용(데모) 모드로 열립니다.
    ══════════════════════════════════════════════ */
-const API_URL = 'https://script.google.com/macros/s/AKfycbxbqax1da1mrnS4W1JKy4RbkKy23lwA9YkX1aD7RO1HrS5IAeBAEMcnYnoN9cm0SZGx/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbxtlPvs4osmX2bs_gFRwKdAra565keCxp07VUKiVPs4zh3cLV42GfbMvO07gScqlkc/exec';
 
 const DEMO = !API_URL;
 const app = document.getElementById('app');
@@ -430,14 +510,18 @@ const SECTIONS = {
     desc: '학교에서 만든 업무용 웹앱을 모았습니다. 누르면 새 창에서 열립니다.' },
   learn: { label: '학습자료', color: 'var(--s-learn)', add: '자료 올리기',
     desc: '수업용 웹앱과 자료를 학년·교과별로 나눕니다. 올린 파일은 학교 구글 드라이브에 저장됩니다.' },
+  room: { label: '실 예약', color: 'var(--s-room)', noPosts: true,
+    desc: '실을 고르고 날짜를 누른 뒤, 비어 있는 시간을 골라 예약합니다. 예약한 사람과 사용 목적은 모두에게 보입니다.' },
   plan: { label: '업무계획', color: 'var(--s-plan)', noPosts: true,
     desc: '학교 월별·주간 업무계획 시트를 그대로 보여 줍니다. 처음에는 이번 주(이번 달) 탭이 열립니다.' },
   apply: { label: '신청', color: 'var(--s-apply)', add: '신청 받기',
     desc: '선생님들께 받을 신청을 올립니다. 신청 현황은 올린 선생님과 관리자만 볼 수 있습니다.' },
   tally: { label: '집계', color: 'var(--s-tally)', add: '집계 글쓰기',
-    desc: '사이트에서 바로 입력합니다. 내가 입력한 내용만 보이고, 결과는 올린 선생님과 관리자만 받아 봅니다.' },
+    desc: '선생님들께 받을 집계를 올립니다. 사이트에서 바로 입력받거나 구글 시트로 가서 입력받을 수 있고, 제출 현황은 올린 선생님과 관리자만 봅니다.' },
   link: { label: '바로가기', color: 'var(--s-link)', add: '바로가기 추가',
     desc: '자주 들어가는 사이트를 분류별로 모았습니다.' },
+  roomcfg: { label: '실 관리', color: 'var(--s-room)', adminOnly: true, noPosts: true, add: '실 등록',
+    desc: '예약 받을 실과 예약 시간(교시·시간 단위)을 등록합니다. 등록한 실은 ‘실 예약’ 메뉴에 나옵니다.' },
   users: { label: '회원 관리', color: 'var(--s-users)', adminOnly: true,
     desc: '가입 신청을 승인하고, 관리자 권한과 비밀번호를 관리합니다.' },
 };
@@ -485,6 +569,8 @@ const state = {
   f: { adminTag: '전체', grade: '전체', kind: '전체', subject: '전체' },
   open: {}, users: null, gateTab: 'login',
   plan: { gid: null, data: null, error: null, loading: false },
+  rooms: [],
+  room: { id: null, month: null, cache: {}, day: null, loading: false, error: null },
   tallyCounts: {}, myTallies: {},
   tv: null,   // 열려 있는 집계 화면 { postId, kind: 'entry' | 'results' }
 };
@@ -565,7 +651,7 @@ function clearSession() { state.token = null; state.me = null; store('hm_token',
 async function load() {
   const d = await api('bootstrap');
   Object.assign(state, { me: d.me, posts: d.posts, applyCounts: d.applyCounts || {}, applyFull: d.applyFull || {}, myApplies: d.myApplies || {}, pendingCount: d.pendingCount || 0,
-    tallyCounts: d.tallyCounts || {}, myTallies: d.myTallies || {} });
+    tallyCounts: d.tallyCounts || {}, myTallies: d.myTallies || {}, rooms: d.rooms || [] });
 }
 
 /* ───────── 화면: 입구 ───────── */
@@ -674,7 +760,7 @@ function renderPortal() {
           <div><h1><span class="d"></span>${S.label}</h1><p>${S.desc}</p></div>
           ${S.add ? `<div><button class="btn" data-act="new">${ic('plus')}${S.add}</button></div>` : v === 'plan' && isAdmin ? `<div><button class="btn line" data-act="planCfg">${ic('link')}시트 연결 설정</button></div>` : ''}
         </header>
-        ${v === 'users' || v === 'plan' ? '' : `<div class="toolbar">
+        ${v === 'users' || S.noPosts ? '' : `<div class="toolbar">
           <div class="filters" id="filters"></div>
           <label class="search"><span class="sr">${S.label}에서 찾기</span>${ic('search')}<input id="q" type="search" placeholder="제목, 내용, 올린 사람" value="${esc(state.q)}"></label>
         </div>`}
@@ -717,6 +803,8 @@ function renderList() {
   const v = state.view;
   if (v === 'users') return renderUsers(el);
   if (v === 'plan') return renderPlan(el);
+  if (v === 'room') return renderRoom(el);
+  if (v === 'roomcfg') return renderRoomCfg(el);
   let items = filtered(v);
   const searching = state.q.trim();
   if (v === 'admin') {
@@ -734,7 +822,7 @@ function renderList() {
       : emptyBox(searching ? '찾는 신청이 없습니다' : '진행 중인 신청이 없습니다', searching ? '다른 낱말로 찾아보세요.' : '연수, 협의실 예약, 동아리 모집처럼 선생님들께 받을 신청을 올려 보세요.');
   } else if (v === 'tally') {
     el.innerHTML = items.length ? `<div class="card rows">${items.map(tallyRow).join('')}</div>`
-      : emptyBox(searching ? '찾는 집계가 없습니다' : '진행 중인 집계가 없습니다', searching ? '다른 낱말로 찾아보세요.' : '구글 시트 주소와 안내 글을 올리면 선생님들이 바로 시트를 열어 입력합니다.');
+      : emptyBox(searching ? '찾는 집계가 없습니다' : '진행 중인 집계가 없습니다', searching ? '다른 낱말로 찾아보세요.' : '반별 인원, 참석 여부, 학생 명단처럼 모을 내용을 올려 보세요. 사이트에서 바로 받거나 구글 시트로 받을 수 있습니다.');
   } else if (v === 'learn') {
     const f = state.f;
     items = items.filter(p => (f.grade === '전체' || p.extra.grade === f.grade) && (f.subject === '전체' || p.extra.subject === f.subject) && (f.kind === '전체' || p.extra.kind === f.kind));
@@ -817,14 +905,20 @@ function ticket(p) {
 
 function tallyRow(p) {
   const d = dday(p.extra.due), closed = d !== null && d < 0;
-  const ready = Array.isArray(p.extra.fields) && p.extra.fields.length > 0;
+  const sheet = p.extra.source === 'sheet';
+  const ready = sheet || (Array.isArray(p.extra.fields) && p.extra.fields.length > 0);
   const manage = canEdit(p);
   const due = p.extra.due ? `<span class="due ${d !== null && d >= 0 && d <= 3 ? 'soon' : ''}">${ic('clock')}${fmtDate(p.extra.due)}까지${d !== null && d >= 0 ? ` (D-${d})` : ' (끝남)'}</span>` : '';
   const mine = state.myTallies[p.id];
   const cnt = state.tallyCounts[p.id] || 0;
   let btns = '';
   if (!ready) btns = manage ? `<span class="meta">고치기에서 입력 항목을 다시 만들어 주세요</span>` : `<span class="meta">준비 중</span>`;
-  else {
+  else if (sheet) {
+    // 구글 시트 방식: 시트로 가서 입력하고, 포털에서 '입력 완료'를 눌러 알립니다
+    if (manage) btns += `<button class="btn sm line" data-act="tallyResults" data-id="${p.id}">${ic('chart')}완료 현황</button>`;
+    if (!closed) btns += mine ? `<button class="btn sm line" data-act="sheetUndone" data-id="${p.id}">완료 취소</button>` : `<button class="btn sm line" data-act="sheetDone" data-id="${p.id}">${ic('check')}입력 완료</button>`;
+    btns += `<a class="btn sm" href="${esc(safeUrl(p.url))}" target="_blank" rel="noopener">${ic('out')}구글 시트에서 입력</a>`;
+  } else {
     if (manage) btns += `<button class="btn sm line" data-act="tallyResults" data-id="${p.id}">${ic('chart')}결과 보기</button>`;
     btns += mine ? `<button class="btn sm ${closed ? 'line' : ''}" data-act="tallyOpen" data-id="${p.id}">${closed ? '내 입력 보기' : '내 입력 고치기'}</button>`
       : closed ? `<button class="btn sm line" disabled>기한이 지났습니다</button>` : `<button class="btn sm" data-act="tallyOpen" data-id="${p.id}">입력하기</button>`;
@@ -833,8 +927,8 @@ function tallyRow(p) {
     <div class="top">
       <div>
         <h3>${esc(p.title)}</h3>
-        <div class="meta">${due ? due + ' · ' : ''}${ready ? `<span class="num">${cnt}명 제출</span> · ` : ''}${esc(p.authorName)} · ${fmtDate(p.createdAt)}</div>
-        ${mine ? `<div class="done" style="margin-top:6px">${ic('check')}${fmtDate(mine.at)}에 제출함${p.extra.mode === 'multi' ? ` (${mine.rows.length}줄)` : ''}</div>` : ''}
+        <div class="meta">${ready ? `<span class="pill">${sheet ? '구글 시트' : '사이트 입력'}</span> ` : ''}${due ? due + ' · ' : ''}${ready ? `<span class="num">${cnt}명 ${sheet ? '완료' : '제출'}</span> · ` : ''}${esc(p.authorName)} · ${fmtDate(p.createdAt)}</div>
+        ${mine ? `<div class="done" style="margin-top:6px">${ic('check')}${fmtDate(mine.at)}에 ${sheet ? '입력 완료' : '제출함'}${!sheet && p.extra.mode === 'multi' ? ` (${mine.rows.length}줄)` : ''}</div>` : ''}
       </div>
       <div class="btns">${ownBtns(p)}${btns}</div>
     </div>
@@ -946,19 +1040,32 @@ function postForm(board, p) {
       <div class="fb" id="fieldsBox"></div>
       <button type="button" class="btn sm line" data-act="addField">${ic('plus')}항목 추가</button></div>
     <label class="f"><span>참고 자료 주소<small>선택</small></span><input class="in" name="url" type="url" value="${v(p?.url)}" placeholder="https://"></label>`;
-  else if (board === 'tally') fields = `
+  else if (board === 'tally') {
+    const source = e.source === 'sheet' ? 'sheet' : 'site';
+    fields = `
     <label class="f"><span>제목</span><input class="in" name="title" required maxlength="80" value="${v(p?.title)}" placeholder="2학기 현장체험학습 희망지 조사"></label>
     <label class="f"><span>안내</span><textarea class="in" name="body" maxlength="4000" placeholder="무엇을 왜 모으는지, 어떻게 입력하면 되는지 적어 주세요">${v(p?.body)}</textarea></label>
-    <div class="f" style="margin-bottom:16px"><span class="flabel">입력받을 항목</span>
-      <div class="fb" id="fieldsBox"></div>
-      <div class="preset"><button type="button" class="btn sm line" data-act="addField">${ic('plus')}항목 추가</button>
-        <button type="button" class="btn sm line" data-act="addClassField">${ic('plus')}학년반 항목 넣기</button></div></div>
-    <div class="f" style="margin-bottom:16px"><span class="flabel">입력 방식</span>
-      <div class="opts">
-        <label><input type="radio" name="mode" value="once" ${e.mode !== 'multi' ? 'checked' : ''}>한 사람당 한 번 입력 <span class="qhint">반별 인원, 참석 여부처럼</span></label>
-        <label><input type="radio" name="mode" value="multi" ${e.mode === 'multi' ? 'checked' : ''}>한 사람이 여러 줄 입력 <span class="qhint">학생별·행사별 명단처럼</span></label>
-      </div></div>
+    <fieldset class="f"><legend>입력받는 곳</legend><div class="opts">
+      <label><input type="radio" name="source" value="site" data-act="srcTally" ${source === 'site' ? 'checked' : ''}><span>사이트에서 바로 입력<span class="qhint" style="display:block;margin:2px 0 0">항목을 만들면 포털에 입력 화면이 생기고, 결과는 표로 받아 복사하거나 엑셀로 정리합니다</span></span></label>
+      <label><input type="radio" name="source" value="sheet" data-act="srcTally" ${source === 'sheet' ? 'checked' : ''}><span>구글 시트에서 입력<span class="qhint" style="display:block;margin:2px 0 0">만들어 둔 시트로 보내 입력받고, 포털에서는 누가 입력을 마쳤는지만 확인합니다</span></span></label>
+    </div></fieldset>
+    <div id="srcSite" ${source === 'site' ? '' : 'hidden'}>
+      <div class="f" style="margin-bottom:16px"><span class="flabel">입력받을 항목</span>
+        <div class="fb" id="fieldsBox"></div>
+        <div class="preset"><button type="button" class="btn sm line" data-act="addField">${ic('plus')}항목 추가</button>
+          <button type="button" class="btn sm line" data-act="addClassField">${ic('plus')}학년반 항목 넣기</button></div></div>
+      <div class="f" style="margin-bottom:16px"><span class="flabel">입력 방식</span>
+        <div class="opts">
+          <label><input type="radio" name="mode" value="once" ${e.mode !== 'multi' ? 'checked' : ''}>한 사람당 한 번 입력 <span class="qhint">반별 인원, 참석 여부처럼</span></label>
+          <label><input type="radio" name="mode" value="multi" ${e.mode === 'multi' ? 'checked' : ''}>한 사람이 여러 줄 입력 <span class="qhint">학생별·행사별 명단처럼</span></label>
+        </div></div>
+    </div>
+    <div id="srcSheet" ${source === 'sheet' ? '' : 'hidden'}>
+      <label class="f"><span>구글 시트 주소</span><input class="in" name="sheetUrl" type="url" value="${source === 'sheet' ? v(p?.url) : ''}" placeholder="https://docs.google.com/spreadsheets/d/…"></label>
+      <p class="hint" style="margin-top:-6px">시트의 <b>공유</b>를 ‘링크가 있는 모든 사용자 · 편집자’(또는 학교 계정 사용자 편집자)로 열어 두어야 선생님들이 입력할 수 있습니다. 시트 주소는 이 글을 보는 모든 선생님에게 보입니다.</p>
+    </div>
     <label class="f" style="max-width:240px"><span>입력 기한<small>선택</small></span><input class="in" name="due" type="date" value="${v(e.due)}"></label>`;
+  }
   else if (board === 'learn') {
     const kind = e.kind || 'webapp';
     fields = `
@@ -1054,7 +1161,8 @@ async function submitPost(form, board, p) {
     } else if (!url) return formMsg('웹앱 주소를 입력해 주세요.');
   }
   if (board === 'admin') { extra.tag = fd.tag; extra.icon = fd.icon; }
-  if (board === 'apply' || board === 'tally') {
+  const tallySheet = board === 'tally' && fd.source === 'sheet';
+  if (board === 'apply' || (board === 'tally' && !tallySheet)) {
     syncFields(form);
     const fields = form._fields.map(f => ({ ...f, label: f.label.trim(), options: (f.type === 'one' || f.type === 'many') ? f.options.map(o => o.trim()).filter(Boolean) : [] }));
     const noLabel = fields.findIndex(f => !f.label);
@@ -1065,7 +1173,14 @@ async function submitPost(form, board, p) {
     extra.fields = fields;
   }
   if (board === 'apply') { extra.deadline = fd.deadline || ''; extra.capacity = Math.max(0, parseInt(fd.capacity || '0', 10) || 0); }
-  if (board === 'tally') { extra.due = fd.due || ''; extra.mode = fd.mode === 'multi' ? 'multi' : 'once'; url = ''; }
+  if (board === 'tally') {
+    extra.due = fd.due || '';
+    if (tallySheet) {
+      url = (fd.sheetUrl || '').trim();
+      if (!/^https:\/\/docs\.google\.com\/spreadsheets\/d\//.test(url)) return formMsg('입력받을 구글 시트 주소를 넣어 주세요. (https://docs.google.com/spreadsheets/d/… 형태)');
+      Object.assign(extra, { source: 'sheet', fields: [] });
+    } else { Object.assign(extra, { source: 'site', mode: fd.mode === 'multi' ? 'multi' : 'once' }); url = ''; }
+  }
   if (board === 'link') { if (!url) return formMsg('주소를 입력해 주세요.'); extra.group = (fd.group || '').trim() || '기타'; }
   if (board === 'learn') {
     Object.assign(extra, { kind: fd.kind, grade: fd.grade, subject: fd.subject });
@@ -1119,7 +1234,7 @@ function tvHead(p, extraBtns) {
   return `<button class="txt tv-back" data-act="tvBack">← 집계 목록</button>
     <div class="tv-head">
       <div><h1>${esc(p.title)}</h1>
-        <div class="meta">${p.extra.due ? `<span class="due ${d !== null && d >= 0 && d <= 3 ? 'soon' : ''}">${ic('clock')}${fmtDate(p.extra.due)}까지${d !== null && d >= 0 ? ` (D-${d})` : ' (끝남)'}</span> · ` : ''}${esc(p.authorName)}${state.tv.kind === 'results' && state.tv.data ? ` · ${state.tv.data.list.length}명 제출` : ''}</div></div>
+        <div class="meta">${p.extra.due ? `<span class="due ${d !== null && d >= 0 && d <= 3 ? 'soon' : ''}">${ic('clock')}${fmtDate(p.extra.due)}까지${d !== null && d >= 0 ? ` (D-${d})` : ' (끝남)'}</span> · ` : ''}${esc(p.authorName)}${state.tv.kind === 'results' && state.tv.data ? ` · ${state.tv.data.list.length}명 ${state.tv.data.source === 'sheet' ? '입력 완료' : '제출'}` : ''}</div></div>
       <div class="btns">${extraBtns || ''}</div>
     </div>
     ${p.body ? `<p class="tv-body">${esc(p.body)}</p>` : ''}`;
@@ -1247,6 +1362,7 @@ function renderResults(p, box) {
     <button class="btn sm line" data-act="resCsv">${ic('file')}엑셀(CSV) 내려받기</button>` : '';
   if (tv.error) { box.innerHTML = tvHead(p) + `<div class="msg err">${esc(tv.error)}</div>`; return; }
   if (!tv.data) { box.innerHTML = tvHead(p) + '<p class="meta">결과를 불러오는 중…</p>'; return; }
+  if (tv.data.source === 'sheet') return renderSheetStatus(p, box);
   const { fields, list, missing } = tv.data;
   const rows = resultRows(tv.data);
   const multi = tv.data.mode === 'multi';
@@ -1275,6 +1391,19 @@ function renderResults(p, box) {
     ${sums ? `<div class="sumbox">${sums}</div>` : ''}
     ${table}
     ${missing.length ? `<details class="miss"><summary>아직 제출하지 않은 선생님 ${missing.length}명</summary><div class="names">${missing.map(m => `<span>${esc(m.name)}${m.dept ? ` · ${esc(m.dept)}` : ''}</span>`).join('')}</div></details>` : (list.length ? '<p class="done" style="margin-top:16px">' + ic('check') + '모든 선생님이 제출했습니다.</p>' : '')}`;
+}
+// 구글 시트 방식: 내용은 시트에서 보고, 여기서는 누가 '입력 완료'를 눌렀는지만 봅니다
+function renderSheetStatus(p, box) {
+  const { list, missing } = state.tv.data;
+  const btns = `<a class="btn sm" href="${esc(safeUrl(p.url))}" target="_blank" rel="noopener">${ic('out')}구글 시트 열기</a><button class="btn sm line" data-act="resReload">새로고침</button>`;
+  const done = list.slice().sort((a, b) => String(a.at).localeCompare(String(b.at)));
+  box.innerHTML = tvHead(p, btns) + `
+    <div class="sumbox"><div class="sum"><b>입력 현황</b><div class="r"><span>입력 완료</span><span>${done.length}명</span></div><div class="r"><span>아직</span><span>${missing.length}명</span></div></div></div>
+    <p class="hint" style="margin:0 0 14px">입력 내용은 구글 시트에서 확인하세요. 여기에는 선생님들이 포털에서 ‘입력 완료’를 누른 기록만 모입니다.</p>
+    ${done.length ? `<div class="card tbl-wrap"><table class="tbl"><thead><tr><th>번호</th><th>이름</th><th>소속</th><th>완료 시각</th></tr></thead><tbody>
+      ${done.map((r, i) => `<tr><td class="num">${i + 1}</td><td><b style="font-weight:600">${esc(r.name)}</b></td><td>${esc(r.dept)}</td><td class="meta">${fmtDate(r.at)} ${new Date(r.at).toTimeString().slice(0, 5)}</td></tr>`).join('')}
+    </tbody></table></div>` : '<div class="empty"><b>아직 입력 완료를 누른 선생님이 없습니다</b>선생님들이 시트에 입력한 뒤 포털에서 ‘입력 완료’를 누르면 여기에 모입니다.</div>'}
+    ${missing.length ? `<details class="miss" open><summary>아직 입력 완료를 누르지 않은 선생님 ${missing.length}명</summary><div class="names">${missing.map(m => `<span>${esc(m.name)}${m.dept ? ` · ${esc(m.dept)}` : ''}</span>`).join('')}</div></details>` : (done.length ? '<p class="done" style="margin-top:16px">' + ic('check') + '모든 선생님이 입력을 마쳤습니다.</p>' : '')}`;
 }
 function resultTable() {
   const { fields } = state.tv.data;
@@ -1378,6 +1507,43 @@ document.addEventListener('click', async (ev) => {
         const inp = t.parentElement.querySelector('input'); const show = inp.type === 'password';
         inp.type = show ? 'text' : 'password'; t.textContent = show ? '숨기기' : '보기'; inp.focus(); break;
       }
+      case 'roomPick': {
+        state.room.id = id; state.room.day = null; renderRoom(document.getElementById('list')); break;
+      }
+      case 'roomMonth': {
+        const R = state.room, step = +t.dataset.step;
+        if (step === 0) { R.month = todayStr().slice(0, 7); R.day = todayStr(); }
+        else { const [y, m] = R.month.split('-').map(Number); const d = new Date(y, m - 1 + step, 1); R.month = ymd(d).slice(0, 7); R.day = null; }
+        await loadRoomMonth(); renderRoom(document.getElementById('list')); break;
+      }
+      case 'roomDay': {
+        const R = state.room, ds = t.dataset.date;
+        if (ds.slice(0, 7) !== R.month) { R.month = ds.slice(0, 7); await loadRoomMonth(); }
+        R.day = ds; renderRoom(document.getElementById('list'));
+        if (window.innerWidth <= 1100) document.getElementById('dayPanel')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        break;
+      }
+      case 'bookCancel': {
+        const data = monthData(), b = data && data.bookings.find(x => x.id === id);
+        if (!b || !confirm(`${b.mine ? '' : b.name + ' 선생님의 '}예약을 취소할까요?\n${b.purpose}`)) return;
+        await api('cancelBooking', { id });
+        data.bookings = data.bookings.filter(x => x.id !== id);
+        renderRoom(document.getElementById('list')); toast('예약을 취소했습니다.'); break;
+      }
+      case 'roomEdit': roomForm(state.rooms.find(r => r.id === id)); break;
+      case 'roomDel': {
+        const r = state.rooms.find(x => x.id === id);
+        if (!r || !confirm(`‘${r.name}’을(를) 지울까요?\n이 실의 예약도 모두 지워집니다. 잠시 쉬게 하려면 ‘고치기’에서 ‘잠시 예약 받지 않기’를 쓰세요.`)) return;
+        await api('roomDelete', { id });
+        state.rooms = state.rooms.filter(x => x.id !== id); state.room.cache = {};
+        renderPortal(); toast('지웠습니다.'); break;
+      }
+      case 'slotPreset': {
+        const f = document.getElementById('roomForm');
+        f._slots = SLOT_PRESETS[t.dataset.p].map(([label, time]) => ({ label, time })); renderSlotRows(f); break;
+      }
+      case 'slotAdd': { const f = document.getElementById('roomForm'); syncSlotRows(f); f._slots.push({ label: '', time: '' }); renderSlotRows(f); document.querySelector('#slotRows .slotrow:last-child input')?.focus(); break; }
+      case 'slotDel': { const f = document.getElementById('roomForm'); syncSlotRows(f); f._slots.splice(+t.dataset.i, 1); renderSlotRows(f); break; }
       case 'planTab': await loadPlan(t.dataset.gid); break;
       case 'planReload': await loadPlan(state.plan.gid, true); toast('시트에서 새로 불러왔습니다.'); break;
       case 'planToday': if (!scrollToToday()) toast('이 탭에서 오늘 날짜를 찾지 못했습니다.'); break;
@@ -1394,9 +1560,10 @@ document.addEventListener('click', async (ev) => {
         t.insertAdjacentHTML('afterend', `<div class="pop" role="menu"><button role="menuitem" data-act="pw">${ic('key')}비밀번호 바꾸기</button><button role="menuitem" data-act="logout">${ic('exit')}로그아웃</button></div>`);
         break;
       }
-      case 'nav': if (tvDirty() && !confirm('제출하지 않은 내용이 있습니다. 그래도 이동할까요?')) return; closeTally(); state.view = t.dataset.view; store('hm_view', state.view); state.q = ''; if (state.view === 'users') state.users = null; renderPortal(); window.scrollTo(0, 0); break;
+      case 'nav': if (t.dataset.view === 'room') { state.room.cache = {}; state.room.month = todayStr().slice(0, 7); }
+        if (tvDirty() && !confirm('제출하지 않은 내용이 있습니다. 그래도 이동할까요?')) return; closeTally(); state.view = t.dataset.view; store('hm_view', state.view); state.q = ''; if (state.view === 'users') state.users = null; renderPortal(); window.scrollTo(0, 0); break;
       case 'filter': state.f[t.dataset.g] = t.dataset.v; renderFilters(); renderList(); break;
-      case 'new': postForm(state.view, null); break;
+      case 'new': if (state.view === 'roomcfg') roomForm(null); else postForm(state.view, null); break;
       case 'edit': if (post) postForm(post.board, post); break;
       case 'close': closeDialog(); break;
       case 'icon': {
@@ -1423,6 +1590,19 @@ document.addEventListener('click', async (ev) => {
         break;
       }
       case 'tallyOpen': if (post) openTally(id, 'entry'); break;
+      case 'sheetDone': {
+        if (!post) break;
+        if (!confirm('구글 시트에 입력을 마쳤나요? ‘입력 완료’로 표시합니다.')) return;
+        const r = await api('tallySubmit', { postId: id, rows: [] });
+        if (!state.myTallies[id]) state.tallyCounts[id] = (state.tallyCounts[id] || 0) + 1;
+        state.myTallies[id] = { rows: [], at: r.at }; renderList(); toast('입력 완료로 표시했습니다.'); break;
+      }
+      case 'sheetUndone': {
+        if (!post || !confirm('입력 완료 표시를 취소할까요?')) return;
+        await api('tallyDelete', { postId: id });
+        delete state.myTallies[id]; state.tallyCounts[id] = Math.max(0, (state.tallyCounts[id] || 1) - 1);
+        renderList(); toast('완료 표시를 취소했습니다.'); break;
+      }
       case 'tallyResults': if (post) openTally(id, 'results'); break;
       case 'tvBack': {
         if (tvDirty() && !confirm('제출하지 않은 내용이 있습니다. 그래도 목록으로 갈까요?')) return;
@@ -1541,6 +1721,10 @@ document.addEventListener('change', (ev) => {
     document.getElementById('urlBox').hidden = t.value !== 'link';
     document.getElementById('fileBox').hidden = t.value !== 'file';
   }
+  if (t.dataset.act === 'srcTally') {
+    document.getElementById('srcSite').hidden = t.value !== 'site';
+    document.getElementById('srcSheet').hidden = t.value !== 'sheet';
+  }
   if (t.dataset.act === 'srcSel') {
     document.getElementById('srcUrl').hidden = t.value !== 'url';
     document.getElementById('srcHtml').hidden = t.value !== 'html';
@@ -1584,6 +1768,8 @@ const Mock = (() => {
         { id: 'place', label: '희망 장소', type: 'one', options: ['인천어린이과학관', '국립생태원', '송도 센트럴파크'], required: true },
         { id: 'n', label: '학생 수', type: 'number', options: [], required: true },
         { id: 'note', label: '참고 사항', type: 'long', options: [], required: false }] }, 'u1', 2),
+    mk('tally', '학년별 학예회 프로그램 조사', '학년 협의 후 아래 시트의 우리 학년 칸에 프로그램 이름과 준비물을 적어 주세요. 다 적으면 포털에서 ‘입력 완료’를 눌러 주세요.', 'https://docs.google.com/spreadsheets/d/EXAMPLE_SHEET_ID3/edit',
+      { due: day(5), source: 'sheet', fields: [] }, 'u1', 0),
     mk('tally', '겨울방학 방과후 강좌 수요 조사', '반 학생 중 희망자를 강좌별로 한 줄씩 입력해 주세요.', '',
       { due: day(9), mode: 'multi', fields: [
         { id: 'course', label: '희망 강좌', type: 'one', options: ['코딩', '바이올린', '로봇과학', '미술'], required: true },
@@ -1612,7 +1798,8 @@ const Mock = (() => {
     { postId: posts[6].id, userId: 'x1', userName: '최선생', rows: [{ cls: '1-1', place: '인천어린이과학관', n: '24', note: '' }], at: ago(1) },
     { postId: posts[6].id, userId: 'x2', userName: '정선생', rows: [{ cls: '1-2', place: '국립생태원', n: '23', note: '휠체어 이용 학생 1명' }], at: ago(1) },
     { postId: posts[6].id, userId: 'x3', userName: '강선생', rows: [{ cls: '1-3', place: '인천어린이과학관', n: '25', note: '' }], at: ago(0) },
-    { postId: posts[7].id, userId: 'x5', userName: '윤선생', rows: [{ course: '코딩', n: '6', time: ['오전'] }, { course: '미술', n: '4', time: ['오후'] }], at: ago(2) },
+    { postId: posts[8].id, userId: 'x5', userName: '윤선생', rows: [{ course: '코딩', n: '6', time: ['오전'] }, { course: '미술', n: '4', time: ['오후'] }], at: ago(2) },
+    { postId: posts[7].id, userId: 'x6', userName: '장선생', rows: [], at: ago(0) },
   ];
   const canManage = (me, p) => me.role === 'admin' || p.authorId === me.id;
   const answers = (memo) => { const s = String(memo || ''); if (s[0] === '{') { try { return JSON.parse(s).a || {}; } catch (e) { } } return s ? { memo: s } : {}; };
@@ -1620,6 +1807,26 @@ const Mock = (() => {
   const sessions = {};
   // 체험용 업무계획 시트(이번 주가 들어가도록 오늘 날짜로 만듭니다)
   let planOn = true;
+  // 체험용 실과 예약
+  const P8 = [['1교시', '09:00~09:40'], ['2교시', '09:50~10:30'], ['3교시', '10:40~11:20'], ['4교시', '11:30~12:10'], ['점심시간', '12:10~13:00'], ['5교시', '13:00~13:40'], ['6교시', '13:50~14:30'], ['방과 후', '14:40~16:30']].map(([label, time], i) => ({ id: 'p' + (i + 1), label, time }));
+  const rooms = [
+    { id: 'r1', name: '시청각실', place: '본관 3층', desc: '빔프로젝터·음향, 80석', color: '#3b7cf0', slots: P8, order: 0, opts: { weekend: false, maxDays: 60, off: false } },
+    { id: 'r2', name: '과학실', place: '별관 2층', desc: '실험 도구·흄후드', color: '#12a172', slots: P8.filter(x => x.id !== 'p5'), order: 1, opts: { weekend: false, maxDays: 30, off: false } },
+    { id: 'r3', name: '컴퓨터실', place: '본관 2층', desc: 'PC 30대', color: '#8b5cf6', slots: P8.filter(x => x.id !== 'p5'), order: 2, opts: { weekend: false, maxDays: 30, off: false } },
+    { id: 'r4', name: '학년 협의실', place: '본관 1층', desc: '10석, 모니터', color: '#d8921a', slots: [8, 9, 10, 11, 12, 13, 14, 15, 16].map((h, i) => ({ id: 'h' + h, label: `${h}시`, time: `${String(h).padStart(2, '0')}:00~${String(h + 1).padStart(2, '0')}:00` })), order: 3, opts: { weekend: true, maxDays: 60, off: false } },
+  ];
+  const ymdL = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  const dayN = (n) => { const d = new Date(); d.setDate(d.getDate() + n); return ymdL(d); };
+  const bookings = [];
+  const bk = (room, n, slot, name, dept, purpose) => bookings.push({ id: nid(), roomId: room, date: dayN(n), slot, userId: 'x' + name, userName: name, dept, purpose });
+  bk('r1', 0, 'p3', '최선생', '1-1', '1학년 인형극 관람'); bk('r1', 0, 'p4', '최선생', '1-1', '1학년 인형극 관람'); bk('r1', 0, 'p6', '정선생', '교무부', '교직원 연수 준비');
+  bk('r1', 1, 'p2', '강선생', '4-3', '4학년 영상 수업'); bk('r1', 3, 'p1', '윤선생', '6-2', '6학년 졸업 사진 설명회'); bk('r1', 3, 'p2', '윤선생', '6-2', '6학년 졸업 사진 설명회');
+  bk('r1', -2, 'p5', '조선생', '2-5', '2학년 학부모 설명회'); bk('r1', 5, 'p8', '한선생', '교무부', '방과후 발표회 리허설'); bk('r1', 7, 'p3', '임선생', '5-4', '5학년 진로 강연');
+  bk('r2', 0, 'p2', '장선생', '5-1', '5학년 용해 실험'); bk('r2', 2, 'p3', '장선생', '5-1', '5학년 용해 실험'); bk('r2', 4, 'p5', '오선생', '6-7', '6학년 전기 회로');
+  bk('r3', 1, 'p4', '서선생', '3-8', '3학년 타자 연습'); bk('r4', 0, 'h15', '신선생', '3학년', '3학년 학년 협의');
+  bookings.push({ id: nid(), roomId: 'r1', date: dayN(2), slot: 'p3', userId: 'u2', userName: '김하늘', dept: '3학년 2반', purpose: '3-2 과학 영상 시청' });
+  const todayL = () => ymdL(new Date());
+  const bOut = (b, me) => ({ id: b.id, date: b.date, slot: b.slot, name: b.userName, dept: b.dept, purpose: b.purpose, mine: b.userId === me.id, canCancel: (b.userId === me.id || me.role === 'admin') && b.date >= todayL() });
   function demoPlan() {
     const today = new Date(); const mon = new Date(today); mon.setDate(today.getDate() - ((today.getDay() + 6) % 7));
     const days = [0, 1, 2, 3, 4].map(i => { const d = new Date(mon); d.setDate(mon.getDate() + i); return d; });
@@ -1691,14 +1898,20 @@ document.getElementById('a').addEventListener('keydown',e=>{if(e.key==='Enter'){
       const counts = {}, full = {}, mine = {};
       applies.filter(a => a.userId === me.id).forEach(a => { mine[a.postId] = answers(a.memo); });
       for (const pid in all) { const p = posts.find(x => x.id === pid); if (!p) continue; if (canManage(me, p)) counts[pid] = all[pid]; if (p.extra.capacity && all[pid] >= p.extra.capacity) full[pid] = true; }
-      return { me: pub(me), posts: posts.slice().sort((a, b) => b.createdAt.localeCompare(a.createdAt)).map(p => { const c = JSON.parse(JSON.stringify(p)); if (c.board === 'tally' && !canManage(me, p)) c.url = ''; return c; }),
+      return { me: pub(me), posts: posts.slice().sort((a, b) => b.createdAt.localeCompare(a.createdAt)).map(p => { const c = JSON.parse(JSON.stringify(p)); if (c.board === 'tally' && c.extra.source !== 'sheet' && !canManage(me, p)) c.url = ''; return c; }),
         applyCounts: counts, applyFull: full, myApplies: mine, pendingCount: users.filter(u => u.status === 'pending').length,
         tallyCounts: tallyData.reduce((m, t) => (m[t.postId] = (m[t.postId] || 0) + 1, m), {}),
-        myTallies: tallyData.filter(t => t.userId === me.id).reduce((m, t) => (m[t.postId] = { rows: JSON.parse(JSON.stringify(t.rows)), at: t.at }, m), {}) };
+        myTallies: tallyData.filter(t => t.userId === me.id).reduce((m, t) => (m[t.postId] = { rows: JSON.parse(JSON.stringify(t.rows)), at: t.at }, m), {}),
+        rooms: JSON.parse(JSON.stringify(rooms)) };
     },
     tallySubmit(r, me) {
       const p = posts.find(x => x.id === r.postId);
       if (p.extra.due && p.extra.due < day(0)) return fail('CLOSED', '입력 기한이 지났습니다.');
+      if (p.extra.source === 'sheet') {
+        const at = new Date().toISOString(), mine = tallyData.find(t => t.postId === p.id && t.userId === me.id);
+        if (mine) mine.at = at; else tallyData.push({ postId: p.id, userId: me.id, userName: me.name, rows: [], at });
+        return { rows: [], at, updated: !!mine };
+      }
       let rows = Array.isArray(r.rows) ? r.rows : []; if (p.extra.mode !== 'multi') rows = rows.slice(0, 1);
       for (let i = 0; i < rows.length; i++) for (const f of p.extra.fields) {
         const v = rows[i][f.id]; if (f.required && (Array.isArray(v) ? !v.length : !v)) return fail('INVALID', `${p.extra.mode === 'multi' ? (i + 1) + '번째 줄: ' : ''}‘${f.label}’ 항목을 입력해 주세요.`);
@@ -1714,7 +1927,7 @@ document.getElementById('a').addEventListener('keydown',e=>{if(e.key==='Enter'){
       if (!canManage(me, p)) return fail('FORBIDDEN', '작성자와 관리자만 결과를 볼 수 있습니다.');
       const list = tallyData.filter(t => t.postId === p.id).map(t => ({ name: t.userName, dept: (users.find(u => u.id === t.userId) || {}).dept || '', rows: t.rows, at: t.at }));
       const done = new Set(tallyData.filter(t => t.postId === p.id).map(t => t.userId));
-      return { fields: p.extra.fields, mode: p.extra.mode, list: JSON.parse(JSON.stringify(list)), missing: users.filter(u => u.status === 'approved' && !done.has(u.id)).map(u => ({ name: u.name, dept: u.dept })) };
+      return { fields: p.extra.fields || [], mode: p.extra.mode, source: p.extra.source || 'site', list: JSON.parse(JSON.stringify(list)), missing: users.filter(u => u.status === 'approved' && !done.has(u.id)).map(u => ({ name: u.name, dept: u.dept })) };
     },
     savePost(r, me) {
       const p = r.post; const now = new Date().toISOString();
@@ -1743,6 +1956,40 @@ document.getElementById('a').addEventListener('keydown',e=>{if(e.key==='Enter'){
       const p = posts.find(x => x.id === r.postId);
       if (!canManage(me, p)) return fail('FORBIDDEN', '작성자와 관리자만 신청 현황을 볼 수 있습니다.');
       return { fields: fieldsOf(p.extra), list: applies.filter(a => a.postId === r.postId).map(a => ({ name: a.userName, dept: (users.find(u => u.id === a.userId) || {}).dept || '', answers: answers(a.memo), createdAt: a.createdAt })) };
+    },
+    roomSave(r, me) {
+      if (me.role !== 'admin') return fail('FORBIDDEN', '관리자만 할 수 있습니다.');
+      const x = r.room; if (!String(x.name || '').trim()) return fail('INVALID', '실 이름을 입력해 주세요.');
+      const slots = (x.slots || []).filter(sl => sl.label).map(sl => ({ id: sl.id || nid(), label: sl.label, time: sl.time || '' }));
+      if (!slots.length) return fail('INVALID', '예약 시간을 하나 이상 만들어 주세요.');
+      const data = { name: x.name.trim(), place: x.place || '', desc: x.desc || '', color: x.color || '#3b7cf0', slots, order: +x.order || 0,
+        opts: { weekend: !!x.opts.weekend, off: !!x.opts.off, maxDays: Math.max(1, Math.min(365, parseInt(x.opts.maxDays, 10) || 60)) } };
+      let cur = rooms.find(q => q.id === x.id);
+      if (cur) Object.assign(cur, data); else { cur = { id: nid(), ...data }; rooms.push(cur); }
+      return JSON.parse(JSON.stringify(cur));
+    },
+    roomDelete(r, me) {
+      if (me.role !== 'admin') return fail('FORBIDDEN', '관리자만 할 수 있습니다.');
+      rooms.splice(rooms.findIndex(q => q.id === r.id), 1);
+      for (let i = bookings.length - 1; i >= 0; i--) if (bookings[i].roomId === r.id) bookings.splice(i, 1);
+      return true;
+    },
+    roomMonth(r, me) { return { month: r.month, today: todayL(), bookings: bookings.filter(b => b.roomId === r.roomId && b.date.startsWith(r.month)).map(b => bOut(b, me)) }; },
+    book(r, me) {
+      const room = rooms.find(q => q.id === r.roomId);
+      if (!String(r.purpose || '').trim()) return fail('INVALID', '사용 목적을 적어 주세요.');
+      if (r.date < todayL()) return fail('INVALID', '지난 날짜는 예약할 수 없습니다.');
+      const dow = new Date(r.date + 'T00:00:00').getDay();
+      if (!room.opts.weekend && (dow === 0 || dow === 6)) return fail('INVALID', '주말에는 예약할 수 없습니다.');
+      const taken = bookings.filter(b => b.roomId === room.id && b.date === r.date && r.slots.includes(b.slot));
+      if (taken.length) return fail('TAKEN', '이미 예약된 시간이 있습니다: ' + taken.map(b => (room.slots.find(x => x.id === b.slot) || {}).label + '(' + b.userName + ')').join(', ') + '. 화면을 새로고침해 주세요.');
+      const out = r.slots.map(sl => { const b = { id: nid(), roomId: room.id, date: r.date, slot: sl, userId: me.id, userName: me.name, dept: me.dept, purpose: r.purpose.trim() }; bookings.push(b); return bOut(b, me); });
+      return { bookings: out };
+    },
+    cancelBooking(r, me) {
+      const i = bookings.findIndex(b => b.id === r.id); if (i < 0) return fail('NOT_FOUND', '이미 취소된 예약입니다.');
+      if (bookings[i].userId !== me.id && me.role !== 'admin') return fail('FORBIDDEN', '내 예약만 취소할 수 있습니다.');
+      bookings.splice(i, 1); return true;
     },
     planSet(r, me) {
       if (me.role !== 'admin') return fail('FORBIDDEN', '관리자만 할 수 있습니다.');
@@ -1797,6 +2044,215 @@ document.getElementById('a').addEventListener('keydown',e=>{if(e.key==='Enter'){
     },
   };
 })();
+
+/* ───────── 실 예약 ─────────
+   실 카드 → 그 실의 월 달력(예약자 표시) → 날짜를 누르면 오른쪽 패널에서 시간 고르고 예약 */
+const pad2 = (n) => String(n).padStart(2, '0');
+const ymd = (d) => `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
+const todayStr = () => ymd(new Date());
+const WD = ['일', '월', '화', '수', '목', '금', '토'];
+const ROOM_COLORS = ['#3b7cf0', '#12a172', '#e5484d', '#d8921a', '#8b5cf6', '#0e9fb5', '#db2777', '#64748b'];
+const SLOT_PRESETS = {
+  period: [['1교시', '09:00~09:40'], ['2교시', '09:50~10:30'], ['3교시', '10:40~11:20'], ['4교시', '11:30~12:10'], ['점심시간', '12:10~13:00'], ['5교시', '13:00~13:40'], ['6교시', '13:50~14:30'], ['방과 후', '14:40~16:30']],
+  hour: [8, 9, 10, 11, 12, 13, 14, 15, 16].map(h => [`${h}시`, `${pad2(h)}:00~${pad2(h + 1)}:00`]),
+};
+function activeRooms() { return state.rooms.filter(r => !r.opts.off); }
+function curRoom() { return state.rooms.find(r => r.id === state.room.id); }
+function monthKey() { return `${state.room.id}|${state.room.month}`; }
+function monthData() { return state.room.cache[monthKey()]; }
+
+async function loadRoomMonth(force) {
+  const R = state.room, key = monthKey();
+  if (!force && R.cache[key]) return;
+  R.loading = true; R.error = null;
+  try { R.cache[key] = await api('roomMonth', { roomId: R.id, month: R.month }); }
+  catch (e) { R.error = e.message; }
+  R.loading = false;
+}
+
+function renderRoom(el) {
+  const R = state.room, rooms = activeRooms(), isAdmin = state.me.role === 'admin';
+  if (!rooms.length) {
+    el.innerHTML = `<div class="empty"><b>예약할 수 있는 실이 아직 없습니다</b>${isAdmin ? '관리 메뉴의 ‘실 관리’에서 시청각실, 과학실처럼 예약 받을 실을 등록해 주세요.<br><button class="btn line" data-act="nav" data-view="roomcfg">실 관리로 가기</button>' : '관리자가 실을 등록하면 여기에서 예약할 수 있습니다.'}</div>`;
+    return;
+  }
+  if (!rooms.some(r => r.id === R.id)) { R.id = rooms[0].id; R.day = null; }
+  if (!R.month) R.month = todayStr().slice(0, 7);
+  const room = curRoom();
+  const data = monthData();
+  if (!data && !R.error) {
+    el.innerHTML = roomCards(rooms) + '<p class="meta">예약 현황을 불러오는 중…</p>';
+    loadRoomMonth().then(() => { if (state.view === 'room') renderRoom(document.getElementById('list')); });
+    return;
+  }
+  el.innerHTML = roomCards(rooms) + `<div class="rv" style="--rc:${room.color}">
+      <section class="card cal">${calendarHtml(room, data)}</section>
+      <aside class="card dp" id="dayPanel">${dayPanelHtml(room, data)}</aside>
+    </div>`;
+  bindBookForm();   // 예약 폼 연결은 여기 한 곳에서만(두 번 연결되면 예약이 두 번 들어감)
+}
+function roomCards(rooms) {
+  const today = todayStr(), data = monthData();
+  return `<div class="rooms" role="toolbar" aria-label="실 고르기">${rooms.map(r => {
+    const n = r.id === state.room.id && data ? data.bookings.filter(b => b.date === today).length : null;
+    return `<button class="rcard" style="--rc:${r.color}" data-act="roomPick" data-id="${r.id}" aria-pressed="${r.id === state.room.id}">
+      <span class="ri">${ic('door')}</span>
+      <span style="min-width:0"><b>${esc(r.name)}</b><small>${esc(r.place || '위치 미입력')}${r.desc ? ` · ${esc(r.desc)}` : ''}</small>
+      ${n !== null ? `<span class="rtoday">오늘 예약 ${n}건 / ${r.slots.length}</span>` : ''}</span></button>`;
+  }).join('')}</div>`;
+}
+function calendarHtml(room, data) {
+  const R = state.room, [y, m] = R.month.split('-').map(Number);
+  const first = new Date(y, m - 1, 1), start = new Date(first); start.setDate(1 - first.getDay());
+  const last = new Date(y, m, 0);
+  const weeks = Math.ceil((first.getDay() + last.getDate()) / 7);
+  const today = todayStr();
+  const byDate = {};
+  (data ? data.bookings : []).forEach(b => (byDate[b.date] = byDate[b.date] || []).push(b));
+  const order = Object.fromEntries(room.slots.map((sl, i) => [sl.id, i]));
+  const label = Object.fromEntries(room.slots.map(sl => [sl.id, sl.label]));
+  let cells = WD.map((w, i) => `<div class="wd ${i === 0 ? 'sun' : i === 6 ? 'sat' : ''}">${w}</div>`).join('');
+  for (let i = 0; i < weeks * 7; i++) {
+    const d = new Date(start); d.setDate(start.getDate() + i);
+    const ds = ymd(d), out = d.getMonth() !== m - 1, dow = d.getDay();
+    const list = (byDate[ds] || []).sort((a, b) => (order[a.slot] ?? 99) - (order[b.slot] ?? 99));
+    const past = ds < today, closedDay = !room.opts.weekend && (dow === 0 || dow === 6);
+    const free = !out && !past && !closedDay ? room.slots.length - list.length : 0;
+    const shown = list.slice(0, 3);
+    cells += `<button class="day ${out ? 'out' : ''} ${past ? 'past' : ''} ${ds === today ? 'today' : ''} ${ds === R.day ? 'sel' : ''} ${dow === 0 ? 'sun' : dow === 6 ? 'sat' : ''}" data-act="roomDay" data-date="${ds}" aria-label="${d.getMonth() + 1}월 ${d.getDate()}일 예약 ${list.length}건">
+      <span class="dn"><span>${d.getDate()}</span>${free && list.length ? `<em class="free">${free}칸 남음</em>` : ''}</span>
+      ${shown.map(b => `<span class="bk ${b.mine ? 'mine' : ''}" title="${esc(label[b.slot] || '')} ${esc(b.name)} · ${esc(b.purpose)}">${esc(label[b.slot] || '')} ${esc(b.name)}</span>`).join('')}
+      ${list.length > 3 ? `<span class="bk more">외 ${list.length - 3}건</span>` : ''}
+    </button>`;
+  }
+  return `<div class="cal-head">
+      <button class="icon-btn" data-act="roomMonth" data-step="-1" aria-label="지난달">‹</button>
+      <h2>${y}년 ${m}월</h2>
+      <button class="icon-btn" data-act="roomMonth" data-step="1" aria-label="다음 달">›</button>
+      <button class="btn sm line" data-act="roomMonth" data-step="0">오늘</button>
+      <span class="room-name"><i></i>${esc(room.name)}${R.loading ? ' · 불러오는 중…' : ''}</span>
+    </div>
+    ${R.error ? `<div class="msg err">${esc(R.error)}</div>` : ''}
+    <div class="cal-grid">${cells}</div>
+    <div class="cal-legend"><span><i></i>예약</span><span><i class="m"></i>내 예약</span><span>날짜를 누르면 시간별 예약 현황과 예약 창이 열립니다</span></div>`;
+}
+function dayPanelHtml(room, data) {
+  const R = state.room;
+  if (!R.day) return `<div class="dp-empty">${ic('calendar')}<br>달력에서 날짜를 누르면<br>시간별 예약 현황이 여기에 나옵니다.</div>`;
+  const d = new Date(R.day + 'T00:00:00'), dow = d.getDay(), today = todayStr();
+  const list = (data ? data.bookings : []).filter(b => b.date === R.day);
+  const by = Object.fromEntries(list.map(b => [b.slot, b]));
+  const past = R.day < today;
+  const weekendNo = !room.opts.weekend && (dow === 0 || dow === 6);
+  const limit = new Date(); limit.setHours(0, 0, 0, 0); limit.setDate(limit.getDate() + room.opts.maxDays);
+  const tooFar = d > limit;
+  const why = past ? '지난 날짜라 예약할 수 없습니다.' : weekendNo ? '주말에는 예약을 받지 않습니다.' : tooFar ? `${room.opts.maxDays}일 뒤까지만 예약할 수 있습니다.` : '';
+  const slots = room.slots.map(sl => {
+    const b = by[sl.id];
+    const time = `<span class="sl"><b>${esc(sl.label)}</b>${sl.time ? `<small>${esc(sl.time)}</small>` : ''}</span>`;
+    if (b) return `<div class="slot booked ${b.mine ? 'mine' : ''}">${time}<span class="who"><b>${esc(b.name)}</b>${b.dept ? `<span>${esc(b.dept)}</span>` : ''}<p>${esc(b.purpose)}</p></span>
+      ${b.canCancel ? `<button class="txt" data-act="bookCancel" data-id="${b.id}">${b.mine ? '취소' : '관리자 취소'}</button>` : '<span></span>'}</div>`;
+    if (why) return `<div class="slot na">${time}<span>비어 있음</span><span></span></div>`;
+    return `<label class="slot free">${time}<span class="tag2">예약 가능</span><input type="checkbox" name="slot" value="${esc(sl.id)}" aria-label="${esc(sl.label)} 선택"></label>`;
+  }).join('');
+  const freeN = room.slots.filter(sl => !by[sl.id]).length;
+  return `<h3>${d.getMonth() + 1}월 ${d.getDate()}일 (${WD[dow]})</h3>
+    <p class="meta">${esc(room.name)}${room.place ? ` · ${esc(room.place)}` : ''} · 예약 ${list.length}건, 빈 시간 ${freeN}개</p>
+    ${why ? `<div class="msg" style="background:var(--sunken);color:var(--ink-2)">${why}</div>` : ''}
+    <form id="bookForm" novalidate>
+      <div class="slots">${slots}</div>
+      ${!why && freeN ? `<div class="bookform">
+        <label class="f" style="margin-bottom:0"><span>사용 목적</span><input class="in" name="purpose" maxlength="100" placeholder="예) 3-2 과학 실험, 학년 협의회"></label>
+        <button class="btn primary" type="submit" id="bookBtn">시간을 골라 주세요</button>
+      </div>` : ''}
+    </form>`;
+}
+function bindBookForm() {
+  const f = document.getElementById('bookForm'); if (!f) return;
+  const upd = () => {
+    const n = f.querySelectorAll('input[name=slot]:checked').length, b = document.getElementById('bookBtn');
+    if (b) b.textContent = n ? `${n}개 시간 예약하기` : '시간을 골라 주세요';
+  };
+  f.addEventListener('change', upd);
+  f.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const slots = [...f.querySelectorAll('input[name=slot]:checked')].map(x => x.value);
+    const purpose = (f.purpose?.value || '').trim();
+    if (!slots.length) return toast('예약할 시간을 골라 주세요.');
+    if (!purpose) { f.purpose.focus(); return toast('사용 목적을 적어 주세요.'); }
+    const b = document.getElementById('bookBtn'); b.disabled = true; b.textContent = '예약하는 중…';
+    try {
+      const r = await api('book', { roomId: state.room.id, date: state.room.day, slots, purpose });
+      monthData().bookings.push(...r.bookings);
+      renderRoom(document.getElementById('list'));
+      toast(`${r.bookings.length}개 시간을 예약했습니다.`);
+    } catch (err) {
+      toast(err.message); b.disabled = false; upd();
+      if (/이미 예약/.test(err.message)) { await loadRoomMonth(true); renderRoom(document.getElementById('list')); }
+    }
+  });
+}
+
+/* 실 관리(관리자) */
+function renderRoomCfg(el) {
+  const rooms = state.rooms;
+  if (!rooms.length) { el.innerHTML = `<div class="empty"><b>등록된 실이 없습니다</b>시청각실, 과학실, 컴퓨터실처럼 예약 받을 실을 등록해 주세요.<br><button class="btn line" data-act="new">${ic('plus')}실 등록</button></div>`; return; }
+  el.innerHTML = `<div class="rcfg">${rooms.map(r => `<div class="card rrow" style="--rc:${r.color}">
+      <span class="ri">${ic('door')}</span>
+      <div style="min-width:0"><b>${esc(r.name)}</b>${r.opts.off ? '<span class="off">예약 중지</span>' : ''}
+        <div class="meta"><span>${esc(r.place || '위치 미입력')}</span><span>시간 ${r.slots.length}개 (${esc(r.slots.slice(0, 3).map(x => x.label).join(', '))}${r.slots.length > 3 ? ' …' : ''})</span><span>${r.opts.weekend ? '주말 포함' : '평일만'}</span><span>${r.opts.maxDays}일 뒤까지</span></div>
+        ${r.desc ? `<div class="meta" style="margin-top:2px">${esc(r.desc)}</div>` : ''}</div>
+      <div class="own"><button class="txt" data-act="roomEdit" data-id="${r.id}">고치기</button><button class="txt" data-act="roomDel" data-id="${r.id}">지우기</button></div>
+    </div>`).join('')}</div>`;
+}
+function roomForm(room) {
+  const r = room || { name: '', place: '', desc: '', color: ROOM_COLORS[state.rooms.length % ROOM_COLORS.length], slots: SLOT_PRESETS.period.map(([label, time]) => ({ label, time })), opts: { weekend: false, maxDays: 60, off: false } };
+  openDialog(`<form id="roomForm" novalidate>${dlgHead(room ? '실 고치기' : '실 등록')}
+    <div class="dlg-body"><div id="formMsg"></div>
+      <div class="row2"><label class="f"><span>실 이름</span><input class="in" name="name" maxlength="30" value="${esc(r.name)}" placeholder="시청각실"></label>
+        <label class="f"><span>위치<small>선택</small></span><input class="in" name="place" maxlength="40" value="${esc(r.place)}" placeholder="본관 3층"></label></div>
+      <label class="f"><span>안내<small>선택</small></span><input class="in" name="desc" maxlength="200" value="${esc(r.desc)}" placeholder="빔프로젝터, 60석"></label>
+      <fieldset class="f"><legend>색</legend><div class="swatches">${ROOM_COLORS.map(c => `<label style="--sw:${c}"><input type="radio" name="color" value="${c}" ${c === r.color ? 'checked' : ''} aria-label="색 ${c}"></label>`).join('')}</div></fieldset>
+      <div class="f" style="margin-bottom:16px"><span class="flabel">예약 시간<small>한 칸씩 예약됩니다</small></span>
+        <div class="preset" style="margin:0 0 10px"><button type="button" class="btn sm line" data-act="slotPreset" data-p="period">교시 단위로 채우기</button><button type="button" class="btn sm line" data-act="slotPreset" data-p="hour">1시간 단위로 채우기</button></div>
+        <div class="slotrows" id="slotRows"></div>
+        <button type="button" class="txt" data-act="slotAdd">+ 시간 추가</button></div>
+      <div class="row2"><label class="f"><span>며칠 뒤까지 예약</span><input class="in" name="maxDays" type="number" min="1" max="365" value="${r.opts.maxDays}"></label><div></div></div>
+      <label class="check" style="margin-top:0"><input type="checkbox" name="weekend" ${r.opts.weekend ? 'checked' : ''}>주말(토·일)에도 예약 받기</label>
+      <label class="check"><input type="checkbox" name="off" ${r.opts.off ? 'checked' : ''}>잠시 예약 받지 않기 <span class="qhint">실 예약 메뉴에서 숨겨집니다</span></label>
+    </div>
+    <div class="dlg-foot"><button type="button" class="btn line" data-act="close">닫기</button><button class="btn primary" type="submit">${room ? '저장' : '등록'}</button></div></form>`);
+  const form = document.getElementById('roomForm');
+  form._slots = r.slots.map(x => ({ ...x }));
+  renderSlotRows(form);
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault(); syncSlotRows(form);
+    const fd = new FormData(form);
+    const slots = form._slots.map(x => ({ ...x, label: x.label.trim(), time: x.time.trim() })).filter(x => x.label);
+    if (!String(fd.get('name') || '').trim()) return formMsg('실 이름을 입력해 주세요.');
+    if (!slots.length) return formMsg('예약 시간을 하나 이상 만들어 주세요.');
+    const b = form.querySelector('[type=submit]'); b.disabled = true;
+    try {
+      const saved = await api('roomSave', { room: { id: room?.id, name: fd.get('name'), place: fd.get('place'), desc: fd.get('desc'), color: fd.get('color'), slots,
+        order: room ? room.order : state.rooms.length, opts: { weekend: !!fd.get('weekend'), off: !!fd.get('off'), maxDays: fd.get('maxDays') } } });
+      const i = state.rooms.findIndex(x => x.id === saved.id);
+      if (i >= 0) state.rooms[i] = saved; else state.rooms.push(saved);
+      closeDialog(); renderPortal(); toast(room ? '저장했습니다.' : `‘${saved.name}’을(를) 등록했습니다.`);
+    } catch (err) { formMsg(err.message); b.disabled = false; }
+  });
+}
+function renderSlotRows(form) {
+  document.getElementById('slotRows').innerHTML = form._slots.map((x, i) => `<div class="slotrow" data-i="${i}">
+    <input class="in" data-k="label" value="${esc(x.label)}" maxlength="20" placeholder="이름 (예: 1교시)" aria-label="${i + 1}번 시간 이름">
+    <input class="in" data-k="time" value="${esc(x.time || '')}" maxlength="30" placeholder="시각 (예: 09:00~09:40)" aria-label="${i + 1}번 시각">
+    <button type="button" class="icon-btn" data-act="slotDel" data-i="${i}" aria-label="이 시간 지우기">✕</button></div>`).join('') || '<p class="meta">시간이 없습니다. 위의 버튼으로 채우거나 시간을 추가하세요.</p>';
+}
+function syncSlotRows(form) {
+  document.querySelectorAll('#slotRows .slotrow').forEach(row => {
+    const x = form._slots[+row.dataset.i]; if (!x) return;
+    x.label = row.querySelector('[data-k=label]').value; x.time = row.querySelector('[data-k=time]').value;
+  });
+}
 
 /* ───────── 업무계획 ─────────
    서버가 시트를 값·병합·색·굵기·열 너비 그대로 보내 주면, 여기서 표로 그립니다. 시트를 고치지는 않습니다. */
